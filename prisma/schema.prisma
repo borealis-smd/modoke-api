@@ -12,3 +12,179 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  user_id       String         @id @default(uuid())
+  name          String
+  tries         Int
+  xp            Int
+  level_id      Int
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @default(now())
+  Login         Login[]
+  Level         Level          @relation(fields: [level_id], references: [level_id])
+  Mascot        Mascot?
+  Badges        BadgesOnUser[]
+  Certificates  Certificates[]
+  Attempts      Attempts[]
+}
+
+model Login {
+  login_id      String   @id @default(uuid())
+  email         String   @unique
+  password_hash String
+  user_id       String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+  User          User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Level {
+  level_id    Int       @id @default(autoincrement())
+  name        LevelName
+  description String
+  User        User[]
+  Sessions    Sessions?
+}
+
+enum LevelName {
+  A
+  AA
+  AAA
+}
+
+model Sessions {
+  session_id          Int           @id @default(autoincrement())
+  session_title       String
+  session_description String
+  is_completed        Boolean
+  completed_at        DateTime
+  level_id            Int           @unique
+  Level               Level         @relation(fields: [level_id], references: [level_id])
+  Units               Units[]
+  Certificates        Certificates?
+}
+
+model Units {
+  unit_id          Int       @id @default(autoincrement())
+  unit_title       String
+  unit_description String
+  is_completed     Boolean
+  completed_at     DateTime
+  session_id       Int
+  Session          Sessions  @relation(fields: [session_id], references: [session_id])
+  Lessons          Lessons[]
+  Badges           Badges?
+}
+
+model Lessons {
+  lesson_id          Int           @id @default(autoincrement())
+  lesson_title       String
+  lesson_description String
+  is_completed       Boolean
+  unit_id            Int
+  completed_at       DateTime
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @default(now())
+  Unit               Units         @relation(fields: [unit_id], references: [unit_id])
+  Explanations       Explanations?
+  Questions          Questions[]
+}
+
+model Explanations {
+  explanation_id Int      @id @default(autoincrement())
+  content        String
+  lesson_id      Int      @unique
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+  Lesson         Lessons  @relation(fields: [lesson_id], references: [lesson_id])
+}
+
+model Questions {
+  question_id          Int        @id @default(autoincrement())
+  question_text        String
+  is_entrance_question Boolean
+  xp                   Int
+  lesson_id            Int
+  created_at           DateTime   @default(now())
+  updated_at           DateTime   @default(now())
+  Lesson               Lessons    @relation(fields: [lesson_id], references: [lesson_id])
+  Answers              Answers[]
+  Attempts             Attempts[]
+}
+
+model Answers {
+  // Considera apenas questões de múltipla escolha
+  answer_id   Int       @id @default(autoincrement())
+  answer_text String
+  is_correct  Boolean
+  question_id Int
+  answered_at DateTime
+  Question    Questions @relation(fields: [question_id], references: [question_id])
+  Attempts    Attempts?
+}
+
+model Attempts {
+  attempt_id         Int       @id @default(autoincrement())
+  user_id            String
+  question_id        Int
+  selected_answer_id Int       @unique
+  attempted_at       DateTime
+  User               User      @relation(fields: [user_id], references: [user_id])
+  Question           Questions @relation(fields: [question_id], references: [question_id])
+  Answer             Answers   @relation(fields: [selected_answer_id], references: [answer_id])
+}
+
+model Mascot {
+  mascot_id        Int                   @id @default(autoincrement())
+  mascot_image_url String
+  user_id          String                @unique
+  User             User                  @relation(fields: [user_id], references: [user_id])
+  MascotItems      MascotItemsOnMascot[]
+}
+
+model MascotItems {
+  mascot_items_id     Int                   @id @default(autoincrement())
+  item_name           String
+  item_image_url      String
+  isEquipped          Boolean
+  acquired_at         DateTime
+  MascotItemsOnMascot MascotItemsOnMascot[]
+}
+
+model MascotItemsOnMascot {
+  mascot_id       Int
+  mascot_items_id Int
+  Mascot          Mascot      @relation(fields: [mascot_id], references: [mascot_id])
+  MascotItems     MascotItems @relation(fields: [mascot_items_id], references: [mascot_items_id])
+
+  @@id([mascot_id, mascot_items_id])
+}
+
+model Badges {
+  badge_id        Int            @id @default(autoincrement())
+  badge_name      String
+  badge_image_url String
+  unit_id         Int            @unique
+  Unit            Units          @relation(fields: [unit_id], references: [unit_id])
+  User            BadgesOnUser[]
+}
+
+model BadgesOnUser {
+  badge_id Int
+  user_id  String
+  Badges   Badges @relation(fields: [badge_id], references: [badge_id])
+  User     User   @relation(fields: [user_id], references: [user_id])
+
+  @@id([badge_id, user_id])
+}
+
+model Certificates {
+  certificate_id   Int      @id @default(autoincrement())
+  certificate_text String
+  user_id          String
+  session_id       Int      @unique
+  created_at       DateTime
+  User             User     @relation(fields: [user_id], references: [user_id])
+  Session          Sessions @relation(fields: [session_id], references: [session_id])
+}
