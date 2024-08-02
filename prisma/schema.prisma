@@ -14,19 +14,19 @@ datasource db {
 }
 
 model User {
-  user_id       String         @id @default(uuid())
-  name          String
-  tries         Int
-  xp            Int
-  level_id      Int
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @default(now())
-  Login         Login[]
-  Level         Level          @relation(fields: [level_id], references: [level_id])
-  Mascot        Mascot?
-  Badges        BadgesOnUser[]
-  Certificates  Certificates[]
-  Attempts      Attempts[]
+  user_id      String         @id @default(uuid())
+  name         String
+  tries        Int
+  xp           Int
+  level_id     Int
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now())
+  Login        Login[]
+  Level        Level          @relation(fields: [level_id], references: [level_id])
+  Mascot       Mascot?
+  Badges       BadgesOnUser[]
+  Certificates Certificates[]
+  Attempts     Attempts[]
 }
 
 model Login {
@@ -48,9 +48,9 @@ model Level {
 }
 
 enum LevelName {
-  A
-  AA
-  AAA
+  A // Beginner
+  AA // Intermediate
+  AAA // Advanced
 }
 
 model Sessions {
@@ -78,17 +78,25 @@ model Units {
 }
 
 model Lessons {
-  lesson_id          Int           @id @default(autoincrement())
+  lesson_id          Int              @id @default(autoincrement())
   lesson_title       String
   lesson_description String
+  lesson_principle   LessonPrinciple
   is_completed       Boolean
   unit_id            Int
   completed_at       DateTime
-  created_at         DateTime      @default(now())
-  updated_at         DateTime      @default(now())
-  Unit               Units         @relation(fields: [unit_id], references: [unit_id])
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @default(now())
+  Unit               Units            @relation(fields: [unit_id], references: [unit_id])
   Explanations       Explanations?
   Questions          Questions[]
+}
+
+enum LessonPrinciple {
+  P // Perceivable
+  O // Operable
+  U // Understandable
+  R // Robust
 }
 
 model Explanations {
