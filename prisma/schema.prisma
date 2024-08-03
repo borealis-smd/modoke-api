@@ -14,19 +14,19 @@ datasource db {
 }
 
 model User {
-  user_id      String         @id @default(uuid())
+  user_id      String               @id @default(uuid())
   name         String
   tries        Int
   xp           Int
   level_id     Int
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @default(now())
+  created_at   DateTime             @default(now())
+  updated_at   DateTime             @updatedAt
   Login        Login[]
-  Level        Level          @relation(fields: [level_id], references: [level_id])
+  Level        Level                @relation(fields: [level_id], references: [level_id])
   Mascot       Mascot?
-  Badges       BadgesOnUser[]
-  Certificates Certificates[]
+  Badges       UserHasBadge[]
   Attempts     Attempts[]
+  Certificates UserHasCertificate[]
 }
 
 model Login {
@@ -35,7 +35,7 @@ model Login {
   password_hash String
   user_id       String
   created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
   User          User     @relation(fields: [user_id], references: [user_id])
 }
 
@@ -58,7 +58,7 @@ model Sessions {
   session_title       String
   session_description String
   is_completed        Boolean
-  completed_at        DateTime
+  completed_at        DateTime?
   level_id            Int           @unique
   Level               Level         @relation(fields: [level_id], references: [level_id])
   Units               Units[]
@@ -70,7 +70,7 @@ model Units {
   unit_title       String
   unit_description String
   is_completed     Boolean
-  completed_at     DateTime
+  completed_at     DateTime?
   session_id       Int
   Session          Sessions  @relation(fields: [session_id], references: [session_id])
   Lessons          Lessons[]
@@ -78,21 +78,21 @@ model Units {
 }
 
 model Lessons {
-  lesson_id          Int              @id @default(autoincrement())
+  lesson_id          Int             @id @default(autoincrement())
   lesson_title       String
   lesson_description String
-  lesson_principle   LessonPrinciple
+  lesson_principle   Principle
   is_completed       Boolean
   unit_id            Int
-  completed_at       DateTime
-  created_at         DateTime         @default(now())
-  updated_at         DateTime         @default(now())
-  Unit               Units            @relation(fields: [unit_id], references: [unit_id])
+  completed_at       DateTime?
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
+  Unit               Units           @relation(fields: [unit_id], references: [unit_id])
   Explanations       Explanations?
   Questions          Questions[]
 }
 
-enum LessonPrinciple {
+enum Principle {
   P // Perceivable
   O // Operable
   U // Understandable
@@ -104,7 +104,7 @@ model Explanations {
   content        String
   lesson_id      Int      @unique
   created_at     DateTime @default(now())
-  updated_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
   Lesson         Lessons  @relation(fields: [lesson_id], references: [lesson_id])
 }
 
@@ -115,14 +115,15 @@ model Questions {
   xp                   Int
   lesson_id            Int
   created_at           DateTime   @default(now())
-  updated_at           DateTime   @default(now())
+  updated_at           DateTime   @updatedAt
   Lesson               Lessons    @relation(fields: [lesson_id], references: [lesson_id])
   Answers              Answers[]
   Attempts             Attempts[]
 }
 
+// Alternativas
+// Considera apenas questões de múltipla escolha.
 model Answers {
-  // Considera apenas questões de múltipla escolha
   answer_id   Int       @id @default(autoincrement())
   answer_text String
   is_correct  Boolean
@@ -132,6 +133,7 @@ model Answers {
   Attempts    Attempts?
 }
 
+// Respostas marcadas
 model Attempts {
   attempt_id         Int       @id @default(autoincrement())
   user_id            String
@@ -144,29 +146,28 @@ model Attempts {
 }
 
 model Mascot {
-  mascot_id        Int                   @id @default(autoincrement())
+  mascot_id        Int                    @id @default(autoincrement())
   mascot_image_url String
-  user_id          String                @unique
-  User             User                  @relation(fields: [user_id], references: [user_id])
-  MascotItems      MascotItemsOnMascot[]
+  user_id          String                 @unique
+  User             User                   @relation(fields: [user_id], references: [user_id])
+  MascotItems      MascotHasMascotItems[]
 }
 
 model MascotItems {
-  mascot_items_id     Int                   @id @default(autoincrement())
-  item_name           String
-  item_image_url      String
-  isEquipped          Boolean
-  acquired_at         DateTime
-  MascotItemsOnMascot MascotItemsOnMascot[]
+  mascot_items_id Int                    @id @default(autoincrement())
+  item_name       String
+  item_image_url  String
+  isEquipped      Boolean
+  Mascots         MascotHasMascotItems[]
 }
 
-model MascotItemsOnMascot {
-  mascot_id       Int
-  mascot_items_id Int
-  Mascot          Mascot      @relation(fields: [mascot_id], references: [mascot_id])
-  MascotItems     MascotItems @relation(fields: [mascot_items_id], references: [mascot_items_id])
-
-  @@id([mascot_id, mascot_items_id])
+model MascotHasMascotItems {
+  mascot_has_mascot_items_id String      @id @default(uuid())
+  mascot_id                  Int
+  mascot_items_id            Int
+  acquired_at                DateTime?
+  Mascot                     Mascot      @relation(fields: [mascot_id], references: [mascot_id])
+  MascotItems                MascotItems @relation(fields: [mascot_items_id], references: [mascot_items_id])
 }
 
 model Badges {
@@ -175,24 +176,31 @@ model Badges {
   badge_image_url String
   unit_id         Int            @unique
   Unit            Units          @relation(fields: [unit_id], references: [unit_id])
-  User            BadgesOnUser[]
+  users           UserHasBadge[]
 }
 
-model BadgesOnUser {
-  badge_id Int
-  user_id  String
-  Badges   Badges @relation(fields: [badge_id], references: [badge_id])
-  User     User   @relation(fields: [user_id], references: [user_id])
-
-  @@id([badge_id, user_id])
+model UserHasBadge {
+  user_has_badge_id String   @id @default(uuid())
+  badge_id          Int
+  user_id           String
+  acquired_at       DateTime @default(now())
+  User              User     @relation(fields: [user_id], references: [user_id])
+  Badges            Badges   @relation(fields: [badge_id], references: [badge_id])
 }
 
 model Certificates {
-  certificate_id   Int      @id @default(autoincrement())
+  certificate_id   Int                  @id @default(autoincrement())
   certificate_text String
-  user_id          String
-  session_id       Int      @unique
-  created_at       DateTime
-  User             User     @relation(fields: [user_id], references: [user_id])
-  Session          Sessions @relation(fields: [session_id], references: [session_id])
+  session_id       Int                  @unique
+  Session          Sessions             @relation(fields: [session_id], references: [session_id])
+  Users            UserHasCertificate[]
+}
+
+model UserHasCertificate {
+  user_has_certificate_id String       @id @default(uuid())
+  user_id                 String
+  certificate_id          Int
+  acquired_at             DateTime     @default(now())
+  User                    User         @relation(fields: [user_id], references: [user_id])
+  Certificate             Certificates @relation(fields: [certificate_id], references: [certificate_id])
 }
