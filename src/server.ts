@@ -1,14 +1,14 @@
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import { config } from "dotenv";
+import UserRoutes from "./routes/userRoutes";
 
 config();
 
 const server = Fastify({ logger: true });
 const PORT = Number(process.env.PORT) || 3000;
+const fastify = Fastify();
 
-server.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
-  return { hello: "world" };
-});
+fastify.register(UserRoutes, { prefix: "/user" });
 
 server.listen({ port: PORT }, (err, address) => {
   if (err) {

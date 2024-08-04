@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { verifyToken } from "../config/jwt";
 
-export const tokenValidator = async (
+export const validateToken = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

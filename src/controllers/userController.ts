@@ -1,0 +1,119 @@
+import * as UserService from "../services/userService";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { User, UserSchema } from "../validators/userValidator";
+import { Login, LoginSchema } from "../validators/loginValidator";
+import { validateToken } from "../validators/tokenValidator";
+import { z } from "zod";
+
+export const registerUser = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    /*
+       {
+        user: {},
+        login: {},
+       }
+    */
+    const { user, login } = request.body as { user: User; login: Login };
+    const userParsedBody = UserSchema.parse(user);
+    const loginParsedBody = LoginSchema.parse(login);
+
+    const newUser = await UserService.registerUser(
+      userParsedBody,
+      loginParsedBody,
+    );
+
+    reply.code(201).send(newUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
+  try {
+    const { email, password } = LoginSchema.parse(request.body);
+
+    const { token } = await UserService.logIn(email, password);
+
+    reply.code(200).send(JSON.stringify(token));
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const getUserByEmail = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    await validateToken(request, reply);
+
+    const paramsSchema = z.object({
+      email: z.string().email(),
+    });
+    const { email } = paramsSchema.parse(request.params);
+
+    const user = await UserService.getUserByEmail(email);
+
+    reply.code(200).send(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const updateUser = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    await validateToken(request, reply);
+
+    const paramsSchema = z.object({
+      user_id: z.string(),
+    });
+    const { user_id } = paramsSchema.parse(request.params);
+
+    const user = UserSchema.parse(request.body);
+
+    const updatedUser = await UserService.updateUser(user_id, user);
+
+    reply.code(200).send(updatedUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const updatePassword = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    await validateToken(request, reply);
+
+    const { email, oldPassword, newPassword } = z
+      .object({
+        email: z.string().email(),
+        oldPassword: z.string(),
+        newPassword: z.string(),
+      })
+      .parse(request.body);
+
+    await UserService.updatePassword(email, oldPassword, newPassword);
+
+    reply.code(204).send();
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
