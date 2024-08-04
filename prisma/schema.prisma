@@ -15,8 +15,8 @@ datasource db {
 
 model User {
   user_id      String               @id @default(uuid())
-  name         String
-  tries        Int
+  first_name   String
+  last_name    String
   xp           Int
   level_id     Int
   created_at   DateTime             @default(now())
@@ -78,16 +78,16 @@ model Units {
 }
 
 model Lessons {
-  lesson_id          Int             @id @default(autoincrement())
+  lesson_id          Int           @id @default(autoincrement())
   lesson_title       String
   lesson_description String
   lesson_principle   Principle
   is_completed       Boolean
   unit_id            Int
   completed_at       DateTime?
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
-  Unit               Units           @relation(fields: [unit_id], references: [unit_id])
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
+  Unit               Units         @relation(fields: [unit_id], references: [unit_id])
   Explanations       Explanations?
   Questions          Questions[]
 }

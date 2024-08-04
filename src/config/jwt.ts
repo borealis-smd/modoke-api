@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { LoginDB } from "../validators/loginValidator";
+import { UserDB } from "../validators/userValidator";
 
 if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET not defined.");
@@ -8,12 +8,13 @@ if (!process.env.JWT_SECRET) {
 const SECRET = process.env.JWT_SECRET;
 const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION || "1d";
 
-export const generateToken = (login: LoginDB) => {
+export const generateToken = (user: UserDB) => {
   return jwt.sign(
     {
-      login_id: login.login_id,
-      user_id: login.user_id,
-      email: login.email,
+      user_id: user.user_id,
+      first_name: user.first_name,
+      xp: user.xp,
+      level_id: user.level_id,
     },
     SECRET,
     { expiresIn: TOKEN_EXPIRATION },
