@@ -24,21 +24,17 @@ export const registerUser = async (user: User, login: Login) => {
 
   const password_hash = await hash(login.password, 10);
 
-  return prisma.$transaction(async (prisma) => {
-    const createdUser = await prisma.user.create({
-      data: {
-        ...user,
-        level_id: 1, // Por padrão, definir como nível 1 (A)
+  return prisma.user.create({
+    data: {
+      ...user,
+      level_id: 1, // Por padrão, definir como nível 1 (A)
+      Login: {
+        create: {
+          email: login.email,
+          password_hash,
+        },
       },
-    });
-
-    await prisma.login.create({
-      data: {
-        email: login.email,
-        password_hash,
-        user_id: createdUser.user_id,
-      },
-    });
+    },
   });
 };
 
