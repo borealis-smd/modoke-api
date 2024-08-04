@@ -1,7 +1,7 @@
 import * as UserRepo from "../models/user";
 import { User } from "../validators/userValidator";
 import { Login } from "../validators/loginValidator";
-import {compare, hash} from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { generateToken } from "../config/jwt";
 
 export const registerUser = async (user: User, login: Login) => {
@@ -44,19 +44,22 @@ export const updateUser = async (user_id: string, user: User) => {
   return UserRepo.updateUser(user_id, user);
 };
 
-
-export const updatePassword = async (email: string, oldPassword: string, newPassword: string) => {
+export const updatePassword = async (
+  email: string,
+  oldPassword: string,
+  newPassword: string,
+) => {
   const existingUser = await UserRepo.getUserByEmail(email);
-    if (!existingUser) {
-        throw new UserNotFoundError("Usuário não encontrado.");
-    }
+  if (!existingUser) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
 
-    const login = await UserRepo.getCredentialsByEmail(email);
-    const passwordMatch = await compare(oldPassword, login.password_hash);
-    if (!passwordMatch) {
-        throw new InvalidCredentialsError("Credenciais inválidas.");
-    }
+  const login = await UserRepo.getCredentialsByEmail(email);
+  const passwordMatch = await compare(oldPassword, login.password_hash);
+  if (!passwordMatch) {
+    throw new InvalidCredentialsError("Credenciais inválidas.");
+  }
 
-    const newPasswordHash = await hash(newPassword, 10);
-    return UserRepo.updatePassword(email, newPasswordHash);
-}
+  const newPasswordHash = await hash(newPassword, 10);
+  return UserRepo.updatePassword(email, newPasswordHash);
+};
