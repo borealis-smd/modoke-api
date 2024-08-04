@@ -1,14 +1,24 @@
 import { prisma } from "../config/db";
-import { User, UserDB, UserSchema } from "../validators/userValidator";
+import {
+  UserDB,
+  UserRegister,
+  UserRegisterSchema, UserUpdate,
+} from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
+import { MissingFieldError } from "../errors/MissingFieldError";
+import { ValidationError } from "../errors/ValidationError";
 import { hash } from "bcrypt";
 
-export const registerUser = async (user: User, login: Login) => {
-  if (!user.first_name || !user.last_name || !user.xp) {
-    throw new MissingFieldError("Nome, sobrenome e XP são obrigatórios.");
+export const registerUser = async (user: UserRegister, login: Login) => {
+  if (!user.first_name || !user.last_name) {
+    throw new MissingFieldError("Nome e sobrenome são obrigatórios.");
   }
 
-  const userValidationResult = UserSchema.safeParse(user);
+  if (user.level_id === undefined || user.level_id === null) {
+    throw new MissingFieldError("Level é obrigatório.");
+  }
+
+  const userValidationResult = UserRegisterSchema.safeParse(user);
   if (!userValidationResult.success) {
     throw new ValidationError("Dados de usuário inválidos.");
   }
@@ -27,7 +37,7 @@ export const registerUser = async (user: User, login: Login) => {
   return prisma.user.create({
     data: {
       ...user,
-      level_id: 1, // Por padrão, definir como nível 1 (A)
+      xp: 0,
       Login: {
         create: {
           email: login.email,
@@ -45,11 +55,15 @@ export const getUserById = async (user_id: string) => {
 };
 
 export const getUserByEmail = async (email: string) => {
-  const login = await prisma.login.findUniqueOrThrow({
+  const login = await prisma.login.findUnique({
     where: { email },
   });
 
-  return prisma.user.findUniqueOrThrow({
+  if (!login) {
+    return null;
+  }
+
+  return prisma.user.findUnique({
     where: { user_id: login.user_id },
   });
 };
@@ -60,7 +74,7 @@ export const getCredentialsByEmail = async (email: string) => {
   });
 };
 
-export const updateUser = async (user_id: string, user: Partial<UserDB>) => {
+export const updateUser = async (user_id: string, user: UserUpdate) => {
   return prisma.user.update({
     where: { user_id },
     data: user,

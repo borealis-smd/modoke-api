@@ -7,19 +7,19 @@ export default function UserRoutes(
   done: Function,
 ) {
   // Rota de cadastro de usuário
-  app.post("/user", UserController.registerUser);
+  app.post("/", UserController.registerUser);
 
   // Rota de login de usuário
   app.post("/login", UserController.logIn);
 
   // Rota de listagem de usuário por email
-  app.get("/user/:email", UserController.getUserByEmail);
+  app.get("/g:email", UserController.getUserByEmail);
 
   // Rota de atualização de usuário
-  app.put("/user/:user_id", UserController.updateUser);
+  app.put("/u:user_id", UserController.updateUser);
 
   // Rota de atualização de senha
-  app.put("/user/password", UserController.updatePassword);
+  app.put("/password", UserController.updatePassword);
 
   done();
 }

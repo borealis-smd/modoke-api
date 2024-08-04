@@ -1,6 +1,11 @@
 import * as UserService from "../services/userService";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { User, UserSchema } from "../validators/userValidator";
+import {
+  User,
+  UserRegisterSchema,
+  UserSchema,
+  UserUpdateSchema,
+} from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
 import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
@@ -10,14 +15,8 @@ export const registerUser = async (
   reply: FastifyReply,
 ) => {
   try {
-    /*
-       {
-        user: {},
-        login: {},
-       }
-    */
     const { user, login } = request.body as { user: User; login: Login };
-    const userParsedBody = UserSchema.parse(user);
+    const userParsedBody = UserRegisterSchema.parse(user);
     const loginParsedBody = LoginSchema.parse(login);
 
     const newUser = await UserService.registerUser(
@@ -27,6 +26,9 @@ export const registerUser = async (
 
     reply.code(201).send(newUser);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      reply.code(400).send({ message: error.errors[0].message });
+    }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
     }
@@ -41,6 +43,9 @@ export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
 
     reply.code(200).send(JSON.stringify(token));
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      reply.code(400).send({ message: error.errors[0].message });
+    }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
     }
@@ -54,15 +59,18 @@ export const getUserByEmail = async (
   try {
     await validateToken(request, reply);
 
-    const paramsSchema = z.object({
+    const querySchema = z.object({
       email: z.string().email(),
     });
-    const { email } = paramsSchema.parse(request.params);
+    const { email } = querySchema.parse(request.query);
 
     const user = await UserService.getUserByEmail(email);
 
     reply.code(200).send(user);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      reply.code(400).send({ message: error.errors[0].message });
+    }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
     }
@@ -76,17 +84,20 @@ export const updateUser = async (
   try {
     await validateToken(request, reply);
 
-    const paramsSchema = z.object({
+    const querySchema = z.object({
       user_id: z.string(),
     });
-    const { user_id } = paramsSchema.parse(request.params);
+    const { user_id } = querySchema.parse(request.query);
 
-    const user = UserSchema.parse(request.body);
+    const user = UserUpdateSchema.parse(request.body);
 
     const updatedUser = await UserService.updateUser(user_id, user);
 
     reply.code(200).send(updatedUser);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      reply.code(400).send({ message: error.errors[0].message });
+    }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
     }
@@ -112,6 +123,9 @@ export const updatePassword = async (
 
     reply.code(204).send();
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      reply.code(400).send({ message: error.errors[0].message });
+    }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
     }

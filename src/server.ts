@@ -1,4 +1,4 @@
-import Fastify, { FastifyReply, FastifyRequest } from "fastify";
+import Fastify from "fastify";
 import { config } from "dotenv";
 import UserRoutes from "./routes/userRoutes";
 
