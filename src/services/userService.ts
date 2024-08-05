@@ -1,5 +1,5 @@
 import * as UserRepo from "../models/user";
-import {User, UserRegister, UserUpdate} from "../validators/userValidator";
+import { UserRegister, UserUpdate } from "../validators/userValidator";
 import { Login } from "../validators/loginValidator";
 import { compare, hash } from "bcrypt";
 import { generateToken } from "../config/jwt";

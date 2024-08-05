@@ -1,8 +1,8 @@
 import { prisma } from "../config/db";
 import {
-  UserDB,
   UserRegister,
-  UserRegisterSchema, UserUpdate,
+  UserRegisterSchema,
+  UserUpdate,
 } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
 import { MissingFieldError } from "../errors/MissingFieldError";
