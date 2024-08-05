@@ -3,7 +3,6 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import {
   User,
   UserRegisterSchema,
-  UserSchema,
   UserUpdateSchema,
 } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
@@ -27,7 +26,11 @@ export const registerUser = async (
     reply.code(201).send(newUser);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      reply.code(400).send({ message: error.errors[0].message });
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
     }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
@@ -44,7 +47,11 @@ export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
     reply.code(200).send(JSON.stringify(token));
   } catch (error) {
     if (error instanceof z.ZodError) {
-      reply.code(400).send({ message: error.errors[0].message });
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
     }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
@@ -69,7 +76,11 @@ export const getUserByEmail = async (
     reply.code(200).send(user);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      reply.code(400).send({ message: error.errors[0].message });
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
     }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
@@ -96,7 +107,11 @@ export const updateUser = async (
     reply.code(200).send(updatedUser);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      reply.code(400).send({ message: error.errors[0].message });
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
     }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
@@ -124,7 +139,11 @@ export const updatePassword = async (
     reply.code(204).send();
   } catch (error) {
     if (error instanceof z.ZodError) {
-      reply.code(400).send({ message: error.errors[0].message });
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
     }
     if (error instanceof Error) {
       reply.code(400).send({ message: error.message });
