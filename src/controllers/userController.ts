@@ -7,6 +7,7 @@ import {
 } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
 import { validateToken } from "../validators/tokenValidator";
+import { sendGreetingEmail } from "../config/nodemailer";
 import { z } from "zod";
 
 export const registerUser = async (
@@ -22,6 +23,8 @@ export const registerUser = async (
       userParsedBody,
       loginParsedBody,
     );
+
+    await sendGreetingEmail(login.email, user.first_name);
 
     reply.code(201).send(newUser);
   } catch (error) {
