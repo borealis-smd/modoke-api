@@ -31,7 +31,13 @@ export const getLessonsByLevelId = async (level_id: number) => {
 
 export const createLesson = async (lesson: LessonsCreate) => {
   return prisma.lessons.create({
-    data: { ...lesson, is_completed: false },
+    data: {
+      lesson_title: lesson.lesson_title,
+      lesson_description: lesson.lesson_description,
+      lesson_principle: lesson.lesson_principle,
+      unit_id: lesson.unit_id,
+      is_completed: false,
+    },
   });
 };
 
@@ -40,4 +46,4 @@ export const finishLesson = async (lesson_id: number) => {
     where: { lesson_id },
     data: { is_completed: true, completed_at: new Date() },
   });
-}
+};
