@@ -138,7 +138,7 @@ export default function UserRoutes(
     "/u:user_id",
     {
       schema: {
-        description: "Atualizar usuário",
+        description: "Atualizar informações de um usuário",
         querystring: {
           user_id: {
             type: "string",
@@ -196,7 +196,7 @@ export default function UserRoutes(
     "/password",
     {
       schema: {
-        description: "Atualizar senha",
+        description: "Atualizar senha do usuário",
         body: {
           type: "object",
           required: ["email", "oldPassword", "newPassword"],

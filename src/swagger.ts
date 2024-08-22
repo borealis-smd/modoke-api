@@ -3,6 +3,7 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import UserRoutes from "./routes/userRoutes";
 import LevelRoutes from "./routes/levelRoutes";
+import LessonRoutes from "./routes/lessonRoutes";
 
 const fastify = Fastify();
 
@@ -30,6 +31,7 @@ fastify.register(fastifySwaggerUi, {
 
 fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
+fastify.register(LessonRoutes, { prefix: "/lesson" });
 
 fastify.listen({ port: 3000 }, (err, address) => {
   if (err) {

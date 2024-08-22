@@ -14,5 +14,14 @@ export const LessonsDBSchema = z.object({
 
 export const LessonsSchema = LessonsDBSchema.partial();
 
+export const LessonsCreateSchema = LessonsDBSchema.omit({
+  lesson_id: true,
+  is_completed: true,
+  completed_at: true,
+  created_at: true,
+  updated_at: true,
+});
+
 export type LessonsDB = z.infer<typeof LessonsDBSchema>;
 export type Lessons = z.infer<typeof LessonsSchema>;
+export type LessonsCreate = z.infer<typeof LessonsCreateSchema>;
