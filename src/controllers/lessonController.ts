@@ -1,6 +1,7 @@
 import * as LessonService from "../services/lessonService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
+import { validateToken } from "../validators/tokenValidator";
 
 export const getLessonById = async (
   request: FastifyRequest,
@@ -120,6 +121,8 @@ export const createLesson = async (
   reply: FastifyReply,
 ) => {
   try {
+    await validateToken(request, reply);
+
     const lesson = z
       .object({
         lesson_title: z.string(),
@@ -151,6 +154,8 @@ export const finishLesson = async (
   reply: FastifyReply,
 ) => {
   try {
+    await validateToken(request, reply);
+
     const { lesson_id } = z
       .object({
         lesson_id: z.number(),
