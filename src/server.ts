@@ -25,6 +25,7 @@ fastify.register(fastifySwagger, {
       version: "1.0.0",
     },
     servers: [
+      { url: "http://localhost:3000" },
       { url: "https://api-projeto-production-2ac4.up.railway.app" },
     ],
     components: {
@@ -55,7 +56,7 @@ fastify.register(LevelRoutes, { prefix: "/level" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });
 
-fastify.listen({ port: PORT }, (err, address) => {
+fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
