@@ -6,11 +6,16 @@ import LessonRoutes from "./routes/lessonRoutes";
 import ExplanationRoutes from "./routes/explanationRoutes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyCors from "@fastify/cors";
 
 config();
 
 const fastify = Fastify({ logger: true });
 const PORT = Number(process.env.PORT) || 3000;
+
+fastify.register(fastifyCors, {
+  origin: "*",
+});
 
 fastify.register(fastifySwagger, {
   openapi: {
@@ -19,7 +24,10 @@ fastify.register(fastifySwagger, {
       description: "API documentation with Swagger",
       version: "1.0.0",
     },
-    servers: [{ url: "http://localhost:3000" }],
+    servers: [
+      { url: "http://localhost:3000" },
+      { url: "https://api-projeto-production-2ac4.up.railway.app/" },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
