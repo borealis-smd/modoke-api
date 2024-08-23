@@ -6,7 +6,6 @@ export default function UserRoutes(
   options: any,
   done: Function,
 ) {
-  // Rota de cadastro de usuário
   app.post(
     "/",
     {
@@ -65,7 +64,6 @@ export default function UserRoutes(
     UserController.registerUser,
   );
 
-  // Rota de login de usuário
   app.post(
     "/login",
     {
@@ -98,9 +96,8 @@ export default function UserRoutes(
     UserController.logIn,
   );
 
-  // Rota de listagem de usuário por email
   app.get(
-    "/g:email",
+    ":email",
     {
       schema: {
         description: "Buscar usuário por email",
@@ -131,14 +128,18 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     UserController.getUserByEmail,
   );
 
-  // Rota de atualização de usuário
   app.put(
-    "/u:user_id",
+    ":user_id",
     {
       schema: {
         description: "Atualizar informações de um usuário",
@@ -190,12 +191,16 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     UserController.updateUser,
   );
 
-  // Rota de atualização de senha
   app.put(
     "/password",
     {
@@ -216,6 +221,11 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     UserController.updatePassword,

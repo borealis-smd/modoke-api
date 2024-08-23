@@ -229,6 +229,11 @@ export default function LessonRoutes(
           },
         },
         tags: ["Lessons"],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     LessonController.createLesson,
@@ -271,6 +276,11 @@ export default function LessonRoutes(
           },
         },
         tags: ["Lessons"],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     LessonController.finishLesson,

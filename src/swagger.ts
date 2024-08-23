@@ -16,6 +16,15 @@ fastify.register(fastifySwagger, {
       version: "1.0.0",
     },
     servers: [{ url: "http://localhost:3000" }],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
 });
 
