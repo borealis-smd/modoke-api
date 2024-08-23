@@ -17,6 +17,5 @@ export const ExplanationsCreate = ExplanationsDBSchema.omit({
   updated_at: true,
 });
 
-export type ExplanationsDB = z.infer<typeof ExplanationsDBSchema>;
 export type Explanations = z.infer<typeof ExplanationsSchema>;
 export type ExplanationsCreate = z.infer<typeof ExplanationsCreate>;

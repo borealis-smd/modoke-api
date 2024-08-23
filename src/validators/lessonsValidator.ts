@@ -22,6 +22,5 @@ export const LessonsCreateSchema = LessonsDBSchema.omit({
   updated_at: true,
 });
 
-export type LessonsDB = z.infer<typeof LessonsDBSchema>;
 export type Lessons = z.infer<typeof LessonsSchema>;
 export type LessonsCreate = z.infer<typeof LessonsCreateSchema>;

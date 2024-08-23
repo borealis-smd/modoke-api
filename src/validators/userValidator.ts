@@ -11,6 +11,7 @@ export const UserDBSchema = z.object({
     .min(3, { message: "Nome muito curto." })
     .max(70, { message: "Sobrenome muito longo." }),
   xp: z.number().int(),
+  coins: z.number().int(),
   level_id: z
     .number()
     .int()

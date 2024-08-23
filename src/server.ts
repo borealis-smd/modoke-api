@@ -7,6 +7,7 @@ import ExplanationRoutes from "./routes/explanationRoutes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
+import UnitRoutes from "./routes/unitRoutes";
 
 config();
 
@@ -55,6 +56,7 @@ fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });
+fastify.register(UnitRoutes, { prefix: "/unit" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
