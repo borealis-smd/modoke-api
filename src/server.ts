@@ -25,8 +25,7 @@ fastify.register(fastifySwagger, {
       version: "1.0.0",
     },
     servers: [
-      { url: "http://localhost:3000" },
-      { url: "https://api-projeto-production-2ac4.up.railway.app/" },
+      { url: "https://api-projeto-production-2ac4.up.railway.app" },
     ],
     components: {
       securitySchemes: {
@@ -43,7 +42,7 @@ fastify.register(fastifySwagger, {
 fastify.register(fastifySwaggerUi, {
   routePrefix: "/docs",
   uiConfig: {
-    docExpansion: "full",
+    docExpansion: "none",
     deepLinking: false,
   },
   staticCSP: true,
