@@ -59,6 +59,7 @@ export default function UserRoutes(
             },
           },
         },
+        tags: ["User"],
       },
     },
     UserController.registerUser,
@@ -91,6 +92,7 @@ export default function UserRoutes(
             },
           },
         },
+        tags: ["User"],
       },
     },
     UserController.logIn,
@@ -128,6 +130,7 @@ export default function UserRoutes(
             },
           },
         },
+        tags: ["User"],
       },
     },
     UserController.getUserByEmail,
@@ -186,6 +189,7 @@ export default function UserRoutes(
             },
           },
         },
+        tags: ["User"],
       },
     },
     UserController.updateUser,
@@ -209,8 +213,9 @@ export default function UserRoutes(
         response: {
           204: {
             type: "null",
-          }
-        }
+          },
+        },
+        tags: ["User"],
       },
     },
     UserController.updatePassword,

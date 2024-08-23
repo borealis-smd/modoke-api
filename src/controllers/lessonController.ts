@@ -155,7 +155,7 @@ export const finishLesson = async (
       .object({
         lesson_id: z.number(),
       })
-      .parse(request.params);
+      .parse(request.query);
 
     const finishedLesson = await LessonService.finishLesson(lesson_id);
 
