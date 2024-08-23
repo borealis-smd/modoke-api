@@ -7,21 +7,18 @@ export const getLessonById = async (lesson_id: number) => {
   });
 };
 
-// get lessons by unit_id
 export const getLessonsByUnitId = async (unit_id: number) => {
   return prisma.lessons.findMany({
     where: { unit_id },
   });
 };
 
-// get lessons by session_id
 export const getLessonsBySessionId = async (session_id: number) => {
   return prisma.lessons.findMany({
     where: { Unit: { session_id } },
   });
 };
 
-// get lessons by level_id
 export const getLessonsByLevelId = async (level_id: number) => {
   // Lessons has unit_id, Units has session_id, Sessions has level_id
   return prisma.lessons.findMany({

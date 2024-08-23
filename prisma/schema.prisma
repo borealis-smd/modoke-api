@@ -78,17 +78,17 @@ model Units {
 }
 
 model Lessons {
-  lesson_id          Int           @id @default(autoincrement())
+  lesson_id          Int            @id @default(autoincrement())
   lesson_title       String
   lesson_description String
   lesson_principle   Principle
   is_completed       Boolean
   unit_id            Int
   completed_at       DateTime?
-  created_at         DateTime      @default(now())
-  updated_at         DateTime      @updatedAt
-  Unit               Units         @relation(fields: [unit_id], references: [unit_id])
-  Explanations       Explanations?
+  created_at         DateTime       @default(now())
+  updated_at         DateTime       @updatedAt
+  Unit               Units          @relation(fields: [unit_id], references: [unit_id])
+  Explanations       Explanations[]
   Questions          Questions[]
 }
 
@@ -100,12 +100,19 @@ enum Principle {
 }
 
 model Explanations {
-  explanation_id Int      @id @default(autoincrement())
+  explanation_id Int             @id @default(autoincrement())
   content        String
-  lesson_id      Int      @unique
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  Lesson         Lessons  @relation(fields: [lesson_id], references: [lesson_id])
+  part           ExplanationPart
+  lesson_id      Int
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
+  Lesson         Lessons         @relation(fields: [lesson_id], references: [lesson_id])
+}
+
+enum ExplanationPart {
+  PART_1
+  PART_2
+  PART_3
 }
 
 model Questions {

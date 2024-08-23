@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "swagger": "tsx watch src/swagger.ts"
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",

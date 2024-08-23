@@ -201,7 +201,7 @@ export default function LessonRoutes(
           },
         },
         response: {
-          200: {
+          201: {
             type: "object",
             properties: {
               lesson_id: { type: "number", examples: [1] },
