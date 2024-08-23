@@ -1,16 +1,19 @@
 import Fastify from "fastify";
 import { config } from "dotenv";
 import UserRoutes from "./routes/userRoutes";
+import LevelRoutes from "./routes/levelRoutes";
+import LessonRoutes from "./routes/lessonRoutes";
 
 config();
 
-const server = Fastify({ logger: true });
+const fastify = Fastify({ logger: true });
 const PORT = Number(process.env.PORT) || 3000;
-const fastify = Fastify();
 
 fastify.register(UserRoutes, { prefix: "/user" });
+fastify.register(LevelRoutes, { prefix: "/level" });
+fastify.register(LessonRoutes, { prefix: "/lesson" });
 
-server.listen({ port: PORT }, (err, address) => {
+fastify.listen({ port: PORT }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);

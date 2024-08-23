@@ -5,7 +5,8 @@ import UserRoutes from "./routes/userRoutes";
 import LevelRoutes from "./routes/levelRoutes";
 import LessonRoutes from "./routes/lessonRoutes";
 
-const fastify = Fastify();
+const fastify = Fastify({ logger: true });
+const PORT = Number(process.env.PORT) || 3000;
 
 fastify.register(fastifySwagger, {
   openapi: {
@@ -33,7 +34,7 @@ fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 
-fastify.listen({ port: 3000 }, (err, address) => {
+fastify.listen({ port: PORT }, (err, address) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
