@@ -10,7 +10,7 @@ export const getLessonById = async (
   try {
     const { lesson_id } = z
       .object({
-        lesson_id: z.number(),
+        lesson_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -38,7 +38,7 @@ export const getLessonsByUnitId = async (
   try {
     const { unit_id } = z
       .object({
-        unit_id: z.number(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -66,7 +66,7 @@ export const getLessonsBySessionId = async (
   try {
     const { session_id } = z
       .object({
-        session_id: z.number(),
+        session_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -94,7 +94,7 @@ export const getLessonsByLevelId = async (
   try {
     const { level_id } = z
       .object({
-        level_id: z.number(),
+        level_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -127,7 +127,7 @@ export const createLesson = async (
         lesson_title: z.string(),
         lesson_description: z.string(),
         lesson_principle: z.enum(["P", "O", "U", "R"]),
-        unit_id: z.number(),
+        unit_id: z.number().int(),
       })
       .parse(request.body);
 
@@ -157,7 +157,7 @@ export const finishLesson = async (
 
     const { lesson_id } = z
       .object({
-        lesson_id: z.number(),
+        lesson_id: z.number().int(),
       })
       .parse(request.query);
 

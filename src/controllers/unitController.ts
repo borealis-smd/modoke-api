@@ -3,20 +3,26 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
 
-export const getUnits = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getUnits = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
   await validateToken(request, reply);
 
   const units = await UnitService.getUnits();
   reply.send(units);
 };
 
-export const getUnitById = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getUnitById = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
   await validateToken(request, reply);
 
   try {
     const { unit_id } = z
       .object({
-        unit_id: z.number(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -46,7 +52,7 @@ export const getUnitsBySessionId = async (
   try {
     const { session_id } = z
       .object({
-        session_id: z.number(),
+        session_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -67,7 +73,10 @@ export const getUnitsBySessionId = async (
   }
 };
 
-export const createUnit = async (request: FastifyRequest, reply: FastifyReply) => {
+export const createUnit = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
   await validateToken(request, reply);
 
   try {
@@ -75,7 +84,7 @@ export const createUnit = async (request: FastifyRequest, reply: FastifyReply) =
       .object({
         unit_title: z.string(),
         unit_description: z.string(),
-        session_id: z.number(),
+        session_id: z.number().int(),
       })
       .parse(request.body);
 
@@ -96,13 +105,16 @@ export const createUnit = async (request: FastifyRequest, reply: FastifyReply) =
   }
 };
 
-export const finishUnit = async (request: FastifyRequest, reply: FastifyReply) => {
+export const finishUnit = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
   await validateToken(request, reply);
 
   try {
     const { unit_id } = z
       .object({
-        unit_id: z.number(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
 
