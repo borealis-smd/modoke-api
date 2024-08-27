@@ -18,6 +18,7 @@ model User {
   user_id      String               @id @default(uuid())
   first_name   String
   last_name    String
+  avatar_url   String
   xp           Int
   coins        Int
   level_id     Int
@@ -126,18 +127,17 @@ model Questions {
   created_at           DateTime   @default(now())
   updated_at           DateTime   @updatedAt
   Lesson               Lessons?   @relation(fields: [lesson_id], references: [lesson_id])
-  Answers              Answers[]
+  Options              Options[]
   Attempts             Attempts[]
 }
 
 // Alternativas
 // Considera apenas questões de múltipla escolha.
-model Answers {
-  answer_id   Int       @id @default(autoincrement())
-  answer_text String
+model Options {
+  option_id   Int       @id @default(autoincrement())
+  option_text String
   is_correct  Boolean
   question_id Int
-  answered_at DateTime
   Question    Questions @relation(fields: [question_id], references: [question_id])
   Attempts    Attempts?
 }
@@ -147,11 +147,11 @@ model Attempts {
   attempt_id         Int       @id @default(autoincrement())
   user_id            String
   question_id        Int
-  selected_answer_id Int       @unique
+  selected_option_id Int       @unique
   attempted_at       DateTime
   User               User      @relation(fields: [user_id], references: [user_id])
   Question           Questions @relation(fields: [question_id], references: [question_id])
-  Answer             Answers   @relation(fields: [selected_answer_id], references: [answer_id])
+  Option             Options   @relation(fields: [selected_option_id], references: [option_id])
 }
 
 model Mascot {

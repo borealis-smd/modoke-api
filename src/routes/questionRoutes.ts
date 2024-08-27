@@ -10,7 +10,8 @@ export default function QuestionRoutes(
     "/lesson:lesson_id",
     {
       schema: {
-        description: "Buscar questões (enunciados e alternativas) por ID da lição",
+        description:
+          "Buscar questões (enunciados e alternativas) por ID da lição",
         querystring: {
           lesson_id: { type: "number", examples: [1] },
         },
@@ -36,22 +37,18 @@ export default function QuestionRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
-                Answers: {
+                Options: {
                   type: "array",
                   items: {
                     type: "object",
                     properties: {
-                      answer_id: { type: "number", examples: [1] },
-                      answer_text: {
+                      option_id: { type: "number", examples: [1] },
+                      option_text: {
                         type: "string",
                         examples: ["Azul"],
                       },
                       is_correct: { type: "boolean", examples: [true] },
                       question_id: { type: "number", examples: [1] },
-                      answered_at: {
-                        type: "string",
-                        examples: ["2024-08-04 16:21:21.921"],
-                      },
                     },
                   },
                 },
@@ -70,7 +67,8 @@ export default function QuestionRoutes(
     "/entranceTest",
     {
       schema: {
-        description: "Buscar questões (enunciados e alternativas) do teste de entrada",
+        description:
+          "Buscar questões (enunciados e alternativas) do teste de entrada",
         response: {
           200: {
             type: "array",
@@ -93,22 +91,18 @@ export default function QuestionRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
-                Answers: {
+                Options: {
                   type: "array",
                   items: {
                     type: "object",
                     properties: {
-                      answer_id: { type: "number", examples: [1] },
-                      answer_text: {
+                      option_id: { type: "number", examples: [1] },
+                      option_text: {
                         type: "string",
                         examples: ["Azul"],
                       },
                       is_correct: { type: "boolean", examples: [true] },
                       question_id: { type: "number", examples: [1] },
-                      answered_at: {
-                        type: "string",
-                        examples: ["2024-08-04 16:21:21.921"],
-                      },
                     },
                   },
                 },

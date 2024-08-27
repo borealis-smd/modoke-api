@@ -4,14 +4,14 @@ import { QuestionCreate } from "../validators/questionsValidator";
 export const getQuestionsByLessonId = async (lesson_id: number) => {
   return prisma.questions.findMany({
     where: { lesson_id },
-    include: { Answers: true },
+    include: { Options: true },
   });
 };
 
 export const getEntranceTestQuestions = async () => {
   return prisma.questions.findMany({
     where: { is_entrance_question: true },
-    include: { Answers: true },
+    include: { Options: true },
   });
 };
 
