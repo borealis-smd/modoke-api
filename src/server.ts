@@ -9,6 +9,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
 import UnitRoutes from "./routes/unitRoutes";
 import SessionRoutes from "./routes/sessionRoutes";
+import QuestionRoutes from "./routes/questionRoutes";
 
 config();
 
@@ -59,6 +60,7 @@ fastify.register(SessionRoutes, { prefix: "/session" });
 fastify.register(UnitRoutes, { prefix: "/unit" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });
+fastify.register(QuestionRoutes, { prefix: "/question" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
