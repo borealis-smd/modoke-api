@@ -27,7 +27,7 @@ export const UserSchema = UserDBSchema.omit({
   updated_at: true,
 });
 
-export const UserRegisterSchema = UserSchema.omit({ xp: true });
+export const UserRegisterSchema = UserSchema.omit({ xp: true, coins: true });
 
 export const UserUpdateSchema = UserSchema.partial();
 
