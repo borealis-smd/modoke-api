@@ -122,10 +122,10 @@ model Questions {
   question_text        String
   is_entrance_question Boolean
   xp                   Int
-  lesson_id            Int
+  lesson_id            Int?
   created_at           DateTime   @default(now())
   updated_at           DateTime   @updatedAt
-  Lesson               Lessons    @relation(fields: [lesson_id], references: [lesson_id])
+  Lesson               Lessons?   @relation(fields: [lesson_id], references: [lesson_id])
   Answers              Answers[]
   Attempts             Attempts[]
 }
