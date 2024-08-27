@@ -11,7 +11,7 @@ export const UnitsDBSchema = z.object({
 
 export const UnitsSchema = UnitsDBSchema.partial();
 
-export const UnitsCreate = UnitsDBSchema.omit({
+export const UnitsCreateSchema = UnitsDBSchema.omit({
   unit_id: true,
   is_completed: true,
   completed_at: true,
@@ -19,4 +19,4 @@ export const UnitsCreate = UnitsDBSchema.omit({
 
 export type UnitsDB = z.infer<typeof UnitsDBSchema>;
 export type Units = z.infer<typeof UnitsSchema>;
-export type UnitsCreate = z.infer<typeof UnitsCreate>;
+export type UnitsCreate = z.infer<typeof UnitsCreateSchema>;

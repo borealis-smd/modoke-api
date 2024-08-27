@@ -2,6 +2,7 @@ import * as UnitService from "../services/unitService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
+import { UnitsCreateSchema } from "../validators/unitsValidator";
 
 export const getUnits = async (
   request: FastifyRequest,
@@ -80,13 +81,7 @@ export const createUnit = async (
   await validateToken(request, reply);
 
   try {
-    const unit = z
-      .object({
-        unit_title: z.string(),
-        unit_description: z.string(),
-        session_id: z.number().int(),
-      })
-      .parse(request.body);
+    const unit = UnitsCreateSchema.parse(request.body);
 
     const newUnit = await UnitService.createUnit(unit);
 

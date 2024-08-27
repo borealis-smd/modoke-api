@@ -2,6 +2,7 @@ import * as SessionService from "../services/sessionService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
+import { SessionCreateSchema } from "../validators/sessionsValidator";
 
 export const getSessions = async (
   request: FastifyRequest,
@@ -26,13 +27,7 @@ export const createSession = async (
   try {
     await validateToken(request, reply);
 
-    const sessionParsedBody = z
-      .object({
-        session_title: z.string(),
-        session_description: z.string(),
-        level_id: z.number().int(),
-      })
-      .parse(request.body);
+    const sessionParsedBody = SessionCreateSchema.parse(request.body);
 
     const session = await SessionService.createSession(sessionParsedBody);
 

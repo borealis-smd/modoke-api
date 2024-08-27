@@ -2,6 +2,7 @@ import * as LessonService from "../services/lessonService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
+import { LessonsCreateSchema } from "../validators/lessonsValidator";
 
 export const getLessonById = async (
   request: FastifyRequest,
@@ -122,14 +123,7 @@ export const createLesson = async (
   try {
     await validateToken(request, reply);
 
-    const lesson = z
-      .object({
-        lesson_title: z.string(),
-        lesson_description: z.string(),
-        lesson_principle: z.enum(["P", "O", "U", "R"]),
-        unit_id: z.number().int(),
-      })
-      .parse(request.body);
+    const lesson = LessonsCreateSchema.parse(request.body);
 
     const newLesson = await LessonService.createLesson(lesson);
 
