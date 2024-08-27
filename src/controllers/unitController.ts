@@ -4,14 +4,14 @@ import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
 
 export const getUnits = async (request: FastifyRequest, reply: FastifyReply) => {
-  // await validateToken(request, reply);
+  await validateToken(request, reply);
 
   const units = await UnitService.getUnits();
   reply.send(units);
 };
 
 export const getUnitById = async (request: FastifyRequest, reply: FastifyReply) => {
-  // await validateToken(request, reply);
+  await validateToken(request, reply);
 
   try {
     const { unit_id } = z
@@ -41,7 +41,7 @@ export const getUnitsBySessionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  // await validateToken(request, reply);
+  await validateToken(request, reply);
 
   try {
     const { session_id } = z
@@ -68,7 +68,7 @@ export const getUnitsBySessionId = async (
 };
 
 export const createUnit = async (request: FastifyRequest, reply: FastifyReply) => {
-  // await validateToken(request, reply);
+  await validateToken(request, reply);
 
   try {
     const unit = z
@@ -97,7 +97,7 @@ export const createUnit = async (request: FastifyRequest, reply: FastifyReply) =
 };
 
 export const finishUnit = async (request: FastifyRequest, reply: FastifyReply) => {
-  // await validateToken(request, reply);
+  await validateToken(request, reply);
 
   try {
     const { unit_id } = z

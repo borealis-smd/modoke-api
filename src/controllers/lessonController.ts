@@ -71,7 +71,6 @@ export const getLessonsBySessionId = async (
       .parse(request.query);
 
     const lessons = await LessonService.getLessonsBySessionId(session_id);
-    console.log(lessons);
 
     reply.code(200).send(lessons);
   } catch (error) {
