@@ -31,6 +31,7 @@ async function main() {
       first_name: "John",
       last_name: "Doe",
       xp: 0,
+      coins: 0,
       level_id: 1,
       Login: {
         create: {
