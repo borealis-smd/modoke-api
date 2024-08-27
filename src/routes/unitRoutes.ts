@@ -150,7 +150,7 @@ export default function UnitRoutes(
   );
 
   app.put(
-    ":unit_id",
+    "/finish:unit_id",
     {
       schema: {
         description: "Finalizar uma unidade",
