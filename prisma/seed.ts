@@ -30,6 +30,7 @@ async function main() {
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
       first_name: "John",
       last_name: "Doe",
+      avatar_url: "http://example.com/avatar.png",
       xp: 0,
       coins: 0,
       level_id: 1,
