@@ -25,10 +25,10 @@ export default function AttemptRoutes(
               attempt_id: { type: "number", examples: [1] },
               question_id: { type: "number", examples: [1] },
               option_id: { type: "number", examples: [1] },
-              user_id: {
-                type: "string",
-                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-              },
+              // user_id: {
+              //   type: "string",
+              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              // },
               created_at: {
                 type: "string",
                 examples: ["2024-08-04 16:21:21.921"],
