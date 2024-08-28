@@ -134,12 +134,12 @@ model Questions {
 // Alternativas
 // Considera apenas questões de múltipla escolha.
 model Options {
-  option_id   Int       @id @default(autoincrement())
+  option_id   Int        @id @default(autoincrement())
   option_text String
   is_correct  Boolean
   question_id Int
-  Question    Questions @relation(fields: [question_id], references: [question_id])
-  Attempts    Attempts?
+  Question    Questions  @relation(fields: [question_id], references: [question_id])
+  Attempts    Attempts[]
 }
 
 // Respostas marcadas
@@ -147,7 +147,7 @@ model Attempts {
   attempt_id         Int       @id @default(autoincrement())
   user_id            String
   question_id        Int
-  selected_option_id Int       @unique
+  selected_option_id Int
   attempted_at       DateTime
   User               User      @relation(fields: [user_id], references: [user_id])
   Question           Questions @relation(fields: [question_id], references: [question_id])
