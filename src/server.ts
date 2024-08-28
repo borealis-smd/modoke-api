@@ -12,6 +12,7 @@ import SessionRoutes from "./routes/sessionRoutes";
 import QuestionRoutes from "./routes/questionRoutes";
 import AttemptRoutes from "./routes/attemptRoutes";
 import OptionRoutes from "./routes/optionRoutes";
+import BadgeRoutes from "./routes/badgeRoutes";
 
 config();
 
@@ -65,6 +66,7 @@ fastify.register(ExplanationRoutes, { prefix: "/explanation" });
 fastify.register(QuestionRoutes, { prefix: "/question" });
 fastify.register(AttemptRoutes, { prefix: "/attempt" });
 fastify.register(OptionRoutes, { prefix: "/option" });
+fastify.register(BadgeRoutes, { prefix: "/badge" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {

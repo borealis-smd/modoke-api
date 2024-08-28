@@ -1,82 +1,19 @@
-import * as UserService from "../services/userService";
+import * as BadgeService from "../services/badgeService";
 import { FastifyRequest, FastifyReply } from "fastify";
-import {
-  User,
-  UserRegisterSchema,
-  UserUpdateSchema,
-} from "../validators/userValidator";
-import { Login, LoginSchema } from "../validators/loginValidator";
-import { validateToken } from "../validators/tokenValidator";
-import { sendGreetingEmail } from "../config/nodemailer";
 import { z } from "zod";
+import { validateToken } from "../validators/tokenValidator";
+import { BadgeCreateSchema } from "../validators/badgesValidator";
 
-export const registerUser = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { user, login } = request.body as { user: User; login: Login };
-    const userParsedBody = UserRegisterSchema.parse(user);
-    const loginParsedBody = LoginSchema.parse(login);
-
-    const newUser = await UserService.registerUser(
-      userParsedBody,
-      loginParsedBody,
-    );
-
-    await sendGreetingEmail(login.email, user.first_name);
-
-    reply.code(201).send(newUser);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
-  }
-};
-
-export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
-  try {
-    const { email, password } = LoginSchema.parse(request.body);
-
-    const { token } = await UserService.logIn(email, password);
-
-    reply.code(200).send(JSON.stringify(token));
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
-  }
-};
-
-export const getUserByEmail = async (
+export const getBadges = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
     await validateToken(request, reply);
 
-    const querySchema = z.object({
-      email: z.string().email(),
-    });
-    const { email } = querySchema.parse(request.query);
+    const badges = await BadgeService.getBadges();
 
-    const user = await UserService.getUserByEmail(email);
-
-    reply.code(200).send(user);
+    reply.code(200).send(badges);
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) =>
@@ -91,55 +28,109 @@ export const getUserByEmail = async (
   }
 };
 
-export const updateUser = async (
+export const getBadgeByUnitId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
     await validateToken(request, reply);
 
-    const querySchema = z.object({
-      user_id: z.string().uuid(),
-    });
-    const { user_id } = querySchema.parse(request.query);
-
-    const user = UserUpdateSchema.parse(request.body);
-
-    const updatedUser = await UserService.updateUser(user_id, user);
-
-    reply.code(200).send(updatedUser);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
-  }
-};
-
-export const updatePassword = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    await validateToken(request, reply);
-
-    const { email, oldPassword, newPassword } = z
+    const { unit_id } = z
       .object({
-        email: z.string().email(),
-        oldPassword: z.string(),
-        newPassword: z.string(),
+        unit_id: z.number().int(),
+      })
+      .parse(request.query);
+
+    const badge = await BadgeService.getBadgeByUnitId(unit_id);
+
+    reply.code(200).send(badge);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
+    }
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const getBadgesByUserId = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    await validateToken(request, reply);
+
+    const { user_id } = z
+      .object({
+        user_id: z.string().uuid(),
+      })
+      .parse(request.query);
+
+    const badges = await BadgeService.getBadgesByUserId(user_id);
+
+    reply.code(200).send(badges);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
+    }
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const createBadge = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  await validateToken(request, reply);
+
+  try {
+    const badgeParsedBody = BadgeCreateSchema.parse(request.body);
+
+    const badge = await BadgeService.createBadge(badgeParsedBody);
+
+    reply.code(201).send(badge);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
+    }
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
+export const assignBadgeToUser = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  await validateToken(request, reply);
+
+  try {
+    const { user_id, badge_id } = z
+      .object({
+        user_id: z.string().uuid(),
+        badge_id: z.number().int(),
       })
       .parse(request.body);
 
-    await UserService.updatePassword(email, oldPassword, newPassword);
+    await BadgeService.assignBadgeToUser(user_id, badge_id);
 
-    reply.code(204).send();
+    reply.code(200).send({ message: "Emblema atribuído com sucesso." });
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) =>
