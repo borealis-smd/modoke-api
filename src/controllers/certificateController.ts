@@ -74,7 +74,7 @@ export const assignCertificateToUser = async (
     const { user_id, certificate_id } = z
       .object({
         user_id: z.string().uuid(),
-        certificate_id: z.number(),
+        certificate_id: z.number().int(),
       })
       .parse(request.body);
 

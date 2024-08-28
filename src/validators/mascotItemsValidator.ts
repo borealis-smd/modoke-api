@@ -7,4 +7,10 @@ export const MascotItemsDBSchema = z.object({
   isEquipped: z.boolean(),
 });
 
+export const MascotItemsCreateSchema = MascotItemsDBSchema.omit({
+  mascot_items_id: true,
+  isEquipped: true,
+});
+
 export type MascotItemsDB = z.infer<typeof MascotItemsDBSchema>;
+export type MascotItemsCreate = z.infer<typeof MascotItemsCreateSchema>;

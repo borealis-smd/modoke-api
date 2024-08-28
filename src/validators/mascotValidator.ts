@@ -6,4 +6,9 @@ export const MascotDBSchema = z.object({
   user_id: z.string().uuid(),
 });
 
+export const MascotCreateSchema = MascotDBSchema.omit({
+  mascot_id: true,
+});
+
 export type MascotDBSchema = z.infer<typeof MascotDBSchema>;
+export type MascotCreate = z.infer<typeof MascotCreateSchema>;

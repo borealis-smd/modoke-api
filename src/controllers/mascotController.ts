@@ -1,31 +1,25 @@
-import * as AttemptService from "../services/attemptService";
+import * as MascotService from "../services/mascotService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
 import { extractUserId } from "../utils/extractUserId";
 
-export const registerAttempt = async (
+export const getMascotByUserId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
     await validateToken(request, reply);
 
-    const user_id = extractUserId(request, reply);
-
-    const attemptParsedBody = z
+    const { user_id } = z
       .object({
-        question_id: z.number().int(),
-        selected_option_id: z.number().int(),
+        user_id: z.string().uuid(),
       })
-      .parse(request.body);
+      .parse(request.query);
 
-    const attempt = await AttemptService.registerAttempt({
-      user_id: user_id,
-      ...attemptParsedBody,
-    });
+    const mascot = await MascotService.getMascotByUserId(user_id);
 
-    reply.code(201).send(attempt);
+    reply.code(200).send(mascot);
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) =>
@@ -40,27 +34,27 @@ export const registerAttempt = async (
   }
 };
 
-export const getLastAttemptByQuestionId = async (
+export const createMascot = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
     await validateToken(request, reply);
 
-    const { question_id } = z
-      .object({
-        question_id: z.number().int(),
-      })
-      .parse(request.query);
+    const mascot = z.object({
+      mascot_image_url: z.string().url(),
+    });
+
+    const mascotData = mascot.parse(request.body);
 
     const user_id = extractUserId(request, reply);
 
-    const lastAttempt = await AttemptService.getLastAttemptByQuestionId(
-      question_id,
+    const mascotCreated = await MascotService.createMascot({
+      mascot_image_url: mascotData.mascot_image_url,
       user_id,
-    );
+    });
 
-    reply.code(200).send(lastAttempt);
+    reply.code(201).send(mascotCreated);
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) =>
