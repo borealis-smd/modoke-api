@@ -8,6 +8,13 @@ export const getQuestionsByLessonId = async (lesson_id: number) => {
   });
 };
 
+export const getQuestionsByUnitId = async (unit_id: number) => {
+  return prisma.questions.findMany({
+    where: { Lesson: { unit_id } },
+    include: { Options: true },
+  });
+};
+
 export const getEntranceTestQuestions = async () => {
   return prisma.questions.findMany({
     where: { is_entrance_question: true },

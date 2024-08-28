@@ -34,6 +34,36 @@ export const getQuestionsByLessonId = async (
   }
 };
 
+export const getQuestionsByUnitId = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    await validateToken(request, reply);
+
+    const { unit_id } = z
+      .object({
+        unit_id: z.number().int(),
+      })
+      .parse(request.query);
+
+    const questions = await QuestionService.getQuestionsByUnitId(unit_id);
+
+    reply.code(200).send(questions);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) =>
+        reply
+          .code(400)
+          .send({ message: `${err.path.join(".")} - ${err.message}` }),
+      );
+    }
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
+};
+
 export const getEntranceTestQuestions = async (
   request: FastifyRequest,
   reply: FastifyReply,

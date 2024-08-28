@@ -64,6 +64,63 @@ export default function QuestionRoutes(
   );
 
   app.get(
+    "/unit:unit_id",
+    {
+      schema: {
+        description:
+          "Buscar questões (enunciados e alternativas) por ID da unidade",
+        querystring: {
+          unit_id: { type: "number", examples: [1] },
+        },
+        response: {
+          200: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                question_id: { type: "number", examples: [1] },
+                question_text: {
+                  type: "string",
+                  examples: ["Qual a cor do céu?"],
+                },
+                is_entrance_question: { type: "boolean", examples: [false] },
+                xp: { type: "number", examples: [10] },
+                lesson_id: { type: "number", examples: [1] },
+                created_at: {
+                  type: "string",
+                  examples: ["2024-08-04 16:21:21.921"],
+                },
+                updated_at: {
+                  type: "string",
+                  examples: ["2024-08-04 16:21:21.921"],
+                },
+                Options: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      option_id: { type: "number", examples: [1] },
+                      option_text: {
+                        type: "string",
+                        examples: ["Azul"],
+                      },
+                      is_correct: { type: "boolean", examples: [true] },
+                      question_id: { type: "number", examples: [1] },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        tags: ["Questions"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    QuestionController.getQuestionsByUnitId,
+  );
+
+  app.get(
     "/entranceTest",
     {
       schema: {
