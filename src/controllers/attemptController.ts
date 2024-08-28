@@ -2,7 +2,7 @@ import * as AttemptService from "../services/attemptService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
-import { verifyToken } from "../config/jwt";
+import { extractUserId } from "../utils/extractUserId";
 
 export const registerAttempt = async (
   request: FastifyRequest,
@@ -73,20 +73,4 @@ export const getLastAttemptByQuestionId = async (
       reply.code(400).send({ message: error.message });
     }
   }
-};
-
-const extractUserId = (request: FastifyRequest, reply: FastifyReply): string => {
-  const token = request.headers.authorization?.split(" ")[1];
-  if (!token) {
-    reply.code(401).send({ message: "Authorization token is missing" });
-    return "";
-  }
-
-  const decodedToken = verifyToken(token);
-  if (typeof decodedToken !== "string" && "user_id" in decodedToken) {
-    return decodedToken.user_id;
-  }
-
-  reply.code(401).send({ message: "Invalid token" });
-  return "";
 };
