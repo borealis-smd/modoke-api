@@ -7,6 +7,13 @@ import ExplanationRoutes from "./routes/explanationRoutes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
+import UnitRoutes from "./routes/unitRoutes";
+import SessionRoutes from "./routes/sessionRoutes";
+import QuestionRoutes from "./routes/questionRoutes";
+import AttemptRoutes from "./routes/attemptRoutes";
+import OptionRoutes from "./routes/optionRoutes";
+import BadgeRoutes from "./routes/badgeRoutes";
+import CertificateRoutes from "./routes/certificateRoutes";
 
 config();
 
@@ -53,8 +60,15 @@ fastify.register(fastifySwaggerUi, {
 
 fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
+fastify.register(SessionRoutes, { prefix: "/session" });
+fastify.register(UnitRoutes, { prefix: "/unit" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });
+fastify.register(QuestionRoutes, { prefix: "/question" });
+fastify.register(AttemptRoutes, { prefix: "/attempt" });
+fastify.register(OptionRoutes, { prefix: "/option" });
+fastify.register(BadgeRoutes, { prefix: "/badge" });
+fastify.register(CertificateRoutes, { prefix: "/certificate" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {

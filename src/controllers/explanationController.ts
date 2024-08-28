@@ -13,7 +13,7 @@ export const getExplanationsByLessonId = async (
 
     const { lesson_id } = z
       .object({
-        lesson_id: z.number(),
+        lesson_id: z.number().int(),
       })
       .parse(request.query);
 

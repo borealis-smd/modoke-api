@@ -30,7 +30,9 @@ async function main() {
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
       first_name: "John",
       last_name: "Doe",
+      avatar_url: "http://example.com/avatar.png",
       xp: 0,
+      coins: 0,
       level_id: 1,
       Login: {
         create: {
@@ -87,14 +89,13 @@ async function main() {
     },
   });
 
-  // Dados de exemplo para o modelo Answers
-  const answer = await prisma.answers.create({
+  // Dados de exemplo para o modelo Options
+  const option = await prisma.options.create({
     data: {
-      answer_id: 1,
-      answer_text: "4",
+      option_id: 1,
+      option_text: "4",
       is_correct: true,
       question_id: 1,
-      answered_at: new Date(),
     },
   });
 
@@ -104,7 +105,7 @@ async function main() {
       attempt_id: 1,
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
       question_id: 1,
-      selected_answer_id: 1,
+      selected_option_id: 1,
       attempted_at: new Date(),
     },
   });

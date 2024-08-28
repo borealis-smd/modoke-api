@@ -20,6 +20,10 @@ export default function UserRoutes(
               properties: {
                 first_name: { type: "string", examples: ["John"] },
                 last_name: { type: "string", examples: ["Doe"] },
+                avatar_url: {
+                  type: "string",
+                  examples: ["https://www.example.com/avatar.jpg"],
+                },
                 level_id: { type: "number", examples: [1] },
               },
             },
@@ -38,10 +42,10 @@ export default function UserRoutes(
             items: {
               type: "object",
               properties: {
-                user_id: {
-                  type: "number",
-                  examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-                },
+                // user_id: {
+                //   type: "string",
+                //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                // },
                 first_name: { type: "string", examples: ["John"] },
                 last_name: { type: "string", examples: ["Doe"] },
                 xp: { type: "number", examples: [0] },
@@ -108,10 +112,10 @@ export default function UserRoutes(
           200: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-              },
+              // user_id: {
+              //   type: "string",
+              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
               xp: { type: "number", examples: [0] },
@@ -171,10 +175,10 @@ export default function UserRoutes(
           200: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-              },
+              // user_id: {
+              //   type: "string",
+              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
               xp: { type: "number", examples: [0] },

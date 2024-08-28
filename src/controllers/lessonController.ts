@@ -2,6 +2,7 @@ import * as LessonService from "../services/lessonService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
+import { LessonsCreateSchema } from "../validators/lessonsValidator";
 
 export const getLessonById = async (
   request: FastifyRequest,
@@ -10,7 +11,7 @@ export const getLessonById = async (
   try {
     const { lesson_id } = z
       .object({
-        lesson_id: z.number(),
+        lesson_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -38,7 +39,7 @@ export const getLessonsByUnitId = async (
   try {
     const { unit_id } = z
       .object({
-        unit_id: z.number(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -66,12 +67,11 @@ export const getLessonsBySessionId = async (
   try {
     const { session_id } = z
       .object({
-        session_id: z.number(),
+        session_id: z.number().int(),
       })
       .parse(request.query);
 
     const lessons = await LessonService.getLessonsBySessionId(session_id);
-    console.log(lessons);
 
     reply.code(200).send(lessons);
   } catch (error) {
@@ -95,7 +95,7 @@ export const getLessonsByLevelId = async (
   try {
     const { level_id } = z
       .object({
-        level_id: z.number(),
+        level_id: z.number().int(),
       })
       .parse(request.query);
 
@@ -123,14 +123,7 @@ export const createLesson = async (
   try {
     await validateToken(request, reply);
 
-    const lesson = z
-      .object({
-        lesson_title: z.string(),
-        lesson_description: z.string(),
-        lesson_principle: z.enum(["P", "O", "U", "R"]),
-        unit_id: z.number(),
-      })
-      .parse(request.body);
+    const lesson = LessonsCreateSchema.parse(request.body);
 
     const newLesson = await LessonService.createLesson(lesson);
 
@@ -158,7 +151,7 @@ export const finishLesson = async (
 
     const { lesson_id } = z
       .object({
-        lesson_id: z.number(),
+        lesson_id: z.number().int(),
       })
       .parse(request.query);
 

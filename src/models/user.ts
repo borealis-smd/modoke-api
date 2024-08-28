@@ -38,6 +38,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     data: {
       ...user,
       xp: 0,
+      coins: 0,
       Login: {
         create: {
           email: login.email,

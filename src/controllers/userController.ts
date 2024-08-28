@@ -99,7 +99,7 @@ export const updateUser = async (
     await validateToken(request, reply);
 
     const querySchema = z.object({
-      user_id: z.string(),
+      user_id: z.string().uuid(),
     });
     const { user_id } = querySchema.parse(request.query);
 

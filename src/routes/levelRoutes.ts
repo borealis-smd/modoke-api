@@ -8,7 +8,7 @@ export default function LevelRoutes(
 ) {
   // Rota de cadastro de level
   app.get(
-    "/g:level_id",
+    ":level_id",
     {
       schema: {
         description: "Buscar nível por id",

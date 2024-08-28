@@ -7,4 +7,7 @@ export const BadgesDBSchema = z.object({
   unit_id: z.number().int(),
 });
 
+export const BadgeCreateSchema = BadgesDBSchema.omit({ badge_id: true });
+
 export type BadgesDB = z.infer<typeof BadgesDBSchema>;
+export type BadgeCreate = z.infer<typeof BadgeCreateSchema>;

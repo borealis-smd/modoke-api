@@ -15,5 +15,12 @@ export const SessionsDBSchema = z.object({
 
 export const SessionSchema = SessionsDBSchema.partial();
 
+export const SessionCreateSchema = SessionsDBSchema.omit({
+  session_id: true,
+  is_completed: true,
+  completed_at: true,
+});
+
 export type SessionsDB = z.infer<typeof SessionsDBSchema>;
 export type Session = z.infer<typeof SessionSchema>;
+export type SessionCreate = z.infer<typeof SessionCreateSchema>;
