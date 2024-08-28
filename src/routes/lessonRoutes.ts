@@ -7,7 +7,7 @@ export default function LessonRoutes(
   done: Function,
 ) {
   app.get(
-    ":lesson_id",
+    "/id:lesson_id",
     {
       schema: {
         description: "Buscar lição por ID",

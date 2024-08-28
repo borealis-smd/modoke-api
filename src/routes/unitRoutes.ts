@@ -41,7 +41,7 @@ export default function UnitRoutes(
   );
 
   app.get(
-    ":unit_id",
+    "/id:unit_id",
     {
       schema: {
         description: "Buscar unidade por ID",
