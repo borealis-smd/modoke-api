@@ -15,6 +15,7 @@ import OptionRoutes from "./routes/optionRoutes";
 import BadgeRoutes from "./routes/badgeRoutes";
 import CertificateRoutes from "./routes/certificateRoutes";
 import MascotRoutes from "./routes/mascotRoutes";
+import MascotItemRoutes from "./routes/mascotItemRoutes";
 
 config();
 
@@ -71,6 +72,7 @@ fastify.register(OptionRoutes, { prefix: "/option" });
 fastify.register(BadgeRoutes, { prefix: "/badge" });
 fastify.register(CertificateRoutes, { prefix: "/certificate" });
 fastify.register(MascotRoutes, { prefix: "/mascot" });
+fastify.register(MascotItemRoutes, { prefix: "/mascotItem" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
