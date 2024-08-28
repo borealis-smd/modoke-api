@@ -15,7 +15,7 @@ export const createCertificate = async (certificate: CertificateCreate) => {
   const certificates = await prisma.certificates.findMany();
   if (certificates.length >= 3) {
     throw new MaxCertificatesReachedError(
-      "Já existem certificados para todos os níveis",
+      "Já existem certificados para todas as sessões.",
     );
   }
 
@@ -24,7 +24,7 @@ export const createCertificate = async (certificate: CertificateCreate) => {
   );
   if (certificateExists) {
     throw new CertificateForSessionAlreadyExistsError(
-      "Já existe um certificado para essa sessão",
+      "Você não pode criar mais de um certificado para um sessão.",
     );
   }
 
