@@ -54,13 +54,11 @@ export const getLastAttemptByQuestionId = async (
       .parse(request.query);
 
     const user_id = extractUserId(request, reply);
-    console.log(user_id);
 
     const lastAttempt = await AttemptService.getLastAttemptByQuestionId(
       question_id,
       user_id,
     );
-    // console.log(lastAttempt);
 
     reply.code(200).send(lastAttempt);
   } catch (error) {
