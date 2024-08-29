@@ -8,18 +8,20 @@ export const getUnits = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
-  const units = await UnitService.getUnits();
-  reply.send(units);
+  try {
+    const units = await UnitService.getUnits();
+    reply.send(units);
+  } catch (error) {
+    if (error instanceof Error) {
+      reply.code(400).send({ message: error.message });
+    }
+  }
 };
 
 export const getUnitById = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const { unit_id } = z
       .object({
@@ -48,8 +50,6 @@ export const getUnitsBySessionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const { session_id } = z
       .object({

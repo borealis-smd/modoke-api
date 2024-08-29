@@ -34,7 +34,6 @@ export default function SessionRoutes(
           },
         },
         tags: ["Sessions"],
-        security: [{ bearerAuth: [] }],
       },
     },
     SessionController.getSessions,
