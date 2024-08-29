@@ -9,8 +9,6 @@ export const getSessions = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const sessions = await SessionService.getSessions();
     reply.code(200).send(sessions);
   } catch (error) {

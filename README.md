@@ -2,7 +2,7 @@
 Esta API foi desenvolvida para o Modoke, uma aplicação desenvolvida para a cadeira de Projeto Integrado I, da Universidade Federal do Ceará (UFC). O Modoke é uma plataforma de e-learning que tem como principal objetivo ensinar a desenvolvedores web (iniciantes e intermediários) sobre acessibilidade web. 
 
 ## Sobre a API
-A estrutura desta API segue o padrão RESTful e foi desenvolvida utilizando o framework Fastify e TypeScript. O código foi estrurado de uma forma similar ao padrão MVC (Model-View-Controller), com a separação de rotas, controladores e modelos. Além disso, foi utilizado o Prisma como ORM para o gerenciamento e a comunicação com o banco de dados PostgreSQL. O Docker foi utilizado para a criação de um container para a própria aplicação e para o banco de dados PostgreSQL (Docker Compose). O Swagger foi utilizado para a documentação da API.
+A estrutura desta API segue o padrão RESTful e foi desenvolvida utilizando o framework Fastify e TypeScript. O código foi estrurado de uma forma similar ao padrão MVC (Model-View-Controller), com a separação de rotas, controladores e modelos. Além disso, foi utilizado o Prisma como ORM para o gerenciamento e a comunicação com o banco de dados PostgreSQL. O Docker foi utilizado para a criação de um container para a própria aplicação e para o banco de dados PostgreSQL (Docker Compose). O Swagger foi utilizado para a documentação da API. Utilizou-se ainda o Amazon S3 para o armazenamento de arquivos em nuvem.
 
 ## Tecnologias Utilizadas
 - Node.js
@@ -12,7 +12,6 @@ A estrutura desta API segue o padrão RESTful e foi desenvolvida utilizando o fr
 - Docker
 - PostgreSQL
 - Swagger
-- Nodemailer
 - JWT
 
 ## Diagrama Entidade-Relacionamento
@@ -29,15 +28,24 @@ npm install
 ```
 3. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 ```bash
-DATABASE_URL="postgresql://<user>:<password
->@<host>:<port>/<database>"
+DATABASE_URL="postgresql://<user>:<password>@<host>:<port>/<database>"
 JWT_SECRET="<secret>"
 JWT_EXPIRATION="<time>"
 PORT=<port>
+
 NODEMAILER_USER="<user>"
 NODEMAILER_PASSWORD="<password>"
 EMAIL_PORT=<email_port>
 EMAIL_HOST="<host>"
+
+GOOGLE_CLIENT_ID="<client_id>"
+GOOGLE_CLIENT_SECRET="<client_secret>"
+GOOGLE_REDIRECT_URI="<redirect_uri>"
+
+AWS_ACCESS_KEY_ID="<access_key_id>"
+AWS_SECRET_ACCESS_KEY="<secret_access_key>"
+AWS_REGION="<region>"
+AWS_BUCKET_NAME="<bucket_name>"
 ```
 4. Crie o container do banco de dados
 ```bash

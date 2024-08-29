@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import { config } from "dotenv";
+import multipart from "@fastify/multipart";
 import UserRoutes from "./routes/userRoutes";
 import LevelRoutes from "./routes/levelRoutes";
 import LessonRoutes from "./routes/lessonRoutes";
@@ -17,11 +18,14 @@ import CertificateRoutes from "./routes/certificateRoutes";
 import MascotRoutes from "./routes/mascotRoutes";
 import MascotItemRoutes from "./routes/mascotItemRoutes";
 import GoogleAuthRoutes from "./routes/googleAuthRoutes";
+import UploadRoutes from "./routes/uploadRoutes";
 
 config();
 
 const fastify = Fastify({ logger: true });
 const PORT = Number(process.env.PORT) || 3000;
+
+fastify.register(multipart);
 
 fastify.register(fastifyCors, {
   origin: "*",
@@ -61,6 +65,7 @@ fastify.register(fastifySwaggerUi, {
   transformSpecificationClone: true,
 });
 
+fastify.register(UploadRoutes, { prefix: "/upload" })
 fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
 fastify.register(SessionRoutes, { prefix: "/session" });
