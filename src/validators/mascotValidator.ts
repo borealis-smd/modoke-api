@@ -10,5 +10,4 @@ export const MascotCreateSchema = MascotDBSchema.omit({
   mascot_id: true,
 });
 
-export type MascotDBSchema = z.infer<typeof MascotDBSchema>;
 export type MascotCreate = z.infer<typeof MascotCreateSchema>;

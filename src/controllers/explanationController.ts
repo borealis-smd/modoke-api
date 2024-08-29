@@ -19,7 +19,6 @@ export const getExplanationsByLessonId = async (
 
     const explanations =
       await ExplanationService.getExplanationsByLessonId(lesson_id);
-    console.log(explanations);
 
     reply.code(200).send(explanations);
   } catch (error) {

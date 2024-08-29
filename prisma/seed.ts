@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Dados de exemplo para o modelo Level
-  const level = await prisma.level.createMany({
+  await prisma.level.createMany({
     data: [
       {
         level_id: 1,
@@ -25,7 +25,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo User
-  const user = await prisma.user.create({
+  await prisma.user.create({
     data: {
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
       first_name: "John",
@@ -45,7 +45,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Sessions
-  const session = await prisma.sessions.create({
+  await prisma.sessions.create({
     data: {
       session_id: 1,
       session_title: "Session 1",
@@ -56,7 +56,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Units
-  const unit = await prisma.units.create({
+  await prisma.units.create({
     data: {
       unit_id: 1,
       unit_title: "Unit 1",
@@ -67,7 +67,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Lessons
-  const lesson = await prisma.lessons.create({
+  await prisma.lessons.create({
     data: {
       lesson_id: 1,
       lesson_title: "Lesson 1",
@@ -79,7 +79,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Questions
-  const question = await prisma.questions.create({
+  await prisma.questions.create({
     data: {
       question_id: 1,
       question_text: "What is 2 + 2?",
@@ -90,7 +90,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Options
-  const option = await prisma.options.create({
+  await prisma.options.create({
     data: {
       option_id: 1,
       option_text: "4",
@@ -100,7 +100,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Attempts
-  const attempt = await prisma.attempts.create({
+  await prisma.attempts.create({
     data: {
       attempt_id: 1,
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
@@ -111,7 +111,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Mascot
-  const mascot = await prisma.mascot.create({
+  await prisma.mascot.create({
     data: {
       mascot_id: 1,
       mascot_image_url: "http://example.com/mascot.png",
@@ -120,7 +120,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo MascotItems
-  const mascotItem = await prisma.mascotItems.create({
+  await prisma.mascotItems.create({
     data: {
       mascot_items_id: 1,
       item_name: "Hat",
@@ -130,7 +130,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo MascotHasMascotItems
-  const mascotHasMascotItems = await prisma.mascotHasMascotItems.create({
+  await prisma.mascotHasMascotItems.create({
     data: {
       mascot_has_mascot_items_id: "mascot-item-1",
       mascot_id: 1,
@@ -140,7 +140,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Badges
-  const badge = await prisma.badges.create({
+  await prisma.badges.create({
     data: {
       badge_id: 1,
       badge_name: "First Badge",
@@ -150,7 +150,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo UserHasBadge
-  const userHasBadge = await prisma.userHasBadge.create({
+  await prisma.userHasBadge.create({
     data: {
       user_has_badge_id: "user-badge-1",
       badge_id: 1,
@@ -160,7 +160,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo Certificates
-  const certificate = await prisma.certificates.create({
+  await prisma.certificates.create({
     data: {
       certificate_id: 1,
       certificate_text: "Certificate of Completion",
@@ -169,7 +169,7 @@ async function main() {
   });
 
   // Dados de exemplo para o modelo UserHasCertificate
-  const userHasCertificate = await prisma.userHasCertificate.create({
+  await prisma.userHasCertificate.create({
     data: {
       user_has_certificate_id: "user-certificate-1",
       user_id: "0f52361f-ee67-440b-8b61-477732092aaf",

@@ -10,5 +10,4 @@ export const CertificateCreateSchema = CertificatesDBSchema.omit({
   certificate_id: true,
 });
 
-export type CertificatesDB = z.infer<typeof CertificatesDBSchema>;
 export type CertificateCreate = z.infer<typeof CertificateCreateSchema>;

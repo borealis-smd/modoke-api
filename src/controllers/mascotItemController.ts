@@ -54,7 +54,6 @@ export const getMascotItemById = async (
         mascot_items_id: z.number().int(),
       })
       .parse(request.query);
-    console.log(mascot_items_id);
 
     const mascotItem =
       await MascotItemService.getMascotItemById(mascot_items_id);
@@ -151,7 +150,7 @@ export const equipMascotItem = async (
       })
       .parse(request.body);
 
-    const mascotItem = await MascotItemService.equipMascotItem(
+    await MascotItemService.equipMascotItem(
       mascot_items_id,
       mascot_image_url,
       mascot_id,

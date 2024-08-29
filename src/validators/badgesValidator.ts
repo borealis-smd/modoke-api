@@ -9,5 +9,4 @@ export const BadgesDBSchema = z.object({
 
 export const BadgeCreateSchema = BadgesDBSchema.omit({ badge_id: true });
 
-export type BadgesDB = z.infer<typeof BadgesDBSchema>;
 export type BadgeCreate = z.infer<typeof BadgeCreateSchema>;

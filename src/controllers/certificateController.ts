@@ -19,7 +19,6 @@ export const getCertificatesByUserId = async (
 
     const certificate =
       await CertificateService.getCertificatesByUserId(user_id);
-    console.log(certificate);
 
     reply.code(200).send(certificate);
   } catch (error) {

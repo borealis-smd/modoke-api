@@ -7,7 +7,6 @@ export const registerAttempt = async (attempt: AttemptCreate) => {
     attempt.question_id,
     attempt.user_id,
   );
-  console.log(attempt.user_id, lastAttempt);
 
   if (lastAttempt) {
     return prisma.attempts.update({
@@ -19,16 +18,14 @@ export const registerAttempt = async (attempt: AttemptCreate) => {
     });
   }
 
-  return prisma.attempts
-    .create({
-      data: {
-        user_id: attempt.user_id,
-        question_id: attempt.question_id,
-        selected_option_id: attempt.selected_option_id,
-        attempted_at: new Date(),
-      },
-    })
-    .catch((error) => console.log(error));
+  return prisma.attempts.create({
+    data: {
+      user_id: attempt.user_id,
+      question_id: attempt.question_id,
+      selected_option_id: attempt.selected_option_id,
+      attempted_at: new Date(),
+    },
+  });
 };
 
 export const getLastAttemptByQuestionId = async (
