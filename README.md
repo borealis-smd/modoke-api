@@ -28,8 +28,7 @@ npm install
 ```
 3. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 ```bash
-DATABASE_URL="postgresql://<user>:<password
->@<host>:<port>/<database>"
+DATABASE_URL="postgresql://<user>:<password>@<host>:<port>/<database>"
 JWT_SECRET="<secret>"
 JWT_EXPIRATION="<time>"
 PORT=<port>
