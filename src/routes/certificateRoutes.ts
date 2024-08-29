@@ -7,16 +7,10 @@ export default function CertificateRoutes(
   done: Function,
 ) {
   app.get(
-    "/user:user_id",
+    "/user",
     {
       schema: {
-        description: "Buscar certificados",
-        querystring: {
-          user_id: {
-            type: "string",
-            examples: ["123e4567-e89b-12d3-a456-426614174000"],
-          },
-        },
+        description: "Buscar certificados por usuário",
         response: {
           200: {
             type: "array",

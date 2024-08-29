@@ -32,7 +32,22 @@ export const UserRegisterSchema = UserSchema.omit({ xp: true, coins: true });
 
 export const UserUpdateSchema = UserSchema.partial();
 
-export type UserDB = z.infer<typeof UserDBSchema>;
+export const UserTokenSchema = z.object({
+  user_id: z.string().uuid(),
+  first_name: z.string(),
+  xp: z.number().int(),
+  level_id: z.number().int(),
+});
+
+export const GoogleUserRegisterSchema = UserDBSchema.omit({
+  xp: true,
+  coins: true,
+  created_at: true,
+  updated_at: true,
+});
+
 export type User = z.infer<typeof UserSchema>;
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
+export type UserToken = z.infer<typeof UserTokenSchema>;
+export type GoogleUserRegister = z.infer<typeof GoogleUserRegisterSchema>;

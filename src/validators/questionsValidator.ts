@@ -18,6 +18,5 @@ export const QuestionCreateSchema = QuestionsDBSchema.omit({
   updated_at: true,
 });
 
-export type QuestionsDB = z.infer<typeof QuestionsDBSchema>;
 export type Questions = z.infer<typeof QuestionsSchema>;
 export type QuestionCreate = z.infer<typeof QuestionCreateSchema>;

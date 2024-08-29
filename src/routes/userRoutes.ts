@@ -143,16 +143,10 @@ export default function UserRoutes(
   );
 
   app.put(
-    ":user_id",
+    "/",
     {
       schema: {
         description: "Atualizar informações de um usuário",
-        querystring: {
-          user_id: {
-            type: "string",
-            examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-          },
-        },
         body: {
           type: "object",
           properties: {

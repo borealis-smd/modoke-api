@@ -15,6 +15,5 @@ export const AttemptCreateSchema = AttemptsDBSchema.omit({
   attempted_at: true,
 });
 
-export type AttemptsDB = z.infer<typeof AttemptsDBSchema>;
 export type Attempts = z.infer<typeof AttemptsSchema>;
 export type AttemptCreate = z.infer<typeof AttemptCreateSchema>;

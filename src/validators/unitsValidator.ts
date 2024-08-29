@@ -17,6 +17,5 @@ export const UnitsCreateSchema = UnitsDBSchema.omit({
   completed_at: true,
 });
 
-export type UnitsDB = z.infer<typeof UnitsDBSchema>;
 export type Units = z.infer<typeof UnitsSchema>;
 export type UnitsCreate = z.infer<typeof UnitsCreateSchema>;

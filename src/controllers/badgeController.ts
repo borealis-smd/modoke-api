@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
 import { BadgeCreateSchema } from "../validators/badgesValidator";
+import { extractUserId } from "../utils/extractUserId";
 
 export const getBadges = async (
   request: FastifyRequest,
@@ -65,11 +66,7 @@ export const getBadgesByUserId = async (
   try {
     await validateToken(request, reply);
 
-    const { user_id } = z
-      .object({
-        user_id: z.string().uuid(),
-      })
-      .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
     const badges = await BadgeService.getBadgesByUserId(user_id);
 
