@@ -1,5 +1,6 @@
 import { prisma } from "../config/db";
 import {
+  GoogleUserRegister,
   UserRegister,
   UserRegisterSchema,
   UserUpdate,
@@ -15,7 +16,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
   }
 
   if (user.level_id === undefined || user.level_id === null) {
-    throw new MissingFieldError("Level é obrigatório.");
+    throw new MissingFieldError("Nível é obrigatório.");
   }
 
   const userValidationResult = UserRegisterSchema.safeParse(user);
@@ -45,6 +46,29 @@ export const registerUser = async (user: UserRegister, login: Login) => {
           password_hash,
         },
       },
+    },
+  });
+};
+
+export const registerGoogleUser = async (user: GoogleUserRegister) => {
+  if (!user.first_name || !user.last_name) {
+    throw new MissingFieldError("Nome e sobrenome são obrigatórios.");
+  }
+
+  if (user.level_id === undefined || user.level_id === null) {
+    throw new MissingFieldError("Nível é obrigatório.");
+  }
+
+  const userValidationResult = UserRegisterSchema.safeParse(user);
+  if (!userValidationResult.success) {
+    throw new ValidationError("Dados de usuário inválidos.");
+  }
+
+  return prisma.user.create({
+    data: {
+      ...user,
+      xp: 0,
+      coins: 0,
     },
   });
 };
