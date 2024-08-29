@@ -11,11 +11,7 @@ export const getMascotByUserId = async (
   try {
     await validateToken(request, reply);
 
-    const { user_id } = z
-      .object({
-        user_id: z.string().uuid(),
-      })
-      .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
     const mascot = await MascotService.getMascotByUserId(user_id);
 

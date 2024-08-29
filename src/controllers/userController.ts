@@ -9,6 +9,7 @@ import { Login, LoginSchema } from "../validators/loginValidator";
 import { validateToken } from "../validators/tokenValidator";
 import { sendGreetingEmail } from "../config/nodemailer";
 import { z } from "zod";
+import { extractUserId } from "../utils/extractUserId";
 
 export const registerUser = async (
   request: FastifyRequest,
@@ -98,10 +99,7 @@ export const updateUser = async (
   try {
     await validateToken(request, reply);
 
-    const querySchema = z.object({
-      user_id: z.string().uuid(),
-    });
-    const { user_id } = querySchema.parse(request.query);
+    const user_id = extractUserId(request, reply);
 
     const user = UserUpdateSchema.parse(request.body);
 

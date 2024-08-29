@@ -58,7 +58,7 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `POST /user`: Cria um novo usuário
 - `POST /user/login`: Autentica um usuário
 - `GET /user{email}`: Busca um usuário pelo email
-- `PUT /user{user_id}`: Atualiza um usuário por id
+- `PUT /user/`: Atualiza um usuário por id
 - `PUT /user/password`: Atualiza a senha de um usuário
 
 ### Níveis
@@ -104,18 +104,18 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 
 ### Emblemas
 - `GET /badge/`: Busca todos os emblemas
-- `GET /badge/user{user_id}`: Busca todos os emblemas de um usuário
+- `GET /badge/user`: Busca todos os emblemas de um usuário
 - `GET /badge/unit{unit_id}`: Busca todos os emblemas de uma unidade
 - `POST /badge/`: Cria um novo emblema
 - `POST /badge/assign`: Atribui um emblema a um usuário
 
 ### Certificados
-- `GET /certificate/user{user_id}`: Busca todos os certificados de um usuário
+- `GET /certificate/user`: Busca todos os certificados de um usuário
 - `POST /certificate/`: Cria um novo certificado
 - `POST /certificate/assign`: Atribui um certificado a um usuário
 
 ### Mascote
-- `GET /mascot/user{user_id}`: Busca o mascote de um usuário
+- `GET /mascot/user`: Busca o mascote de um usuário
 - `POST /mascot/`: Cria um novo mascote
 
 ### Item de mascote

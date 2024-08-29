@@ -7,16 +7,10 @@ export default function MascotRoutes(
   done: Function,
 ) {
   app.get(
-    "/user:user_id",
+    "/user",
     {
       schema: {
         description: "Buscar mascote por usuário",
-        querystring: {
-          user_id: {
-            type: "string",
-            examples: ["123e4567-e89b-12d3-a456-426614174000"],
-          },
-        },
         response: {
           200: {
             type: "object",

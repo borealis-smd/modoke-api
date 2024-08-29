@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { validateToken } from "../validators/tokenValidator";
 import { CertificateCreateSchema } from "../validators/certificatesValidator";
+import { extractUserId } from "../utils/extractUserId";
 
 export const getCertificatesByUserId = async (
   request: FastifyRequest,
@@ -11,11 +12,7 @@ export const getCertificatesByUserId = async (
   try {
     await validateToken(request, reply);
 
-    const { user_id } = z
-      .object({
-        user_id: z.string().uuid(),
-      })
-      .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
     const certificate =
       await CertificateService.getCertificatesByUserId(user_id);
