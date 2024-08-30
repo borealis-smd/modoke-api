@@ -164,7 +164,7 @@ export default function BadgeRoutes(
           },
         },
         response: {
-          200: {
+          201: {
             type: "object",
             properties: {
               badge_id: { type: "number", examples: [1] },

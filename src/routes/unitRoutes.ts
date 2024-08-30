@@ -127,7 +127,7 @@ export default function UnitRoutes(
           },
         },
         response: {
-          200: {
+          201: {
             type: "object",
             properties: {
               unit_id: { type: "number", examples: [1] },

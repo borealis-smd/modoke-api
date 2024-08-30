@@ -1,6 +1,6 @@
 import * as CertificateController from "../controllers/certificateController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import { verifyRole } from "../middleware/authMiddleware";
 
 export default function CertificateRoutes(
   app: FastifyInstance,
@@ -68,6 +68,19 @@ export default function CertificateRoutes(
               examples: ["Certificado de participação"],
             },
             session_id: { type: "number", examples: [1] },
+          },
+        },
+        response: {
+          201: {
+            type: "object",
+            properties: {
+              certificate_id: { type: "number", examples: [1] },
+              certificate_text: {
+                type: "string",
+                examples: ["Certificado de participação"],
+              },
+              session_id: { type: "number", examples: [1] },
+            },
           },
         },
         tags: ["Certificates"],

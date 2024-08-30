@@ -194,7 +194,7 @@ export default function QuestionRoutes(
           },
         },
         response: {
-          200: {
+          201: {
             type: "object",
             properties: {
               question_id: { type: "number", examples: [1] },
