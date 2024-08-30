@@ -40,7 +40,7 @@ fastify.register(fastifySwagger, {
     },
     servers: [
       { url: "http://localhost:3000" },
-      { url: "https://api-projeto-production-2ac4.up.railway.app" },
+      { url: "https://api-projeto-production-8dc6.up.railway.app" },
     ],
     components: {
       securitySchemes: {
