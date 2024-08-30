@@ -1,5 +1,6 @@
 import * as MascotItemController from "../controllers/mascotItemController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function MascotItemRoutes(
   app: FastifyInstance,
@@ -110,6 +111,7 @@ export default function MascotItemRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar item de mascote",
         body: {

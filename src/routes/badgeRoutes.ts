@@ -1,5 +1,6 @@
 import * as BadgeController from "../controllers/badgeController";
 import { FastifyInstance } from "fastify";
+import { verifyRole } from "../middleware/authMiddleware";
 
 export default function BadgeRoutes(
   app: FastifyInstance,
@@ -148,6 +149,7 @@ export default function BadgeRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Cadastrar um emblema",
         body: {
