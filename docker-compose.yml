@@ -6,9 +6,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=projeto
-      - POSTGRES_DB=projeto-access-control
+      - POSTGRES_DB=projeto
     volumes:
-      - pools_pg_data_new:/bitnami/postgresql
+      - pools_pg_data:/bitnami/postgresql
 
 
 volumes:
