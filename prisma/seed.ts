@@ -33,6 +33,7 @@ async function main() {
       avatar_url: "http://example.com/avatar.png",
       xp: 0,
       coins: 0,
+      role: "USER",
       level_id: 1,
       Login: {
         create: {

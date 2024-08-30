@@ -1,5 +1,6 @@
 import * as LessonController from "../controllers/lessonController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function LessonRoutes(
   app: FastifyInstance,
@@ -186,6 +187,7 @@ export default function LessonRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar uma lição",
         body: {

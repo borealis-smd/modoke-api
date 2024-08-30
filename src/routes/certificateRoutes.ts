@@ -1,5 +1,6 @@
 import * as CertificateController from "../controllers/certificateController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function CertificateRoutes(
   app: FastifyInstance,
@@ -55,6 +56,7 @@ export default function CertificateRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar certificado",
         body: {

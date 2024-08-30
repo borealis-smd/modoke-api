@@ -6,7 +6,6 @@ export default function LevelRoutes(
   options: any,
   done: Function,
 ) {
-  // Rota de cadastro de level
   app.get(
     "/id:level_id",
     {
@@ -46,7 +45,6 @@ export default function LevelRoutes(
     LevelController.getLevelById,
   );
 
-  // Rota de cadastro de level
   app.get(
     "/",
     {
