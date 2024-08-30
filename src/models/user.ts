@@ -40,6 +40,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
       ...user,
       xp: 0,
       coins: 0,
+      role: "USER",
       Login: {
         create: {
           email: login.email,

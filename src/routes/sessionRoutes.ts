@@ -1,5 +1,6 @@
 import * as SessionController from "../controllers/sessionController";
 import { FastifyInstance } from "fastify";
+import { verifyRole } from "../middleware/authMiddleware";
 
 export default function SessionRoutes(
   app: FastifyInstance,
@@ -42,6 +43,7 @@ export default function SessionRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar uma nova sessão",
         body: {

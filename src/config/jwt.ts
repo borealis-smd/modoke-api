@@ -13,7 +13,9 @@ export const generateToken = (user: UserToken) => {
     {
       user_id: user.user_id,
       first_name: user.first_name,
+      coins: user.coins,
       xp: user.xp,
+      role: user.role,
       level_id: user.level_id,
     },
     SECRET,

@@ -13,6 +13,7 @@ export const UserDBSchema = z.object({
   avatar_url: z.string().url(),
   xp: z.number().int(),
   coins: z.number().int(),
+  role: z.enum(["USER", "ADMIN"]),
   level_id: z
     .number()
     .int()
@@ -26,16 +27,22 @@ export const UserSchema = UserDBSchema.omit({
   user_id: true,
   created_at: true,
   updated_at: true,
+  role: true,
 });
 
-export const UserRegisterSchema = UserSchema.omit({ xp: true, coins: true });
+export const UserRegisterSchema = UserSchema.omit({
+  xp: true,
+  coins: true,
+});
 
 export const UserUpdateSchema = UserSchema.partial();
 
 export const UserTokenSchema = z.object({
   user_id: z.string().uuid(),
   first_name: z.string(),
+  coins: z.number().int(),
   xp: z.number().int(),
+  role: z.enum(["USER", "ADMIN"]),
   level_id: z.number().int(),
 });
 

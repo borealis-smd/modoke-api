@@ -135,4 +135,4 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `POST /mascotItem/equip`: Equipa um item de mascote
 
 ## Produção
-A aplicação está disponível em produção no Railway:...
+A documentação da aplicação está disponível em produção no Railway: https://api-projeto-production-8dc6.up.railway.app/docs.

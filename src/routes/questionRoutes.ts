@@ -1,5 +1,6 @@
 import * as QuestionController from "../controllers/questionController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function QuestionRoutes(
   app: FastifyInstance,
@@ -177,6 +178,7 @@ export default function QuestionRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar questão",
         body: {

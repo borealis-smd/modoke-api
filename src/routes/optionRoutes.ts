@@ -1,5 +1,6 @@
 import * as OptionController from "../controllers/optionController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function OptionRoutes(
   app: FastifyInstance,
@@ -9,6 +10,7 @@ export default function OptionRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar opção",
         body: {

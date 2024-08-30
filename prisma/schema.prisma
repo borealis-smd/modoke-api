@@ -21,6 +21,7 @@ model User {
   avatar_url   String
   xp           Int
   coins        Int
+  role         Role
   level_id     Int
   created_at   DateTime             @default(now())
   updated_at   DateTime             @updatedAt
@@ -30,6 +31,11 @@ model User {
   Badges       UserHasBadge[]
   Attempts     Attempts[]
   Certificates UserHasCertificate[]
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Login {

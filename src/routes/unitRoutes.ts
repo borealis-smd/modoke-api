@@ -1,5 +1,6 @@
 import * as UnitController from "../controllers/unitController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function UnitRoutes(
   app: FastifyInstance,
@@ -111,6 +112,7 @@ export default function UnitRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar uma unidade",
         body: {

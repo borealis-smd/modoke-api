@@ -1,5 +1,6 @@
 import * as ExplanationController from "../controllers/explanationController";
 import { FastifyInstance } from "fastify";
+import {verifyRole} from "../middleware/authMiddleware";
 
 export default function ExplanationRoutes(
   app: FastifyInstance,
@@ -46,6 +47,7 @@ export default function ExplanationRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyRole("ADMIN"),
       schema: {
         description: "Criar uma explicação",
         body: {
