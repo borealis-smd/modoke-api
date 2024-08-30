@@ -1,16 +1,14 @@
 import * as QuestionService from "../services/questionService";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
 import { QuestionCreateSchema } from "../validators/questionsValidator";
+import { handleError } from "../utils/errorHandler";
 
 export const getQuestionsByLessonId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { lesson_id } = z
       .object({
         lesson_id: z.number().int(),
@@ -21,16 +19,7 @@ export const getQuestionsByLessonId = async (
 
     reply.code(200).send(questions);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -39,8 +28,6 @@ export const getQuestionsByUnitId = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { unit_id } = z
       .object({
         unit_id: z.number().int(),
@@ -51,16 +38,7 @@ export const getQuestionsByUnitId = async (
 
     reply.code(200).send(questions);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -69,8 +47,6 @@ export const getEntranceTestQuestions = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const questions = await QuestionService.getEntranceTestQuestions();
 
     reply.code(200).send(questions);
@@ -85,8 +61,6 @@ export const createQuestion = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const questionParsedBody = QuestionCreateSchema.parse(request.body);
 
@@ -94,15 +68,6 @@ export const createQuestion = async (
 
     reply.code(201).send(question);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };

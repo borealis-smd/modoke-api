@@ -1,6 +1,9 @@
 import * as MascotItemController from "../controllers/mascotItemController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import {
+  verifyTokenMiddleware,
+  verifyRole,
+} from "../middleware/authMiddleware";
 
 export default function MascotItemRoutes(
   app: FastifyInstance,
@@ -10,6 +13,7 @@ export default function MascotItemRoutes(
   app.get(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar todos os itens de mascote",
         response: {
@@ -39,6 +43,7 @@ export default function MascotItemRoutes(
   app.get(
     "/user",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar itens adquiridos pelo usuário",
         response: {
@@ -81,31 +86,32 @@ export default function MascotItemRoutes(
   );
 
   app.get(
-      "/item:mascot_items_id",
-      {
-        schema: {
-          description: "Buscar item de mascote por ID",
-          querystring: {
-            mascot_items_id: { type: "number", examples: [1] },
-          },
-          response: {
-            200: {
-              type: "object",
-              properties: {
-                mascot_items_id: { type: "number", examples: [1] },
-                item_name: { type: "string", examples: ["Espada"] },
-                item_image_url: {
-                  type: "string",
-                  examples: ["https://www.example.com/sword.jpg"],
-                },
-                isEquipped: { type: "boolean", examples: [false] },
+    "/item:mascot_items_id",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Buscar item de mascote por ID",
+        querystring: {
+          mascot_items_id: { type: "number", examples: [1] },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              mascot_items_id: { type: "number", examples: [1] },
+              item_name: { type: "string", examples: ["Espada"] },
+              item_image_url: {
+                type: "string",
+                examples: ["https://www.example.com/sword.jpg"],
               },
+              isEquipped: { type: "boolean", examples: [false] },
             },
           },
-          tags: ["Mascot Item"],
         },
+        tags: ["Mascot Item"],
       },
-      MascotItemController.getMascotItemById,
+    },
+    MascotItemController.getMascotItemById,
   );
 
   app.post(
@@ -148,6 +154,7 @@ export default function MascotItemRoutes(
   app.post(
     "/buy",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Comprar item de mascote",
         body: {
@@ -180,6 +187,7 @@ export default function MascotItemRoutes(
   app.post(
     "/equip",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Equipar item de mascote",
         body: {

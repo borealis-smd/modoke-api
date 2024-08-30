@@ -1,31 +1,20 @@
 import * as BadgeService from "../services/badgeService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { validateToken } from "../validators/tokenValidator";
 import { BadgeCreateSchema } from "../validators/badgesValidator";
 import { extractUserId } from "../utils/extractUserId";
+import { handleError } from "../utils/errorHandler";
 
 export const getBadges = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const badges = await BadgeService.getBadges();
 
     reply.code(200).send(badges);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -34,8 +23,6 @@ export const getBadgeByUnitId = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { unit_id } = z
       .object({
         unit_id: z.number().int(),
@@ -46,16 +33,7 @@ export const getBadgeByUnitId = async (
 
     reply.code(200).send(badge);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -64,24 +42,13 @@ export const getBadgesByUserId = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const user_id = extractUserId(request, reply);
 
     const badges = await BadgeService.getBadgesByUserId(user_id);
 
     reply.code(200).send(badges);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -89,8 +56,6 @@ export const createBadge = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const badgeParsedBody = BadgeCreateSchema.parse(request.body);
 
@@ -98,16 +63,7 @@ export const createBadge = async (
 
     reply.code(201).send(badge);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -115,8 +71,6 @@ export const assignBadgeToUser = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const { user_id, badge_id } = z
       .object({
@@ -129,15 +83,6 @@ export const assignBadgeToUser = async (
 
     reply.code(200).send({ message: "Emblema atribuído com sucesso." });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };

@@ -1,5 +1,6 @@
 import * as UserController from "../controllers/userController";
 import { FastifyInstance } from "fastify";
+import {verifyTokenMiddleware} from "../middleware/authMiddleware";
 
 export default function UserRoutes(
   app: FastifyInstance,
@@ -101,6 +102,7 @@ export default function UserRoutes(
   app.get(
     ":email",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar usuário por email",
         querystring: {
@@ -130,11 +132,7 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     UserController.getUserByEmail,
@@ -143,6 +141,7 @@ export default function UserRoutes(
   app.put(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Atualizar informações de um usuário",
         body: {
@@ -187,11 +186,7 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     UserController.updateUser,
@@ -200,6 +195,7 @@ export default function UserRoutes(
   app.put(
     "/password",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Atualizar senha do usuário",
         body: {
@@ -217,11 +213,7 @@ export default function UserRoutes(
           },
         },
         tags: ["User"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     UserController.updatePassword,

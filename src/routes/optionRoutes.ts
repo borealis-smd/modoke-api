@@ -33,11 +33,7 @@ export default function OptionRoutes(
           },
         },
         tags: ["Options"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     OptionController.createOption,

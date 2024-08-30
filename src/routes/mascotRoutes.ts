@@ -1,5 +1,6 @@
 import * as MascotController from "../controllers/mascotController";
 import { FastifyInstance } from "fastify";
+import { verifyTokenMiddleware } from "../middleware/authMiddleware";
 
 export default function MascotRoutes(
   app: FastifyInstance,
@@ -9,6 +10,7 @@ export default function MascotRoutes(
   app.get(
     "/user",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar mascote por usuário",
         response: {
@@ -37,6 +39,7 @@ export default function MascotRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Criar mascote",
         body: {

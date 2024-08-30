@@ -1,8 +1,8 @@
 import * as UnitService from "../services/unitService";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { validateToken } from "../validators/tokenValidator";
 import { z } from "zod";
 import { UnitsCreateSchema } from "../validators/unitsValidator";
+import { handleError } from "../utils/errorHandler";
 
 export const getUnits = async (
   request: FastifyRequest,
@@ -33,16 +33,7 @@ export const getUnitById = async (
 
     reply.code(200).send(unit);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -61,16 +52,7 @@ export const getUnitsBySessionId = async (
 
     reply.code(200).send(units);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -78,8 +60,6 @@ export const createUnit = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const unit = UnitsCreateSchema.parse(request.body);
 
@@ -87,16 +67,7 @@ export const createUnit = async (
 
     reply.code(201).send(newUnit);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -104,8 +75,6 @@ export const finishUnit = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  await validateToken(request, reply);
-
   try {
     const { unit_id } = z
       .object({
@@ -117,15 +86,6 @@ export const finishUnit = async (
 
     reply.code(200).send(finishedUnit);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };

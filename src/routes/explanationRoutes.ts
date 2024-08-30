@@ -1,6 +1,9 @@
 import * as ExplanationController from "../controllers/explanationController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function ExplanationRoutes(
   app: FastifyInstance,
@@ -10,6 +13,7 @@ export default function ExplanationRoutes(
   app.get(
     ":lesson_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar explicações por ID de uma lição",
         querystring: {

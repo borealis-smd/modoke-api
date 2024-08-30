@@ -1,6 +1,9 @@
 import * as SessionController from "../controllers/sessionController";
 import { FastifyInstance } from "fastify";
-import { verifyRole } from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function SessionRoutes(
   app: FastifyInstance,
@@ -86,6 +89,7 @@ export default function SessionRoutes(
   app.put(
     "/finish:session_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Finalizar uma sessão",
         querystring: {

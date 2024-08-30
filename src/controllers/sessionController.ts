@@ -1,8 +1,8 @@
 import * as SessionService from "../services/sessionService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { validateToken } from "../validators/tokenValidator";
 import { SessionCreateSchema } from "../validators/sessionsValidator";
+import { handleError } from "../utils/errorHandler";
 
 export const getSessions = async (
   request: FastifyRequest,
@@ -23,24 +23,13 @@ export const createSession = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const sessionParsedBody = SessionCreateSchema.parse(request.body);
 
     const session = await SessionService.createSession(sessionParsedBody);
 
     reply.code(201).send(session);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -49,8 +38,6 @@ export const finishSession = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { session_id } = z
       .object({
         session_id: z.number().int(),
@@ -61,15 +48,6 @@ export const finishSession = async (
 
     reply.code(200).send(session);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
