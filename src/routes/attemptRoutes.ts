@@ -1,5 +1,6 @@
 import * as AttemptController from "../controllers/attemptController";
 import { FastifyInstance } from "fastify";
+import { verifyTokenMiddleware } from "../middleware/authMiddleware";
 
 export default function AttemptRoutes(
   app: FastifyInstance,
@@ -9,6 +10,7 @@ export default function AttemptRoutes(
   app.post(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Registrar tentativa",
         body: {
@@ -50,6 +52,7 @@ export default function AttemptRoutes(
   app.get(
     "/last:question_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar última tentativa por ID da questão",
         querystring: {

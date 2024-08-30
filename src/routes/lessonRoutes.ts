@@ -1,6 +1,6 @@
 import * as LessonController from "../controllers/lessonController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import {verifyRole, verifyTokenMiddleware} from "../middleware/authMiddleware";
 
 export default function LessonRoutes(
   app: FastifyInstance,
@@ -231,11 +231,7 @@ export default function LessonRoutes(
           },
         },
         tags: ["Lessons"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     LessonController.createLesson,
@@ -244,6 +240,7 @@ export default function LessonRoutes(
   app.put(
     "/finish:lesson_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Finalizar uma lição",
         querystring: {
@@ -278,11 +275,7 @@ export default function LessonRoutes(
           },
         },
         tags: ["Lessons"],
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
       },
     },
     LessonController.finishLesson,

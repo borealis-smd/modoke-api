@@ -1,6 +1,9 @@
 import * as UnitController from "../controllers/unitController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function UnitRoutes(
   app: FastifyInstance,
@@ -10,6 +13,7 @@ export default function UnitRoutes(
   app.get(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar todas as unidades",
         response: {
@@ -43,6 +47,7 @@ export default function UnitRoutes(
   app.get(
     "/id:unit_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar unidade por ID",
         querystring: {
@@ -76,6 +81,7 @@ export default function UnitRoutes(
   app.get(
     "/session:session_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar unidades por ID de uma sessão",
         querystring: {
@@ -155,6 +161,7 @@ export default function UnitRoutes(
   app.put(
     "/finish:unit_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Finalizar uma unidade",
         querystring: {

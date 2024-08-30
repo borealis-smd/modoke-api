@@ -1,8 +1,8 @@
 import * as LessonService from "../services/lessonService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { validateToken } from "../validators/tokenValidator";
 import { LessonsCreateSchema } from "../validators/lessonsValidator";
+import { handleError } from "../utils/errorHandler";
 
 export const getLessonById = async (
   request: FastifyRequest,
@@ -19,16 +19,7 @@ export const getLessonById = async (
 
     reply.code(200).send(lesson);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -47,16 +38,7 @@ export const getLessonsByUnitId = async (
 
     reply.code(200).send(lessons);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -75,16 +57,7 @@ export const getLessonsBySessionId = async (
 
     reply.code(200).send(lessons);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -103,16 +76,7 @@ export const getLessonsByLevelId = async (
 
     reply.code(200).send(lessons);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -121,24 +85,13 @@ export const createLesson = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const lesson = LessonsCreateSchema.parse(request.body);
 
     const newLesson = await LessonService.createLesson(lesson);
 
     reply.code(201).send(newLesson);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -147,8 +100,6 @@ export const finishLesson = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { lesson_id } = z
       .object({
         lesson_id: z.number().int(),
@@ -159,15 +110,6 @@ export const finishLesson = async (
 
     reply.code(200).send(finishedLesson);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };

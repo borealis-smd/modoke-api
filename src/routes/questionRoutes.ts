@@ -1,6 +1,9 @@
 import * as QuestionController from "../controllers/questionController";
 import { FastifyInstance } from "fastify";
-import {verifyRole} from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function QuestionRoutes(
   app: FastifyInstance,
@@ -10,6 +13,7 @@ export default function QuestionRoutes(
   app.get(
     "/lesson:lesson_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description:
           "Buscar questões (enunciados e alternativas) por ID da lição",
@@ -67,6 +71,7 @@ export default function QuestionRoutes(
   app.get(
     "/unit:unit_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description:
           "Buscar questões (enunciados e alternativas) por ID da unidade",
@@ -124,6 +129,7 @@ export default function QuestionRoutes(
   app.get(
     "/entranceTest",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description:
           "Buscar questões (enunciados e alternativas) do teste de entrada",

@@ -1,32 +1,21 @@
 import * as MascotService from "../services/mascotService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { validateToken } from "../validators/tokenValidator";
 import { extractUserId } from "../utils/extractUserId";
+import {handleError} from "../utils/errorHandler";
 
 export const getMascotByUserId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const user_id = extractUserId(request, reply);
 
     const mascot = await MascotService.getMascotByUserId(user_id);
 
     reply.code(200).send(mascot);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -35,8 +24,6 @@ export const createMascot = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const mascot = z.object({
       mascot_image_url: z.string().url(),
     });
@@ -52,15 +39,6 @@ export const createMascot = async (
 
     reply.code(201).send(mascotCreated);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };

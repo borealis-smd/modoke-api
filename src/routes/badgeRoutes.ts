@@ -1,6 +1,9 @@
 import * as BadgeController from "../controllers/badgeController";
 import { FastifyInstance } from "fastify";
-import { verifyRole } from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function BadgeRoutes(
   app: FastifyInstance,
@@ -10,6 +13,7 @@ export default function BadgeRoutes(
   app.get(
     "/",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar todas os emblemas",
         response: {
@@ -39,6 +43,7 @@ export default function BadgeRoutes(
   app.get(
     "/unit:unit_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar emblema por ID de uma unidade",
         querystring: {
@@ -85,6 +90,7 @@ export default function BadgeRoutes(
   app.get(
     "/user",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar emblemas por ID de um usuário",
         response: {
@@ -187,6 +193,7 @@ export default function BadgeRoutes(
   app.post(
     "/assign",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Atribuir um emblema a um usuário",
         body: {

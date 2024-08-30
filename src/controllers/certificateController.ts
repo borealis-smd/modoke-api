@@ -1,17 +1,15 @@
 import * as CertificateService from "../services/certificateService";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { validateToken } from "../validators/tokenValidator";
 import { CertificateCreateSchema } from "../validators/certificatesValidator";
 import { extractUserId } from "../utils/extractUserId";
+import { handleError } from "../utils/errorHandler";
 
 export const getCertificatesByUserId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const user_id = extractUserId(request, reply);
 
     const certificate =
@@ -19,16 +17,7 @@ export const getCertificatesByUserId = async (
 
     reply.code(200).send(certificate);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -37,8 +26,6 @@ export const createCertificate = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const certificateParsedBody = CertificateCreateSchema.parse(request.body);
 
     const certificate = await CertificateService.createCertificate(
@@ -47,16 +34,7 @@ export const createCertificate = async (
 
     reply.code(201).send(certificate);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -65,8 +43,6 @@ export const assignCertificateToUser = async (
   reply: FastifyReply,
 ) => {
   try {
-    await validateToken(request, reply);
-
     const { user_id, certificate_id } = z
       .object({
         user_id: z.string().uuid(),
@@ -78,15 +54,6 @@ export const assignCertificateToUser = async (
 
     reply.code(200).send({ message: "Certificado atribuído com sucesso!" });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
