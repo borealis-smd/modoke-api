@@ -37,27 +37,25 @@ export default function UserRoutes(
           },
         },
         response: {
-          200: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                // user_id: {
-                //   type: "string",
-                //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-                // },
-                first_name: { type: "string", examples: ["John"] },
-                last_name: { type: "string", examples: ["Doe"] },
-                xp: { type: "number", examples: [0] },
-                level_id: { type: "number", examples: [1] },
-                created_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
-                updated_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
+          201: {
+            type: "object",
+            properties: {
+              // user_id: {
+              //   type: "string",
+              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              // },
+              first_name: { type: "string", examples: ["John"] },
+              last_name: { type: "string", examples: ["Doe"] },
+              coins: { type: "number", examples: [0] },
+              xp: { type: "number", examples: [0] },
+              level_id: { type: "number", examples: [1] },
+              created_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
+              },
+              updated_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
               },
             },
           },
