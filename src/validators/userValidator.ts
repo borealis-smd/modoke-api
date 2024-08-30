@@ -40,10 +40,7 @@ export const UserUpdateSchema = UserSchema.partial();
 export const UserTokenSchema = z.object({
   user_id: z.string().uuid(),
   first_name: z.string(),
-  coins: z.number().int(),
-  xp: z.number().int(),
   role: z.enum(["USER", "ADMIN"]),
-  level_id: z.number().int(),
 });
 
 export const GoogleUserRegisterSchema = UserDBSchema.omit({
