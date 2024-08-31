@@ -36,8 +36,7 @@ export const login = async (request: FastifyRequest, reply: FastifyReply) => {
     const token = generateToken({
       user_id: user.user_id,
       first_name: user.first_name,
-      xp: user.xp,
-      level_id: user.level_id,
+      role: user.role,
     });
     reply.send({ token });
   } catch (error) {
@@ -95,8 +94,7 @@ export const register = async (
     const token = generateToken({
       user_id: user.user_id,
       first_name: user.first_name,
-      xp: user.xp,
-      level_id: user.level_id,
+      role: user.role,
     });
     reply.send({ token });
   } catch (error) {

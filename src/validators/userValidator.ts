@@ -46,6 +46,7 @@ export const UserTokenSchema = z.object({
 export const GoogleUserRegisterSchema = UserDBSchema.omit({
   xp: true,
   coins: true,
+  role: true,
   created_at: true,
   updated_at: true,
 });
