@@ -15,22 +15,23 @@ datasource db {
 }
 
 model User {
-  user_id      String               @id @default(uuid())
-  first_name   String
-  last_name    String
-  avatar_url   String
-  xp           Int
-  coins        Int
-  role         Role
-  level_id     Int
-  created_at   DateTime             @default(now())
-  updated_at   DateTime             @updatedAt
-  Login        Login[]
-  Level        Level                @relation(fields: [level_id], references: [level_id])
-  Mascot       Mascot?
-  Badges       UserHasBadge[]
-  Attempts     Attempts[]
-  Certificates UserHasCertificate[]
+  user_id           String               @id @default(uuid())
+  first_name        String
+  last_name         String
+  avatar_url        String
+  xp                Int
+  coins             Int
+  role              Role
+  level_id          Int
+  created_at        DateTime             @default(now())
+  updated_at        DateTime             @updatedAt
+  Login             Login[]
+  Level             Level                @relation(fields: [level_id], references: [level_id])
+  Mascot            Mascot?
+  Badges            UserHasBadge[]
+  Attempts          Attempts[]
+  Certificates      UserHasCertificate[]
+  SystemPreferences SystemPreferences?
 }
 
 enum Role {
@@ -46,6 +47,29 @@ model Login {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
   User          User     @relation(fields: [user_id], references: [user_id])
+}
+
+model SystemPreferences {
+  system_preferences_id Int      @id @default(autoincrement())
+  theme                 Theme
+  font_size             FontSize
+  is_high_contrast      Boolean
+  sound                 Boolean
+  user_id               String   @unique
+  User                  User     @relation(fields: [user_id], references: [user_id])
+}
+
+enum Theme {
+  LIGHT
+  DARK
+}
+
+enum FontSize {
+  VERY_SMALL
+  SMALL
+  MEDIUM
+  LARGE
+  VERY_LARGE
 }
 
 model Level {

@@ -134,5 +134,10 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `POST /mascotItem/buy`: Compra um item de mascote
 - `POST /mascotItem/equip`: Equipa um item de mascote
 
+### Preferências do sistema
+- `GET /systemPreference/`: Busca todas as preferências do sistema de um usuário
+- `POST /systemPreference/`: Cria uma nova preferência do sistema para um usuário
+- `PUT /systemPreference/`: Atualiza uma preferência do sistema de um usuário
+
 ## Produção
 A documentação da aplicação está disponível em produção no Railway: https://api-projeto-production-8dc6.up.railway.app/docs.

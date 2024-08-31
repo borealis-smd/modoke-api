@@ -19,6 +19,7 @@ import MascotRoutes from "./routes/mascotRoutes";
 import MascotItemRoutes from "./routes/mascotItemRoutes";
 import GoogleAuthRoutes from "./routes/googleAuthRoutes";
 import UploadRoutes from "./routes/uploadRoutes";
+import SystemPreferencesRoutes from "./routes/systemPreferencesRoutes";
 
 config();
 
@@ -65,7 +66,7 @@ fastify.register(fastifySwaggerUi, {
   transformSpecificationClone: true,
 });
 
-fastify.register(UploadRoutes, { prefix: "/upload" })
+fastify.register(UploadRoutes, { prefix: "/upload" });
 fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
 fastify.register(SessionRoutes, { prefix: "/session" });
@@ -79,6 +80,7 @@ fastify.register(BadgeRoutes, { prefix: "/badge" });
 fastify.register(CertificateRoutes, { prefix: "/certificate" });
 fastify.register(MascotRoutes, { prefix: "/mascot" });
 fastify.register(MascotItemRoutes, { prefix: "/mascotItem" });
+fastify.register(SystemPreferencesRoutes, { prefix: "/preferences" });
 fastify.register(GoogleAuthRoutes, { prefix: "/auth/google" });
 
 fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {

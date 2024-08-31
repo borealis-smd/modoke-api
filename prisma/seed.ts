@@ -45,6 +45,17 @@ async function main() {
     },
   });
 
+  // Dados de exemplo para o modelo SystemPreferences
+  await prisma.systemPreferences.create({
+    data: {
+      user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
+      font_size: "MEDIUM",
+      theme: "DARK",
+      is_high_contrast: false,
+      sound: true,
+    },
+  });
+
   // Dados de exemplo para o modelo Sessions
   await prisma.sessions.create({
     data: {
