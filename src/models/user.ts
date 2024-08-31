@@ -70,6 +70,7 @@ export const registerGoogleUser = async (user: GoogleUserRegister) => {
       ...user,
       xp: 0,
       coins: 0,
+      role: "USER",
     },
   });
 };
