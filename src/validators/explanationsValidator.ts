@@ -1,10 +1,14 @@
 import { z } from "zod";
 
 export const ExplanationsDBSchema = z.object({
-  explanation_id: z.number().int(),
-  content: z.string(),
-  lesson_id: z.number().int(),
-  part: z.enum(["PART_1", "PART_2", "PART_3"]),
+  explanation_id: z
+    .number()
+    .int({ message: "ID de explicação deve ser um número inteiro." }),
+  content: z.string().min(1, "Conteúdo da explicação não deve ser vazio."),
+  lesson_id: z
+    .number()
+    .int({ message: "ID de lição deve ser um número inteiro." }),
+  part: z.enum(["PART_1", "PART_2", "PART_3"], { message: "Parte inválida." }),
   created_at: z.date(),
   updated_at: z.date(),
 });

@@ -1,12 +1,24 @@
 import { z } from "zod";
 
 export const UnitsDBSchema = z.object({
-  unit_id: z.number().int(),
-  unit_title: z.string(),
-  unit_description: z.string(),
-  is_completed: z.boolean(),
-  completed_at: z.date().nullable(),
-  session_id: z.number().int(),
+  unit_id: z
+    .number()
+    .int({ message: "ID da unidade deve ser um número inteiro." }),
+  unit_title: z
+    .string()
+    .min(1, { message: "Título da unidade não deve ser vazio." }),
+  unit_description: z
+    .string()
+    .min(1, { message: "Descrição da unidade não deve ser vazia." }),
+  is_completed: z.boolean({
+    message: "Status de conclusão deve ser um booleano.",
+  }),
+  completed_at: z
+    .date({ message: "Data de conclusão deve ser uma data válida." })
+    .nullable(),
+  session_id: z
+    .number()
+    .int({ message: "ID da sessão deve ser um número inteiro." }),
 });
 
 export const UnitsSchema = UnitsDBSchema.partial();

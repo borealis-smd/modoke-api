@@ -1,13 +1,25 @@
 import { z } from "zod";
 
 export const LessonsDBSchema = z.object({
-  lesson_id: z.number().int(),
-  lesson_title: z.string(),
-  lesson_description: z.string(),
-  lesson_principle: z.enum(["P", "O", "U", "R"]),
-  is_completed: z.boolean(),
-  unit_id: z.number().int(),
-  completed_at: z.date().nullable(),
+  lesson_id: z
+    .number()
+    .int({ message: "ID da lição deve ser um número inteiro." }),
+  lesson_title: z.string().min(1, "Título da lição não deve ser vazio."),
+  lesson_description: z
+    .string()
+    .min(1, "Descrição da lição não deve ser vazia."),
+  lesson_principle: z.enum(["P", "O", "U", "R"], {
+    message: "Princípio da lição inválido.",
+  }),
+  is_completed: z.boolean({
+    message: "Status de conclusão deve ser um booleano.",
+  }),
+  unit_id: z
+    .number()
+    .int({ message: "ID da unidade deve ser um número inteiro." }),
+  completed_at: z
+    .date({ message: "Data de conclusão deve ser uma data válida." })
+    .nullable(),
   created_at: z.date(),
   updated_at: z.date(),
 });

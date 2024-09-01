@@ -1,11 +1,21 @@
 import { z } from "zod";
 
 export const AttemptsDBSchema = z.object({
-  attempt_id: z.number().int(),
-  user_id: z.string().uuid(),
-  question_id: z.number().int(),
-  selected_option_id: z.number().int(),
-  attempted_at: z.date(),
+  attempt_id: z
+    .number()
+    .int({ message: "ID da tentativa deve ser um número inteiro." }),
+  user_id: z
+    .string()
+    .uuid({ message: "ID do usuário deve ser um UUID válido." }),
+  question_id: z
+    .number()
+    .int({ message: "ID da pergunta deve ser um número inteiro." }),
+  selected_option_id: z
+    .number()
+    .int({ message: "ID da opção selecionada deve ser um número inteiro." }),
+  attempted_at: z.date({
+    message: "Data da tentativa deve ser uma data válida.",
+  }),
 });
 
 export const AttemptsSchema = AttemptsDBSchema.partial();

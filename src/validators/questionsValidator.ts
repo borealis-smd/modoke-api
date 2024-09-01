@@ -1,11 +1,18 @@
 import { z } from "zod";
 
 export const QuestionsDBSchema = z.object({
-  question_id: z.number().int(),
-  question_text: z.string(),
-  is_entrance_question: z.boolean(),
-  xp: z.number().int(),
-  lesson_id: z.number().int().nullable(),
+  question_id: z
+    .number()
+    .int({ message: "ID da pergunta deve ser um número inteiro." }),
+  question_text: z.string().min(1, "Texto da pergunta não deve ser vazio."),
+  is_entrance_question: z.boolean({
+    message: "Status de pergunta de entrada deve ser um booleano.",
+  }),
+  xp: z.number().int({ message: "XP deve ser um número inteiro." }),
+  lesson_id: z
+    .number()
+    .int({ message: "ID da lição deve ser um número inteiro." })
+    .nullable(),
   created_at: z.date(),
   updated_at: z.date(),
 });
