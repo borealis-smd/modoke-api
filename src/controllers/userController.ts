@@ -37,7 +37,7 @@ export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const { email, password } = LoginSchema.parse(request.body);
 
-    const { token } = await UserService.logIn(email, password);
+    const { token } = await UserService.logIn(email, password!);
 
     reply.code(200).send(JSON.stringify(token));
   } catch (error) {

@@ -17,11 +17,11 @@ datasource db {
 model User {
   user_id      String               @id @default(uuid())
   first_name   String
-  last_name    String
+  last_name    String?
   avatar_url   String               @db.VarChar(255)
   xp           Int
   coins        Int
-  role         Role
+  role         Role                 @default(USER)
   level_id     Int
   created_at   DateTime             @default(now())
   updated_at   DateTime             @updatedAt
@@ -39,13 +39,14 @@ enum Role {
 }
 
 model Login {
-  login_id      String   @id @default(uuid())
-  email         String   @unique
-  password_hash String
-  user_id       String
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  User          User     @relation(fields: [user_id], references: [user_id])
+  login_id       String   @id @default(uuid())
+  email          String   @unique
+  password_hash  String?
+  user_id        String
+  is_google_user Boolean  @default(false)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  User           User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Level {

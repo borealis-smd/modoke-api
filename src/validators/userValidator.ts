@@ -8,16 +8,15 @@ export const UserDBSchema = z.object({
     .string()
     .min(3, "Primeiro nome deve ter pelo menos 3 caracteres.")
     .max(70, "Primeiro nome deve ter no máximo 70 caracteres."),
-  last_name: z
-    .string()
-    .min(3, "Último nome deve ter pelo menos 3 caracteres.")
-    .max(70, "Último nome deve ter no máximo 70 caracteres."),
+  last_name: z.string().optional(),
   avatar_url: z
     .string({ message: "URL do avatar deve ser uma URL válida." })
     .url(),
   xp: z.number().int({ message: "XP deve ser um número inteiro." }),
   coins: z.number().int({ message: "Moedas deve ser um número inteiro." }),
-  role: z.enum(["USER", "ADMIN"], { message: "Função inválida." }),
+  role: z
+    .enum(["USER", "ADMIN"], { message: "Função inválida." })
+    .default("USER"),
   level_id: z
     .number()
     .int()

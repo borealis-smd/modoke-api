@@ -1,6 +1,6 @@
 import * as UserController from "../controllers/userController";
 import { FastifyInstance } from "fastify";
-import {verifyTokenMiddleware} from "../middleware/authMiddleware";
+import { verifyTokenMiddleware } from "../middleware/authMiddleware";
 
 export default function UserRoutes(
   app: FastifyInstance,
@@ -17,7 +17,7 @@ export default function UserRoutes(
           properties: {
             user: {
               type: "object",
-              required: ["first_name", "last_name", "level_id"],
+              required: ["first_name", "level_id"],
               properties: {
                 first_name: { type: "string", examples: ["John"] },
                 last_name: { type: "string", examples: ["Doe"] },
@@ -33,6 +33,7 @@ export default function UserRoutes(
               properties: {
                 email: { type: "string", examples: ["jhon.doe@gmail.com"] },
                 password: { type: "string", examples: ["Jhon@123"] },
+                is_google_user: { type: "boolean", examples: [false] },
               },
             },
           },

@@ -39,7 +39,7 @@ fastify.register(fastifySwagger, {
       version: "1.0.0",
     },
     servers: [
-      { url: "http://localhost:3000" },
+      { url: "http://localhost:8000" },
       { url: "https://api-projeto-production-8dc6.up.railway.app" },
     ],
     components: {
