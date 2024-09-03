@@ -1,7 +1,7 @@
 import { prisma } from "../config/db";
 import { CertificateCreate } from "../validators/certificatesValidator";
 import { MaxCertificatesReachedError } from "../errors/MaxCertificatesReachedError";
-import { CertificateForSessionAlreadyExistsError } from "../errors/CertificateForSessionAlreadyExistsError";
+import { CertificateForSectionAlreadyExistsError } from "../errors/CertificateForSectionAlreadyExistsError";
 
 export const getCertificateByUserId = async (user_id: string) => {
   return prisma.userHasCertificate.findMany({
@@ -10,28 +10,28 @@ export const getCertificateByUserId = async (user_id: string) => {
   });
 };
 
-// Apenas um para cada sessão/nível: A, AA, AAA
+// Apenas um para cada seção/nível: A, AA, AAA
 export const createCertificate = async (certificate: CertificateCreate) => {
   const certificates = await prisma.certificates.findMany();
   if (certificates.length >= 3) {
     throw new MaxCertificatesReachedError(
-      "Já existem certificados para todas as sessões.",
+      "Já existem certificados para todas as seções.",
     );
   }
 
   const certificateExists = certificates.some(
-    (c) => c.session_id === certificate.session_id,
+    (c) => c.section_id === certificate.section_id,
   );
   if (certificateExists) {
-    throw new CertificateForSessionAlreadyExistsError(
-      "Você não pode criar mais de um certificado para um sessão.",
+    throw new CertificateForSectionAlreadyExistsError(
+      "Você não pode criar mais de um certificado para um seção.",
     );
   }
 
   return prisma.certificates.create({
     data: {
       certificate_text: certificate.certificate_text,
-      session_id: certificate.session_id,
+      section_id: certificate.section_id,
     },
   });
 };
@@ -49,7 +49,7 @@ export const assignCertificateToUser = async (
       Certificate: {
         select: {
           certificate_text: true,
-          session_id: true,
+          section_id: true,
         },
       },
       User: {

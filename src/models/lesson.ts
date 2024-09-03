@@ -13,16 +13,16 @@ export const getLessonsByUnitId = async (unit_id: number) => {
   });
 };
 
-export const getLessonsBySessionId = async (session_id: number) => {
+export const getLessonsBySeçionId = async (section_id: number) => {
   return prisma.lessons.findMany({
-    where: { Unit: { session_id } },
+    where: { Unit: { section_id } },
   });
 };
 
 export const getLessonsByLevelId = async (level_id: number) => {
-  // Lessons has unit_id, Units has session_id, Sessions has level_id
+  // Lessons has unit_id, Units has section_id, Seçions has level_id
   return prisma.lessons.findMany({
-    where: { Unit: { Session: { level_id } } },
+    where: { Unit: { Section: { level_id } } },
   });
 };
 

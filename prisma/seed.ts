@@ -45,12 +45,12 @@ async function main() {
     },
   });
 
-  // Dados de exemplo para o modelo Sessions
-  await prisma.sessions.create({
+  // Dados de exemplo para o modelo Seçions
+  await prisma.sections.create({
     data: {
-      session_id: 1,
-      session_title: "Session 1",
-      session_description: "Description for session 1",
+      section_id: 1,
+      section_title: "Seçion 1",
+      section_description: "Description for section 1",
       is_completed: false,
       level_id: 1,
     },
@@ -63,7 +63,7 @@ async function main() {
       unit_title: "Unit 1",
       unit_description: "Description for unit 1",
       is_completed: false,
-      session_id: 1,
+      section_id: 1,
     },
   });
 
@@ -165,7 +165,7 @@ async function main() {
     data: {
       certificate_id: 1,
       certificate_text: "Certificate of Completion",
-      session_id: 1,
+      section_id: 1,
     },
   });
 

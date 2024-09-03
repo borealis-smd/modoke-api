@@ -42,18 +42,18 @@ export const getLessonsByUnitId = async (
   }
 };
 
-export const getLessonsBySessionId = async (
+export const getLessonsBySeçionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    const { session_id } = z
+    const { section_id } = z
       .object({
-        session_id: z.number().int(),
+        section_id: z.number().int(),
       })
       .parse(request.query);
 
-    const lessons = await LessonService.getLessonsBySessionId(session_id);
+    const lessons = await LessonService.getLessonsBySeçionId(section_id);
 
     reply.code(200).send(lessons);
   } catch (error) {

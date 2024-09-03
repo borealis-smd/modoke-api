@@ -9,7 +9,7 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
 import UnitRoutes from "./routes/unitRoutes";
-import SessionRoutes from "./routes/sessionRoutes";
+import SeçionRoutes from "./routes/sectionRoutes";
 import QuestionRoutes from "./routes/questionRoutes";
 import AttemptRoutes from "./routes/attemptRoutes";
 import OptionRoutes from "./routes/optionRoutes";
@@ -68,7 +68,7 @@ fastify.register(fastifySwaggerUi, {
 fastify.register(UploadRoutes, { prefix: "/upload" })
 fastify.register(UserRoutes, { prefix: "/user" });
 fastify.register(LevelRoutes, { prefix: "/level" });
-fastify.register(SessionRoutes, { prefix: "/session" });
+fastify.register(SeçionRoutes, { prefix: "/section" });
 fastify.register(UnitRoutes, { prefix: "/unit" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });

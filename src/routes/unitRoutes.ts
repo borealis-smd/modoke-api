@@ -33,7 +33,7 @@ export default function UnitRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
-                session_id: { type: "number", examples: [1] },
+                section_id: { type: "number", examples: [1] },
               },
             },
           },
@@ -68,7 +68,7 @@ export default function UnitRoutes(
                 type: "string",
                 examples: ["2024-08-04 16:21:21.921"],
               },
-              session_id: { type: "number", examples: [1] },
+              section_id: { type: "number", examples: [1] },
             },
           },
         },
@@ -79,13 +79,13 @@ export default function UnitRoutes(
   );
 
   app.get(
-    "/session:session_id",
+    "/section:section_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
-        description: "Buscar unidades por ID de uma sessão",
+        description: "Buscar unidades por ID de uma seção",
         querystring: {
-          session_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
@@ -104,7 +104,7 @@ export default function UnitRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
-                session_id: { type: "number", examples: [1] },
+                section_id: { type: "number", examples: [1] },
               },
             },
           },
@@ -112,7 +112,7 @@ export default function UnitRoutes(
         tags: ["Units"],
       },
     },
-    UnitController.getUnitsBySessionId,
+    UnitController.getUnitsBySeçionId,
   );
 
   app.post(
@@ -129,7 +129,7 @@ export default function UnitRoutes(
               type: "string",
               examples: ["Descrição da unidade 1"],
             },
-            session_id: { type: "number", examples: [1] },
+            section_id: { type: "number", examples: [1] },
           },
         },
         response: {
@@ -147,7 +147,7 @@ export default function UnitRoutes(
                 type: "string",
                 examples: ["2024-08-04 16:21:21.921"],
               },
-              session_id: { type: "number", examples: [1] },
+              section_id: { type: "number", examples: [1] },
             },
           },
         },
@@ -182,7 +182,7 @@ export default function UnitRoutes(
                 type: "string",
                 examples: ["2024-08-04 16:21:21.921"],
               },
-              session_id: { type: "number", examples: [1] },
+              section_id: { type: "number", examples: [1] },
             },
           },
         },

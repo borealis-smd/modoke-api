@@ -54,7 +54,7 @@ model Level {
   name        LevelName
   description String    @db.Text
   User        User[]
-  Sessions    Sessions?
+  Sections    Sections?
 }
 
 enum LevelName {
@@ -63,10 +63,10 @@ enum LevelName {
   AAA // Advanced
 }
 
-model Sessions {
-  session_id          Int           @id @default(autoincrement())
-  session_title       String        @db.VarChar(255)
-  session_description String        @db.Text
+model Sections {
+  section_id          Int           @id @default(autoincrement())
+  section_title       String        @db.VarChar(255)
+  section_description String        @db.Text
   is_completed        Boolean
   completed_at        DateTime?
   level_id            Int           @unique
@@ -81,8 +81,8 @@ model Units {
   unit_description String    @db.Text
   is_completed     Boolean
   completed_at     DateTime?
-  session_id       Int
-  Session          Sessions  @relation(fields: [session_id], references: [session_id])
+  section_id       Int
+  Section          Sections  @relation(fields: [section_id], references: [section_id])
   Lessons          Lessons[]
   Badges           Badges?
 }
@@ -207,8 +207,8 @@ model UserHasBadge {
 model Certificates {
   certificate_id   Int                  @id @default(autoincrement())
   certificate_text String               @db.Text
-  session_id       Int                  @unique
-  Session          Sessions             @relation(fields: [session_id], references: [session_id])
+  section_id       Int                  @unique
+  Section          Sections             @relation(fields: [section_id], references: [section_id])
   Users            UserHasCertificate[]
 }
 

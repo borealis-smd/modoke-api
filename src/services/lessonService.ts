@@ -18,8 +18,8 @@ export const getLessonsByUnitId = async (unit_id: number) => {
   return lessons;
 };
 
-export const getLessonsBySessionId = async (session_id: number) => {
-  const lessons = await LessonRepo.getLessonsBySessionId(session_id);
+export const getLessonsBySeçionId = async (section_id: number) => {
+  const lessons = await LessonRepo.getLessonsBySeçionId(section_id);
   if (!lessons) {
     throw new NoLessonFoundError("Nenhuma lição encontrada.");
   }

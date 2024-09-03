@@ -16,9 +16,9 @@ export const UnitsDBSchema = z.object({
   completed_at: z
     .date({ message: "Data de conclusão deve ser uma data válida." })
     .nullable(),
-  session_id: z
+  section_id: z
     .number()
-    .int({ message: "ID da sessão deve ser um número inteiro." }),
+    .int({ message: "ID da seção deve ser um número inteiro." }),
 });
 
 export const UnitsSchema = UnitsDBSchema.partial();

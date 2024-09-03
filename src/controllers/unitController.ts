@@ -37,18 +37,18 @@ export const getUnitById = async (
   }
 };
 
-export const getUnitsBySessionId = async (
+export const getUnitsBySeçionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    const { session_id } = z
+    const { section_id } = z
       .object({
-        session_id: z.number().int(),
+        section_id: z.number().int(),
       })
       .parse(request.query);
 
-    const units = await UnitService.getUnitsBySessionId(session_id);
+    const units = await UnitService.getUnitsBySeçionId(section_id);
 
     reply.code(200).send(units);
   } catch (error) {

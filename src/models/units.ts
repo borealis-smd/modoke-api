@@ -11,9 +11,9 @@ export const getUnitById = async (unit_id: number) => {
   });
 };
 
-export const getUnitsBySessionId = async (session_id: number) => {
+export const getUnitsBySeçionId = async (section_id: number) => {
   return prisma.units.findMany({
-    where: { session_id },
+    where: { section_id },
   });
 };
 
@@ -22,7 +22,7 @@ export const createUnit = async (unit: UnitsCreate) => {
     data: {
       unit_title: unit.unit_title,
       unit_description: unit.unit_description,
-      session_id: unit.session_id,
+      section_id: unit.section_id,
       is_completed: false,
     },
   });

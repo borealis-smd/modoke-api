@@ -95,12 +95,12 @@ export default function LessonRoutes(
   );
 
   app.get(
-    "/session:session_id",
+    "/section:section_id",
     {
       schema: {
-        description: "Buscar lições por ID de uma sessão",
+        description: "Buscar lições por ID de uma seção",
         querystring: {
-          session_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
@@ -136,7 +136,7 @@ export default function LessonRoutes(
         tags: ["Lessons"],
       },
     },
-    LessonController.getLessonsBySessionId,
+    LessonController.getLessonsBySeçionId,
   );
 
   app.get(

@@ -1,11 +1,11 @@
-import * as SessionController from "../controllers/sessionController";
+import * as SectionController from "../controllers/sectionController";
 import { FastifyInstance } from "fastify";
 import {
   verifyRole,
   verifyTokenMiddleware,
 } from "../middleware/authMiddleware";
 
-export default function SessionRoutes(
+export default function SectionRoutes(
   app: FastifyInstance,
   options: any,
   done: Function,
@@ -14,18 +14,18 @@ export default function SessionRoutes(
     "/",
     {
       schema: {
-        description: "Buscar todas as sessões",
+        description: "Buscar todas as seções",
         response: {
           200: {
             type: "array",
             items: {
               type: "object",
               properties: {
-                session_id: { type: "number", examples: [1] },
-                session_title: { type: "string", examples: ["Sessão 1"] },
-                session_description: {
+                section_id: { type: "number", examples: [1] },
+                section_title: { type: "string", examples: ["Seção 1"] },
+                section_description: {
                   type: "string",
-                  examples: ["Descrição da sessão 1"],
+                  examples: ["Descrição da seção 1"],
                 },
                 level_id: { type: "number", examples: [1] },
                 is_completed: { type: "boolean", examples: [false] },
@@ -37,10 +37,10 @@ export default function SessionRoutes(
             },
           },
         },
-        tags: ["Sessions"],
+        tags: ["Sections"],
       },
     },
-    SessionController.getSessions,
+    SectionController.getSections,
   );
 
   app.post(
@@ -48,14 +48,14 @@ export default function SessionRoutes(
     {
       preHandler: verifyRole("ADMIN"),
       schema: {
-        description: "Criar uma nova sessão",
+        description: "Criar uma nova seção",
         body: {
           type: "object",
           properties: {
-            session_title: { type: "string", examples: ["Sessão 1"] },
-            session_description: {
+            section_title: { type: "string", examples: ["Seção 1"] },
+            section_description: {
               type: "string",
-              examples: ["Descrição da sessão 1"],
+              examples: ["Descrição da seção 1"],
             },
             level_id: { type: "number", examples: [1] },
           },
@@ -64,11 +64,11 @@ export default function SessionRoutes(
           201: {
             type: "object",
             properties: {
-              session_id: { type: "number", examples: [1] },
-              session_title: { type: "string", examples: ["Sessão 1"] },
-              session_description: {
+              section_id: { type: "number", examples: [1] },
+              section_title: { type: "string", examples: ["Seção 1"] },
+              section_description: {
                 type: "string",
-                examples: ["Descrição da sessão 1"],
+                examples: ["Descrição da seção 1"],
               },
               level_id: { type: "number", examples: [1] },
               is_completed: { type: "boolean", examples: [false] },
@@ -79,31 +79,31 @@ export default function SessionRoutes(
             },
           },
         },
-        tags: ["Sessions"],
+        tags: ["Sections"],
         security: [{ bearerAuth: [] }],
       },
     },
-    SessionController.createSession,
+    SectionController.createSection,
   );
 
   app.put(
-    "/finish:session_id",
+    "/finish:section_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
-        description: "Finalizar uma sessão",
+        description: "Finalizar uma seção",
         querystring: {
-          session_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              session_id: { type: "number", examples: [1] },
-              session_title: { type: "string", examples: ["Sessão 1"] },
-              session_description: {
+              section_id: { type: "number", examples: [1] },
+              section_title: { type: "string", examples: ["Seção 1"] },
+              section_description: {
                 type: "string",
-                examples: ["Descrição da sessão 1"],
+                examples: ["Descrição da seção 1"],
               },
               level_id: { type: "number", examples: [1] },
               is_completed: { type: "boolean", examples: [true] },
@@ -114,11 +114,11 @@ export default function SessionRoutes(
             },
           },
         },
-        tags: ["Sessions"],
+        tags: ["Sections"],
         security: [{ bearerAuth: [] }],
       },
     },
-    SessionController.finishSession,
+    SectionController.finishSection,
   );
 
   done();

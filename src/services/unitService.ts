@@ -14,8 +14,8 @@ export const getUnitById = async (unit_id: number) => {
   return unit;
 };
 
-export const getUnitsBySessionId = async (session_id: number) => {
-  const units = UnitRepo.getUnitsBySessionId(session_id);
+export const getUnitsBySeçionId = async (section_id: number) => {
+  const units = UnitRepo.getUnitsBySeçionId(section_id);
   if (!units) {
     throw new UnitNotFoundError("Unit not found");
   }
