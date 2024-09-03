@@ -20,14 +20,13 @@ export const registerUser = async (
     const userParsedBody = UserRegisterSchema.parse(user);
     const loginParsedBody = LoginSchema.parse(login);
 
-    const newUser = await UserService.registerUser(
-      userParsedBody,
-      loginParsedBody,
-    );
+    await UserService.registerUser(userParsedBody, loginParsedBody);
 
     await sendGreetingEmail(login.email, user.first_name);
 
-    reply.code(201).send(newUser);
+    const { token } = await UserService.logIn(login.email, login.password!);
+
+    reply.code(201).send(JSON.stringify(token));
   } catch (error) {
     handleError(error, reply);
   }

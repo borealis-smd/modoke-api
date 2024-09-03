@@ -42,22 +42,11 @@ export default function UserRoutes(
           201: {
             type: "object",
             properties: {
-              // user_id: {
-              //   type: "string",
-              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-              // },
-              first_name: { type: "string", examples: ["John"] },
-              last_name: { type: "string", examples: ["Doe"] },
-              coins: { type: "number", examples: [0] },
-              xp: { type: "number", examples: [0] },
-              level_id: { type: "number", examples: [1] },
-              created_at: {
+              token: {
                 type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              updated_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
+                examples: [
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMGZmM2I4NmYtYTdkZS00NTE5LTllNTktMTAxZGI4YzNhOGYzIiwiaWF0IjoxNjI5NzA3NjQ3LCJleHAiOjE2Mjk3MTExMDd9.6L9r0H7F8G5Pw4l7d0J4Zd7X0z0kF0R4Z0n0e0W4",
+                ],
               },
             },
           },
