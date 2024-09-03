@@ -73,14 +73,14 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `GET /lesson/id{lesson_id}`: Busca uma lição por id
 - `GET /lesson/level{level_id}`: Busca todas as lições de um nível
 - `GET /lesson/unit{unit_id}`: Busca todas as lições de uma unidade
-- `GET /lesson/session{session_id}`: Busca todas as lições de uma sessão
+- `GET /lesson/session{session_id}`: Busca todas as lições de uma seção
 - `POST /lesson`: Cria uma nova lição
 - `PUT /lesson/finish{lesson_id}`: Finaliza uma lição
 
 ### Unidades
 - `GET /unit`: Busca todas as unidades
 - `GET /unit/id{unit_id}`: Busca uma unidade por id
-- `GET /unit/session{session_id}`: Busca todas as unidades de uma sessão
+- `GET /unit/session{session_id}`: Busca todas as unidades de uma seção
 - `POST /unit`: Cria uma nova unidade
 - `PUT /unit/finish{unit_id}`: Finaliza uma unidade
 
@@ -88,10 +88,10 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `GET /explanation{lesson_id}`: Busca todas as explicações de uma lição
 - `POST /explanation`: Cria uma nova explicação
 
-### Sessões
-- `GET /session/`: Busca todas as sessões
-- `POST /session/`: Cria uma nova sessão
-- `PUT /session/finish{session_id}`: Finaliza uma sessão
+### Seções
+- `GET /session/`: Busca todas as seções
+- `POST /session/`: Cria uma nova seção
+- `PUT /session/finish{session_id}`: Finaliza uma seção
 
 ### Questões
 - `GET /question/lesson{lesson_id}`: Busca todas as questões (enunciados e alternativas) de uma lição
