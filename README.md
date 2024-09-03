@@ -38,10 +38,6 @@ NODEMAILER_PASSWORD="<password>"
 EMAIL_PORT=<email_port>
 EMAIL_HOST="<host>"
 
-GOOGLE_CLIENT_ID="<client_id>"
-GOOGLE_CLIENT_SECRET="<client_secret>"
-GOOGLE_REDIRECT_URI="<redirect_uri>"
-
 AWS_ACCESS_KEY_ID="<access_key_id>"
 AWS_SECRET_ACCESS_KEY="<secret_access_key>"
 AWS_REGION="<region>"
