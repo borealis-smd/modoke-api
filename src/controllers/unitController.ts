@@ -37,7 +37,7 @@ export const getUnitById = async (
   }
 };
 
-export const getUnitsBySeçionId = async (
+export const getUnitsBySectionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
@@ -48,7 +48,7 @@ export const getUnitsBySeçionId = async (
       })
       .parse(request.query);
 
-    const units = await UnitService.getUnitsBySeçionId(section_id);
+    const units = await UnitService.getUnitsBySectionId(section_id);
 
     reply.code(200).send(units);
   } catch (error) {

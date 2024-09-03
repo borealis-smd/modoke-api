@@ -136,7 +136,7 @@ export default function LessonRoutes(
         tags: ["Lessons"],
       },
     },
-    LessonController.getLessonsBySeçionId,
+    LessonController.getLessonsBySectionId,
   );
 
   app.get(

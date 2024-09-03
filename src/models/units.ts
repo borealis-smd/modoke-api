@@ -11,7 +11,7 @@ export const getUnitById = async (unit_id: number) => {
   });
 };
 
-export const getUnitsBySeçionId = async (section_id: number) => {
+export const getUnitsBySectionId = async (section_id: number) => {
   return prisma.units.findMany({
     where: { section_id },
   });

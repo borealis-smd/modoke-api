@@ -42,7 +42,7 @@ export const getLessonsByUnitId = async (
   }
 };
 
-export const getLessonsBySeçionId = async (
+export const getLessonsBySectionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
@@ -53,7 +53,7 @@ export const getLessonsBySeçionId = async (
       })
       .parse(request.query);
 
-    const lessons = await LessonService.getLessonsBySeçionId(section_id);
+    const lessons = await LessonService.getLessonsBySectionId(section_id);
 
     reply.code(200).send(lessons);
   } catch (error) {

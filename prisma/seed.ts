@@ -45,11 +45,11 @@ async function main() {
     },
   });
 
-  // Dados de exemplo para o modelo Seçions
+  // Dados de exemplo para o modelo Sections
   await prisma.sections.create({
     data: {
       section_id: 1,
-      section_title: "Seçion 1",
+      section_title: "Section 1",
       section_description: "Description for section 1",
       is_completed: false,
       level_id: 1,

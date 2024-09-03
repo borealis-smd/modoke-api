@@ -112,7 +112,7 @@ export default function UnitRoutes(
         tags: ["Units"],
       },
     },
-    UnitController.getUnitsBySeçionId,
+    UnitController.getUnitsBySectionId,
   );
 
   app.post(
