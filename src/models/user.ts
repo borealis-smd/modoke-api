@@ -1,6 +1,5 @@
 import { prisma } from "../config/db";
 import {
-  GoogleUserRegister,
   UserRegister,
   UserRegisterSchema,
   UserUpdate,
