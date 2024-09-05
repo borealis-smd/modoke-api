@@ -2,7 +2,7 @@ import { prisma } from "../config/db";
 import { AttemptCreate } from "../validators/attemptsValidator";
 
 export const registerAttempt = async (attempt: AttemptCreate) => {
-  // Verifica se o usuário já respondeu a questão
+  // Verifica se o usuário já respondeu à questão
   const lastAttempt = await getLastAttemptByQuestionId(
     attempt.question_id,
     attempt.user_id,

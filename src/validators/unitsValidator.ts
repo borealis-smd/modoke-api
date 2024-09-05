@@ -10,9 +10,21 @@ export const UnitsDBSchema = z.object({
   unit_description: z
     .string()
     .min(1, { message: "Descrição da unidade não deve ser vazia." }),
-  is_completed: z.boolean({
-    message: "Status de conclusão deve ser um booleano.",
-  }),
+  in_progress: z
+    .boolean({
+      message: "Status de progresso deve ser um booleano.",
+    })
+    .default(false),
+  is_locked: z
+    .boolean({
+      message: "Status de bloqueio deve ser um booleano.",
+    })
+    .default(true),
+  is_completed: z
+    .boolean({
+      message: "Status de conclusão deve ser um booleano.",
+    })
+    .default(false),
   completed_at: z
     .date({ message: "Data de conclusão deve ser uma data válida." })
     .nullable(),

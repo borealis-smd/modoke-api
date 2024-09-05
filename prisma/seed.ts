@@ -9,17 +9,17 @@ async function main() {
       {
         level_id: 1,
         name: "A",
-        description: "Beginner level",
+        description: "Nível iniciante",
       },
       {
         level_id: 2,
         name: "AA",
-        description: "Intermediate level",
+        description: "Nível intermediário",
       },
       {
         level_id: 3,
         name: "AAA",
-        description: "Advanced level",
+        description: "Nível avançado",
       },
     ],
   });
@@ -32,7 +32,6 @@ async function main() {
       last_name: "Doe",
       avatar_url: "http://example.com/avatar.png",
       xp: 0,
-      coins: 0,
       role: "USER",
       level_id: 1,
       Login: {
@@ -51,8 +50,19 @@ async function main() {
       section_id: 1,
       section_title: "Section 1",
       section_description: "Description for section 1",
-      is_completed: false,
       level_id: 1,
+    },
+  });
+
+  // Dados de exemplo para o modelo SectionProgress
+  await prisma.sectionProgress.create({
+    data: {
+      section_progress_id: 1,
+      in_progress: true,
+      is_locked: false,
+      // completed_at: new Date(),
+      user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
+      section_id: 1,
     },
   });
 
@@ -62,8 +72,18 @@ async function main() {
       unit_id: 1,
       unit_title: "Unit 1",
       unit_description: "Description for unit 1",
-      is_completed: false,
       section_id: 1,
+    },
+  });
+
+  // Dados de exemplo para o modelo UnitProgress
+  await prisma.unitProgress.create({
+    data: {
+      unit_progress_id: 1,
+      in_progress: true,
+      is_locked: false,
+      user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
+      unit_id: 1,
     },
   });
 
@@ -73,9 +93,18 @@ async function main() {
       lesson_id: 1,
       lesson_title: "Lesson 1",
       lesson_description: "Description for lesson 1",
-      lesson_principle: "P",
-      is_completed: false,
       unit_id: 1,
+    },
+  });
+
+  // Dados de exemplo para o modelo LessonProgress
+  await prisma.lessonProgress.create({
+    data: {
+      lesson_progress_id: 1,
+      in_progress: true,
+      is_locked: false,
+      user_id: "0f52361f-ee67-440b-8b61-477732092aaf",
+      lesson_id: 1,
     },
   });
 

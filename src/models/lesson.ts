@@ -20,9 +20,18 @@ export const getLessonsBySectionId = async (section_id: number) => {
 };
 
 export const getLessonsByLevelId = async (level_id: number) => {
-  // Lessons has unit_id, Units has section_id, Sections has level_id
   return prisma.lessons.findMany({
     where: { Unit: { Section: { level_id } } },
+  });
+};
+
+// Só pode haver uma lição em progresso por usuário
+export const getInProgressLessonByUserId = async (user_id: string) => {
+  return prisma.lessonProgress.findFirst({
+    where: {
+      user_id,
+      in_progress: true,
+    },
   });
 };
 
@@ -31,16 +40,40 @@ export const createLesson = async (lesson: LessonsCreate) => {
     data: {
       lesson_title: lesson.lesson_title,
       lesson_description: lesson.lesson_description,
-      lesson_principle: lesson.lesson_principle,
       unit_id: lesson.unit_id,
-      is_completed: false,
     },
   });
 };
 
-export const finishLesson = async (lesson_id: number) => {
-  return prisma.lessons.update({
-    where: { lesson_id },
-    data: { is_completed: true, completed_at: new Date() },
+export const startLesson = async (lesson_id: number, user_id: string) => {
+  // [] verificar se não existe uma lição em progresso
+  return prisma.lessonProgress.create({
+    data: {
+      lesson_id,
+      user_id,
+      in_progress: true,
+    },
+  });
+};
+
+export const unlockLesson = async (lesson_id: number, user_id: string) => {
+  // [] verificar se não existe uma lição em progresso
+  return prisma.lessonProgress.create({
+    data: {
+      lesson_id,
+      user_id,
+      in_progress: true,
+      is_locked: false,
+    },
+  });
+};
+
+export const finishLesson = async (lesson_id: number, user_id: string) => {
+  return prisma.lessonProgress.update({
+    where: { lesson_id, user_id },
+    data: {
+      in_progress: false,
+      completed_at: new Date(),
+    },
   });
 };

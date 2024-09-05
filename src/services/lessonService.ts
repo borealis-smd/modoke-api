@@ -1,6 +1,7 @@
 import * as LessonRepo from "../models/lesson";
 import { LessonsCreate } from "../validators/lessonsValidator";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
+import { LessonAlreadyInProgressError } from "../errors/LessonAlreadyInProgressError";
 
 export const getLessonById = async (lesson_id: number) => {
   const lesson = await LessonRepo.getLessonById(lesson_id);
@@ -34,10 +35,36 @@ export const getLessonsByLevelId = async (level_id: number) => {
   return lessons;
 };
 
+export const getInProgressLessonByUserId = async (user_id: string) => {
+  return LessonRepo.getInProgressLessonByUserId(user_id);
+};
+
 export const createLesson = async (lesson: LessonsCreate) => {
   return LessonRepo.createLesson(lesson);
 };
 
-export const finishLesson = async (lesson_id: number) => {
-  return LessonRepo.finishLesson(lesson_id);
+export const startLesson = async (lesson_id: number, user_id: string) => {
+  const lessonInProgress =
+    await LessonRepo.getInProgressLessonByUserId(user_id);
+  if (lessonInProgress) {
+    throw new LessonAlreadyInProgressError(
+      "Só é possível ter uma lição em progresso por vez.",
+    );
+  }
+  return LessonRepo.startLesson(lesson_id, user_id);
+};
+
+export const unlockLesson = async (lesson_id: number, user_id: string) => {
+  const lessonInProgress =
+    await LessonRepo.getInProgressLessonByUserId(user_id);
+  if (lessonInProgress) {
+    throw new LessonAlreadyInProgressError(
+      "Só é possível ter uma lição em progresso por vez.",
+    );
+  }
+  return LessonRepo.unlockLesson(lesson_id, user_id);
+};
+
+export const finishLesson = async (lesson_id: number, user_id: string) => {
+  return LessonRepo.finishLesson(lesson_id, user_id);
 };

@@ -11,9 +11,21 @@ export const LessonsDBSchema = z.object({
   lesson_principle: z.enum(["P", "O", "U", "R"], {
     message: "Princípio da lição inválido.",
   }),
-  is_completed: z.boolean({
-    message: "Status de conclusão deve ser um booleano.",
-  }),
+  in_progress: z
+    .boolean({
+      message: "Status de progresso deve ser um booleano.",
+    })
+    .default(false),
+  is_locked: z
+    .boolean({
+      message: "Status de bloqueio deve ser um booleano.",
+    })
+    .default(true),
+  is_completed: z
+    .boolean({
+      message: "Status de conclusão deve ser um booleano.",
+    })
+    .default(false),
   unit_id: z
     .number()
     .int({ message: "ID da unidade deve ser um número inteiro." }),

@@ -13,7 +13,6 @@ export const UserDBSchema = z.object({
     .string({ message: "URL do avatar deve ser uma URL válida." })
     .url(),
   xp: z.number().int({ message: "XP deve ser um número inteiro." }),
-  coins: z.number().int({ message: "Moedas deve ser um número inteiro." }),
   role: z
     .enum(["USER", "ADMIN"], { message: "Função inválida." })
     .default("USER"),
@@ -35,7 +34,6 @@ export const UserSchema = UserDBSchema.omit({
 
 export const UserRegisterSchema = UserSchema.omit({
   xp: true,
-  coins: true,
 });
 
 export const UserUpdateSchema = UserSchema.partial();
@@ -48,7 +46,6 @@ export const UserTokenSchema = UserDBSchema.pick({
 
 export const GoogleUserRegisterSchema = UserDBSchema.omit({
   xp: true,
-  coins: true,
   role: true,
   created_at: true,
   updated_at: true,

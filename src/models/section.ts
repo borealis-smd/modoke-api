@@ -7,6 +7,16 @@ export const getSections = async () => {
   return prisma.sections.findMany();
 };
 
+// Só pode haver uma seção em progresso por usuário
+export const getInProgressSectionByUserId = async (user_id: string) => {
+  return prisma.sectionProgress.findFirst({
+    where: {
+      user_id,
+      in_progress: true,
+    },
+  });
+};
+
 // Apenas uma seção por nível
 export const createSection = async (section: SectionCreate) => {
   const sections = await getSections();
@@ -28,18 +38,41 @@ export const createSection = async (section: SectionCreate) => {
       section_title: section.section_title,
       section_description: section.section_description,
       level_id: section.level_id,
-      is_completed: false,
     },
   });
 };
 
-export const finishSection = async (section_id: number) => {
-  return prisma.sections.update({
+export const startSection = async (section_id: number, user_id: string) => {
+  // [] verificar se não existe uma seção em progresso
+  return prisma.sectionProgress.create({
+    data: {
+      section_id,
+      user_id,
+      in_progress: true,
+    },
+  });
+};
+
+export const unlockSection = async (section_id: number, user_id: string) => {
+  // [] verificar se não existe uma seção em progresso
+  return prisma.sectionProgress.create({
+    data: {
+      section_id,
+      user_id,
+      in_progress: true,
+      is_locked: false,
+    },
+  });
+};
+
+export const finishSection = async (section_id: number, user_id: string) => {
+  return prisma.sectionProgress.update({
     where: {
       section_id,
+      user_id,
     },
     data: {
-      is_completed: true,
+      in_progress: false,
       completed_at: new Date(),
     },
   });
