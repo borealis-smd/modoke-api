@@ -2,7 +2,7 @@
 Esta API foi desenvolvida para o Modoke, uma aplicação desenvolvida para a cadeira de Projeto Integrado I, da Universidade Federal do Ceará (UFC). O Modoke é uma plataforma de e-learning que tem como principal objetivo ensinar a desenvolvedores web (iniciantes e intermediários) sobre acessibilidade web. 
 
 ## Sobre a API
-A estrutura desta API segue o padrão RESTful e foi desenvolvida utilizando o framework Fastify e TypeScript. O código foi estrurado de uma forma similar ao padrão MVC (Model-View-Controller), com a separação de rotas, controladores e modelos. Além disso, foi utilizado o Prisma como ORM para o gerenciamento e a comunicação com o banco de dados PostgreSQL. O Docker foi utilizado para a criação de um container para a própria aplicação e para o banco de dados PostgreSQL (Docker Compose). O Swagger foi utilizado para a documentação da API. Utilizou-se ainda o Amazon S3 para o armazenamento de arquivos em nuvem.
+A estrutura desta API segue o padrão RESTful, desenvolvida utilizando o framework Fastify e TypeScript. O código foi estruturado de uma forma similar ao padrão MVC (Model-View-Controller), com a separação de rotas, controladores e modelos. Além disso, foi utilizado o Prisma como ORM para o gerenciamento e a comunicação com o banco de dados PostgreSQL. O Docker foi utilizado para a criação de um container para a própria aplicação e para o banco de dados PostgreSQL (Docker Compose). O Swagger foi utilizado para a documentação da API. Utilizou-se ainda o Amazon S3 para o armazenamento de arquivos em nuvem.
 
 ## Tecnologias Utilizadas
 - Node.js
@@ -12,7 +12,6 @@ A estrutura desta API segue o padrão RESTful e foi desenvolvida utilizando o fr
 - Docker
 - PostgreSQL
 - Swagger
-- JWT
 
 ## Diagrama Entidade-Relacionamento
 ![Diagrama Entidade-Relacionamento](er-diagram.png)
@@ -73,15 +72,21 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `GET /lesson/id{lesson_id}`: Busca uma lição por id
 - `GET /lesson/level{level_id}`: Busca todas as lições de um nível
 - `GET /lesson/unit{unit_id}`: Busca todas as lições de uma unidade
-- `GET /lesson/session{session_id}`: Busca todas as lições de uma seção
+- `GET /lesson/section{section_id}`: Busca todas as lições de uma seção
+- `GET /lesson/user`: Busca a lição em progresso de um usuário
 - `POST /lesson`: Cria uma nova lição
+- `POST /lesson/start{lesson_id}`: Inicia uma lição
+- `PUT /lesson/unlock{lesson_id}`: Desbloqueia uma lição
 - `PUT /lesson/finish{lesson_id}`: Finaliza uma lição
 
 ### Unidades
 - `GET /unit`: Busca todas as unidades
 - `GET /unit/id{unit_id}`: Busca uma unidade por id
-- `GET /unit/session{session_id}`: Busca todas as unidades de uma seção
+- `GET /unit/section{section_id}`: Busca todas as unidades de uma seção
+- `GET /unit/user`: Busca a unidade em progresso de um usuário
 - `POST /unit`: Cria uma nova unidade
+- `POST /unit/start{unit_id}`: Inicia uma unidade
+- `PUT /unit/unlock{unit_id}`: Desbloqueia uma unidade
 - `PUT /unit/finish{unit_id}`: Finaliza uma unidade
 
 ### Explicações
@@ -89,9 +94,12 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `POST /explanation`: Cria uma nova explicação
 
 ### Seções
-- `GET /session/`: Busca todas as seções
-- `POST /session/`: Cria uma nova seção
-- `PUT /session/finish{session_id}`: Finaliza uma seção
+- `GET /section/`: Busca todas as seções
+- `GET /section/user`: Busca a seção em progresso de um usuário
+- `POST /section/`: Cria uma nova seção
+- `POST /section/start{section_id}`: Inicia uma seção
+- `PUT /section/unlock{section_id}`: Desbloqueia uma seção
+- `PUT /section/finish{section_id}`: Finaliza uma seção
 
 ### Questões
 - `GET /question/lesson{lesson_id}`: Busca todas as questões (enunciados e alternativas) de uma lição
@@ -131,4 +139,4 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `POST /mascotItem/equip`: Equipa um item de mascote
 
 ## Produção
-A documentação da aplicação está disponível em produção no Railway: https://api-projeto-production-8dc6.up.railway.app/docs.
+A documentação da aplicação está disponível em produção no Railway: ...
