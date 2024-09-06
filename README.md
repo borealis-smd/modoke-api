@@ -59,6 +59,7 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 ## Rotas
 ### Usuários
 - Protegidas
+  - `GET /user/`: Busca um usuário por id  
   - `GET /user{email}`: Busca um usuário pelo email
   - `PUT /user/`: Atualiza um usuário por id
   - `PUT /user/password`: Atualiza a senha de um usuário

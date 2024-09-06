@@ -44,6 +44,21 @@ export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
   }
 };
 
+export const getUserById = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const user = await UserService.getUserById(user_id);
+
+    reply.code(200).send(user);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
 export const getUserByEmail = async (
   request: FastifyRequest,
   reply: FastifyReply,

@@ -45,6 +45,15 @@ export const logInWithGoogle = async (email: string) => {
   return { token };
 };
 
+export const getUserById = async (user_id: string) => {
+  const user = await UserRepo.getUserById(user_id);
+  if (!user) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
+
+  return user;
+};
+
 export const getUserByEmail = async (email: string) => {
   const user = await UserRepo.getUserByEmail(email);
   if (!user) {
