@@ -25,13 +25,33 @@ export const logIn = async (email: string, password: string) => {
 
   const login = await UserRepo.getCredentialsByEmail(email);
 
-  const passwordMatch = await compare(password, login.password_hash);
+  const passwordMatch = await compare(password, login.password_hash!);
   if (!passwordMatch) {
     throw new InvalidCredentialsError("Credenciais inválidas.");
   }
 
   const token = generateToken(user);
   return { token };
+};
+
+export const logInWithGoogle = async (email: string) => {
+  const user = await UserRepo.getUserByEmail(email);
+
+  if (!user) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
+
+  const token = generateToken(user);
+  return { token };
+};
+
+export const getUserById = async (user_id: string) => {
+  const user = await UserRepo.getUserById(user_id);
+  if (!user) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
+
+  return user;
 };
 
 export const getUserByEmail = async (email: string) => {
@@ -63,7 +83,12 @@ export const updatePassword = async (
   }
 
   const login = await UserRepo.getCredentialsByEmail(email);
-  const passwordMatch = await compare(oldPassword, login.password_hash);
+
+  if (login.is_google_user) {
+    throw new InvalidCredentialsError("Usuário cadastrado com Google.");
+  }
+
+  const passwordMatch = await compare(oldPassword, login.password_hash!);
   if (!passwordMatch) {
     throw new InvalidCredentialsError("Credenciais inválidas.");
   }

@@ -28,12 +28,7 @@ export default function UnitRoutes(
                   type: "string",
                   examples: ["Descrição da unidade 1"],
                 },
-                is_completed: { type: "boolean", examples: [false] },
-                completed_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
-                session_id: { type: "number", examples: [1] },
+                section_id: { type: "number", examples: [1] },
               },
             },
           },
@@ -63,12 +58,7 @@ export default function UnitRoutes(
                 type: "string",
                 examples: ["Descrição da unidade 1"],
               },
-              is_completed: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              session_id: { type: "number", examples: [1] },
+              section_id: { type: "number", examples: [1] },
             },
           },
         },
@@ -79,13 +69,13 @@ export default function UnitRoutes(
   );
 
   app.get(
-    "/session:session_id",
+    "/section:section_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
-        description: "Buscar unidades por ID de uma sessão",
+        description: "Buscar unidades por ID de uma seção",
         querystring: {
-          session_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
@@ -99,12 +89,7 @@ export default function UnitRoutes(
                   type: "string",
                   examples: ["Descrição da unidade 1"],
                 },
-                is_completed: { type: "boolean", examples: [false] },
-                completed_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
-                session_id: { type: "number", examples: [1] },
+                section_id: { type: "number", examples: [1] },
               },
             },
           },
@@ -112,7 +97,34 @@ export default function UnitRoutes(
         tags: ["Units"],
       },
     },
-    UnitController.getUnitsBySessionId,
+    UnitController.getUnitsBySectionId,
+  );
+
+  app.get(
+    "/user",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Buscar unidade em progresso por ID de usuário",
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              unit_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Units"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    UnitController.getInProgressUnitByUserId,
   );
 
   app.post(
@@ -129,7 +141,7 @@ export default function UnitRoutes(
               type: "string",
               examples: ["Descrição da unidade 1"],
             },
-            session_id: { type: "number", examples: [1] },
+            section_id: { type: "number", examples: [1] },
           },
         },
         response: {
@@ -142,12 +154,7 @@ export default function UnitRoutes(
                 type: "string",
                 examples: ["Descrição da unidade 1"],
               },
-              is_completed: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              session_id: { type: "number", examples: [1] },
+              section_id: { type: "number", examples: [1] },
             },
           },
         },
@@ -156,6 +163,67 @@ export default function UnitRoutes(
       },
     },
     UnitController.createUnit,
+  );
+
+  app.post(
+    "/start:unit_id",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Iniciar uma unidade por ID de unidade e ID de usuário",
+        querystring: {
+          unit_id: { type: "number", examples: [1] },
+        },
+        response: {
+          201: {
+            type: "object",
+            properties: {
+              unit_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Units"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    UnitController.startUnit,
+  );
+
+  app.put(
+    "/unlock:unit_id",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description:
+          "Desbloquear uma unidade por ID de unidade e ID de usuário",
+        querystring: {
+          unit_id: { type: "number", examples: [1] },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              unit_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Units"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    UnitController.unlockUnit,
   );
 
   app.put(
@@ -171,18 +239,13 @@ export default function UnitRoutes(
           200: {
             type: "object",
             properties: {
-              unit_id: { type: "number", examples: [1] },
-              unit_title: { type: "string", examples: ["Unidade 1"] },
-              unit_description: {
-                type: "string",
-                examples: ["Descrição da unidade 1"],
-              },
-              is_completed: { type: "boolean", examples: [true] },
+              unit_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [false] },
+              is_locked: { type: "boolean", examples: [false] },
               completed_at: {
                 type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
+                examples: ["2021-08-04T00:00:00.000Z"],
               },
-              session_id: { type: "number", examples: [1] },
             },
           },
         },

@@ -1,6 +1,9 @@
 import * as LessonController from "../controllers/lessonController";
 import { FastifyInstance } from "fastify";
-import {verifyRole, verifyTokenMiddleware} from "../middleware/authMiddleware";
+import {
+  verifyRole,
+  verifyTokenMiddleware,
+} from "../middleware/authMiddleware";
 
 export default function LessonRoutes(
   app: FastifyInstance,
@@ -25,12 +28,6 @@ export default function LessonRoutes(
               description: {
                 type: "string",
                 examples: ["Descrição da aula 1"],
-              },
-              lesson_principle: { type: "string", examples: ["P"] },
-              is_completed: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
               },
               created_at: {
                 type: "string",
@@ -70,12 +67,6 @@ export default function LessonRoutes(
                   type: "string",
                   examples: ["Descrição da aula 1"],
                 },
-                lesson_principle: { type: "string", examples: ["P"] },
-                is_completed: { type: "boolean", examples: [false] },
-                completed_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
                 created_at: {
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
@@ -95,12 +86,12 @@ export default function LessonRoutes(
   );
 
   app.get(
-    "/session:session_id",
+    "/section:section_id",
     {
       schema: {
-        description: "Buscar lições por ID de uma sessão",
+        description: "Buscar lições por ID de uma seção",
         querystring: {
-          session_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
@@ -114,12 +105,6 @@ export default function LessonRoutes(
                 description: {
                   type: "string",
                   examples: ["Descrição da aula 1"],
-                },
-                lesson_principle: { type: "string", examples: ["P"] },
-                is_completed: { type: "boolean", examples: [false] },
-                completed_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
                 },
                 created_at: {
                   type: "string",
@@ -136,7 +121,7 @@ export default function LessonRoutes(
         tags: ["Lessons"],
       },
     },
-    LessonController.getLessonsBySessionId,
+    LessonController.getLessonsBySectionId,
   );
 
   app.get(
@@ -160,12 +145,6 @@ export default function LessonRoutes(
                   type: "string",
                   examples: ["Descrição da aula 1"],
                 },
-                lesson_principle: { type: "string", examples: ["P"] },
-                is_completed: { type: "boolean", examples: [false] },
-                completed_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
                 created_at: {
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
@@ -184,6 +163,33 @@ export default function LessonRoutes(
     LessonController.getLessonsByLevelId,
   );
 
+  app.get(
+    "/user",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Buscar lição em progresso por ID de usuário",
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              lesson_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    LessonController.getInProgressLessonByUserId,
+  );
+
   app.post(
     "/",
     {
@@ -198,7 +204,6 @@ export default function LessonRoutes(
               type: "string",
               examples: ["Descrição da aula 1"],
             },
-            lesson_principle: { type: "string", examples: ["P"] },
             unit_id: { type: "number", examples: [1] },
           },
         },
@@ -212,12 +217,6 @@ export default function LessonRoutes(
               description: {
                 type: "string",
                 examples: ["Descrição da aula 1"],
-              },
-              lesson_principle: { type: "string", examples: ["P"] },
-              is_completed: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
               },
               created_at: {
                 type: "string",
@@ -237,6 +236,66 @@ export default function LessonRoutes(
     LessonController.createLesson,
   );
 
+  app.post(
+    "/start:lesson_id",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Iniciar uma lição por ID de lição e ID de usuário",
+        querystring: {
+          lesson_id: { type: "number", examples: [1] },
+        },
+        response: {
+          201: {
+            type: "object",
+            properties: {
+              lesson_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    LessonController.startLesson,
+  );
+
+  app.put(
+    "/unlock:lesson_id",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Desbloquear uma lição por ID de lição e ID de usuário",
+        querystring: {
+          lesson_id: { type: "number", examples: [1] },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              lesson_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [true] },
+              is_locked: { type: "boolean", examples: [false] },
+              completed_at: {
+                type: "string",
+                examples: [""],
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    LessonController.unlockLesson,
+  );
+
   app.put(
     "/finish:lesson_id",
     {
@@ -250,26 +309,12 @@ export default function LessonRoutes(
           200: {
             type: "object",
             properties: {
-              lesson_id: { type: "number", examples: [1] },
-              unit_id: { type: "number", examples: [1] },
-              title: { type: "string", examples: ["Aula 1"] },
-              description: {
-                type: "string",
-                examples: ["Descrição da aula 1"],
-              },
-              lesson_principle: { type: "string", examples: ["P"] },
-              is_completed: { type: "boolean", examples: [true] },
+              lesson_progress_id: { type: "number", examples: [1] },
+              in_progress: { type: "boolean", examples: [false] },
+              is_locked: { type: "boolean", examples: [false] },
               completed_at: {
                 type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              created_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              updated_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
+                examples: ["2021-08-04T00:00:00.000Z"],
               },
             },
           },

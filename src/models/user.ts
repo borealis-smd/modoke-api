@@ -1,6 +1,5 @@
 import { prisma } from "../config/db";
 import {
-  GoogleUserRegister,
   UserRegister,
   UserRegisterSchema,
   UserUpdate,
@@ -11,8 +10,8 @@ import { ValidationError } from "../errors/ValidationError";
 import { hash } from "bcrypt";
 
 export const registerUser = async (user: UserRegister, login: Login) => {
-  if (!user.first_name || !user.last_name) {
-    throw new MissingFieldError("Nome e sobrenome são obrigatórios.");
+  if (!user.first_name) {
+    throw new MissingFieldError("Nome é obrigatório.");
   }
 
   if (user.level_id === undefined || user.level_id === null) {
@@ -24,8 +23,10 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     throw new ValidationError("Dados de usuário inválidos.");
   }
 
-  if (!login.email || !login.password) {
-    throw new MissingFieldError("E-mail e senha são obrigatórios.");
+  if (!login.is_google_user) {
+    if (!login.email || !login.password) {
+      throw new MissingFieldError("E-mail e senha são obrigatórios.");
+    }
   }
 
   const loginValidationResult = LoginSchema.safeParse(login);
@@ -33,43 +34,19 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     throw new ValidationError("Dados de login inválidos.");
   }
 
-  const password_hash = await hash(login.password, 10);
+  const password_hash = login.password ? await hash(login.password, 10) : undefined;
 
   return prisma.user.create({
     data: {
       ...user,
       xp: 0,
-      coins: 0,
-      role: "USER",
       Login: {
         create: {
           email: login.email,
-          password_hash,
+          password_hash: password_hash,
+          is_google_user: login.is_google_user,
         },
       },
-    },
-  });
-};
-
-export const registerGoogleUser = async (user: GoogleUserRegister) => {
-  if (!user.first_name || !user.last_name) {
-    throw new MissingFieldError("Nome e sobrenome são obrigatórios.");
-  }
-
-  if (user.level_id === undefined || user.level_id === null) {
-    throw new MissingFieldError("Nível é obrigatório.");
-  }
-
-  const userValidationResult = UserRegisterSchema.safeParse(user);
-  if (!userValidationResult.success) {
-    throw new ValidationError("Dados de usuário inválidos.");
-  }
-
-  return prisma.user.create({
-    data: {
-      ...user,
-      xp: 0,
-      coins: 0,
     },
   });
 };

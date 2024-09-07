@@ -2,21 +2,18 @@ import jwt from "jsonwebtoken";
 import { UserToken } from "../validators/userValidator";
 
 if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET not defined.");
+  throw new Error("JWT_SECRET não definido.");
 }
 
 const SECRET = process.env.JWT_SECRET;
-const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION || "1d";
+const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION || "7d";
 
 export const generateToken = (user: UserToken) => {
   return jwt.sign(
     {
       user_id: user.user_id,
       first_name: user.first_name,
-      coins: user.coins,
-      xp: user.xp,
       role: user.role,
-      level_id: user.level_id,
     },
     SECRET,
     { expiresIn: TOKEN_EXPIRATION },

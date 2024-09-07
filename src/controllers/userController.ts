@@ -20,14 +20,13 @@ export const registerUser = async (
     const userParsedBody = UserRegisterSchema.parse(user);
     const loginParsedBody = LoginSchema.parse(login);
 
-    const newUser = await UserService.registerUser(
-      userParsedBody,
-      loginParsedBody,
-    );
+    await UserService.registerUser(userParsedBody, loginParsedBody);
 
     await sendGreetingEmail(login.email, user.first_name);
 
-    reply.code(201).send(newUser);
+    const { token } = await UserService.logIn(login.email, login.password!);
+
+    reply.code(201).send(JSON.stringify(token));
   } catch (error) {
     handleError(error, reply);
   }
@@ -37,9 +36,24 @@ export const logIn = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const { email, password } = LoginSchema.parse(request.body);
 
-    const { token } = await UserService.logIn(email, password);
+    const { token } = await UserService.logIn(email, password!);
 
     reply.code(200).send(JSON.stringify(token));
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
+export const getUserById = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const user = await UserService.getUserById(user_id);
+
+    reply.code(200).send(user);
   } catch (error) {
     handleError(error, reply);
   }

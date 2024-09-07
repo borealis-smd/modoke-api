@@ -1,56 +1,24 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import client from "../config/googleAuth";
-import { getUserById, registerGoogleUser } from "../models/user";
+import { registerUser } from "../models/user";
 import { generateToken } from "../config/jwt";
+import * as UserService from "../services/userService";
+import { handleError } from "../utils/errorHandler";
+import { User, UserRegisterSchema } from "../validators/userValidator";
+import { Login, LoginSchema } from "../validators/loginValidator";
+import { sendGreetingEmail } from "../config/nodemailer";
 
 export const login = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
-    const { code } = z
-      .object({
-        code: z.string(),
-      })
-      .parse(request.query);
-    const { tokens } = await client.getToken(code);
-    if (!tokens.id_token) {
-      reply.code(400).send({ message: "Token inválido." });
-      return;
-    }
-    const ticket = await client.verifyIdToken({
-      idToken: tokens.id_token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
+    const { email } = z
+      .object({ email: z.string().email() })
+      .parse(request.body);
 
-    const payload = ticket.getPayload();
-    if (!payload || !payload.sub || !payload.given_name) {
-      reply.code(400).send({ message: "Token inválido." });
-      return;
-    }
+    const { token } = await UserService.logInWithGoogle(email);
 
-    let user = await getUserById(payload.sub);
-    if (!user) {
-      reply.code(404).send({ message: "Usuário não encontrado." });
-      return;
-    }
-
-    const token = generateToken({
-      user_id: user.user_id,
-      first_name: user.first_name,
-      xp: user.xp,
-      level_id: user.level_id,
-    });
-    reply.send({ token });
+    reply.code(200).send(JSON.stringify(token));
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) =>
-        reply
-          .code(400)
-          .send({ message: `${err.path.join(".")} - ${err.message}` }),
-      );
-    }
-    if (error instanceof Error) {
-      reply.code(400).send({ message: error.message });
-    }
+    handleError(error, reply);
   }
 };
 
@@ -59,46 +27,21 @@ export const register = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { code, level_id } = z
-      .object({
-        code: z.string(),
-        level_id: z.number().int(),
-      })
-      .parse(request.query);
-    const { tokens } = await client.getToken(code);
-    if (!tokens.id_token) {
-      reply.code(400).send({ message: "Token inválido." });
-      return;
-    }
-    const ticket = await client.verifyIdToken({
-      idToken: tokens.id_token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
+    const { user, login } = request.body as { user: User; login: Login };
+    const userParsedBody = UserRegisterSchema.parse(user);
+    const loginParsedBody = LoginSchema.parse(login);
 
-    const payload = ticket.getPayload();
-    if (!payload || !payload.sub || !payload.given_name) {
-      reply.code(400).send({ message: "Token inválido." });
-      return;
-    }
+    const newUser = await registerUser(userParsedBody, loginParsedBody);
 
-    let user = await getUserById(payload.sub);
-    if (!user) {
-      user = await registerGoogleUser({
-        user_id: payload.sub,
-        first_name: payload.given_name,
-        last_name: payload.family_name || "",
-        avatar_url: payload.picture || "",
-        level_id,
-      });
-    }
+    await sendGreetingEmail(login.email, user.first_name);
 
     const token = generateToken({
-      user_id: user.user_id,
-      first_name: user.first_name,
-      xp: user.xp,
-      level_id: user.level_id,
+      user_id: newUser.user_id,
+      first_name: newUser.first_name,
+      role: newUser.role,
     });
-    reply.send({ token });
+
+    reply.status(201).send(JSON.stringify(token));
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) =>

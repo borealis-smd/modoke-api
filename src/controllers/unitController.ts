@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
 import { UnitsCreateSchema } from "../validators/unitsValidator";
 import { handleError } from "../utils/errorHandler";
+import { extractUserId } from "../utils/extractUserId";
 
 export const getUnits = async (
   request: FastifyRequest,
@@ -37,20 +38,35 @@ export const getUnitById = async (
   }
 };
 
-export const getUnitsBySessionId = async (
+export const getUnitsBySectionId = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    const { session_id } = z
+    const { section_id } = z
       .object({
-        session_id: z.number().int(),
+        section_id: z.number().int(),
       })
       .parse(request.query);
 
-    const units = await UnitService.getUnitsBySessionId(session_id);
+    const units = await UnitService.getUnitsBySectionId(section_id);
 
     reply.code(200).send(units);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
+export const getInProgressUnitByUserId = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const unit = await UnitService.getInProgressUnitByUserId(user_id);
+
+    reply.code(200).send(unit);
   } catch (error) {
     handleError(error, reply);
   }
@@ -71,6 +87,46 @@ export const createUnit = async (
   }
 };
 
+export const startUnit = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const { unit_id } = z
+      .object({
+        unit_id: z.number().int(),
+      })
+      .parse(request.query);
+    const user_id = extractUserId(request, reply);
+
+    const unit = await UnitService.startUnit(unit_id, user_id);
+
+    reply.code(201).send(unit);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
+export const unlockUnit = async (
+    request: FastifyRequest,
+    reply: FastifyReply,
+) => {
+  try {
+    const { unit_id } = z
+        .object({
+          unit_id: z.number().int(),
+        })
+        .parse(request.query);
+    const user_id = extractUserId(request, reply);
+
+    const unit = await UnitService.unlockUnit(unit_id, user_id);
+
+    reply.code(200).send(unit);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
 export const finishUnit = async (
   request: FastifyRequest,
   reply: FastifyReply,
@@ -81,8 +137,9 @@ export const finishUnit = async (
         unit_id: z.number().int(),
       })
       .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
-    const finishedUnit = await UnitService.finishUnit(unit_id);
+    const finishedUnit = await UnitService.finishUnit(unit_id, user_id);
 
     reply.code(200).send(finishedUnit);
   } catch (error) {
