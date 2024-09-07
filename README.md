@@ -158,4 +158,4 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
   - `GET /mascotItem/id{mascotItem_id}`: Busca um item de mascote por id
 
 ## Produção
-A documentação da aplicação está disponível em produção no Railway: ...
+A documentação da aplicação está disponível em produção no Railway: https://modoke-api-production.up.railway.app.
