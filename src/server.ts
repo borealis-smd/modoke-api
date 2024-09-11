@@ -40,7 +40,7 @@ fastify.register(fastifySwagger, {
     },
     servers: [
       { url: "http://localhost:8000" },
-      { url: "https://api-projeto-production-8dc6.up.railway.app" },
+      { url: "https://modoke-api-production.up.railway.app" },
     ],
     components: {
       securitySchemes: {

@@ -24,7 +24,7 @@ export default function LessonRoutes(
             properties: {
               lesson_id: { type: "number", examples: [1] },
               unit_id: { type: "number", examples: [1] },
-              title: { type: "string", examples: ["Aula 1"] },
+              lesson_title: { type: "string", examples: ["Aula 1"] },
               description: {
                 type: "string",
                 examples: ["Descrição da aula 1"],

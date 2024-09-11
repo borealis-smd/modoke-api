@@ -9,14 +9,17 @@ export const getExplanationsByLessonId = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { lesson_id } = z
+    const { lesson_id, part } = z
       .object({
         lesson_id: z.number().int(),
+        part: z.enum(["PART_1", "PART_2", "PART_3"]).optional(),
       })
       .parse(request.query);
 
-    const explanations =
-      await ExplanationService.getExplanationsByLessonId(lesson_id);
+    const explanations = await ExplanationService.getExplanationsByLessonId(
+      lesson_id,
+      part,
+    );
 
     reply.code(200).send(explanations);
   } catch (error) {

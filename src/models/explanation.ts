@@ -2,10 +2,13 @@ import { prisma } from "../config/db";
 import { ExplanationsCreate } from "../validators/explanationsValidator";
 import { ExplanationAlreadyExistsError } from "../errors/ExplanationAlreadyExistsError";
 
-export const getExplanationsByLessonId = async (lesson_id: number) => {
+export const getExplanationsByLessonId = async (
+  lesson_id: number,
+  part?: "PART_1" | "PART_2" | "PART_3",
+) => {
   // findMany because each explanation has 3 parts
   return prisma.explanations.findMany({
-    where: { lesson_id },
+    where: { lesson_id, part },
   });
 };
 

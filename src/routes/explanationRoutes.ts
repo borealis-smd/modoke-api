@@ -18,6 +18,11 @@ export default function ExplanationRoutes(
         description: "Buscar explicações por ID de uma lição",
         querystring: {
           lesson_id: { type: "number", examples: [1] },
+          part: {
+            type: "string",
+            enum: ["PART_1", "PART_2", "PART_3"],
+            examples: ["PART_1"],
+          },
         },
         response: {
           200: {
