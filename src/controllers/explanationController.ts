@@ -21,8 +21,6 @@ export const getExplanationsByLessonId = async (
       part,
     );
 
-    console.log(explanations);
-
     reply.code(200).send(explanations);
   } catch (error) {
     handleError(error, reply);
