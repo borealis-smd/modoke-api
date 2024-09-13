@@ -11,7 +11,6 @@ A estrutura desta API segue o padrão RESTful, desenvolvida utilizando o framewo
 - Prisma
 - Docker
 - PostgreSQL
-- Swagger
 
 ## Diagrama Entidade-Relacionamento
 ![Diagrama Entidade-Relacionamento](er-diagram.png)
@@ -142,20 +141,5 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
   - `POST /certificate/`: Cria um novo certificado (ADMIN)
   - `POST /certificate/assign`: Atribui um certificado a um usuário
 
-### Mascote
-- Protegidas
-  - `GET /mascot/user`: Busca o mascote de um usuário
-  - `POST /mascot/`: Cria um novo mascote
-
-### Item de mascote
-- Protegidas
-  - `GET /mascotItem/user`: Busca todos os itens de mascote de um usuário
-  - `GET /mascotItem/`: Busca todos os itens de mascote
-  - `POST /mascotItem/`: Cria um novo item de mascote (ADMIN)
-  - `POST /mascotItem/buy`: Compra um item de mascote
-  - `POST /mascotItem/equip`: Equipa um item de mascote
-- Não protegidas
-  - `GET /mascotItem/id{mascotItem_id}`: Busca um item de mascote por id
-
 ## Produção
-A documentação da aplicação está disponível em produção no Railway: https://modoke-api-production.up.railway.app.
+A documentação da aplicação está disponível em produção no Railway: https://modoke-api-production.up.railway.app/docs.
