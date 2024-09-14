@@ -79,7 +79,7 @@ model Sections {
 model SectionProgress {
   section_progress_id Int       @id @default(autoincrement())
   section_id          Int
-  user_id             String    @unique
+  user_id             String
   in_progress         Boolean   @default(false)
   is_locked           Boolean   @default(true)
   completed_at        DateTime?
@@ -101,7 +101,7 @@ model Units {
 model UnitProgress {
   unit_progress_id Int       @id @default(autoincrement())
   unit_id          Int
-  user_id          String    @unique
+  user_id          String
   in_progress      Boolean   @default(false)
   is_locked        Boolean   @default(true)
   completed_at     DateTime?
@@ -125,7 +125,7 @@ model Lessons {
 model LessonProgress {
   lesson_progress_id Int       @id @default(autoincrement())
   lesson_id          Int
-  user_id            String    @unique
+  user_id            String
   in_progress        Boolean   @default(false)
   is_locked          Boolean   @default(true)
   completed_at       DateTime?
