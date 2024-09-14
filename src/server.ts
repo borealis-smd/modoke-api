@@ -20,7 +20,7 @@ import UploadRoutes from "./routes/uploadRoutes";
 
 config();
 
-const fastify = Fastify({ logger: true });
+const fastify = Fastify();
 const PORT = Number(process.env.PORT) || 3000;
 
 fastify.register(multipart);

@@ -14,6 +14,9 @@ export const getInProgressSectionByUserId = async (user_id: string) => {
       user_id,
       in_progress: true,
     },
+    include: {
+      Section: true,
+    },
   });
 };
 

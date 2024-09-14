@@ -33,6 +33,7 @@ export function verifyTokenMiddleware() {
     try {
       const token = request.headers.authorization?.split(" ")[1];
       if (!token) {
+        console.log("Token não fornecido");
         return reply.status(401).send({ message: "Nenhum token fornecido." });
       }
 
