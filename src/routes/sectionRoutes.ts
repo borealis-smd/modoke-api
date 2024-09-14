@@ -48,12 +48,23 @@ export default function SectionRoutes(
           200: {
             type: "object",
             properties: {
-              section_progress_id: { type: "number", examples: [1] },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {
                 type: "string",
                 examples: [""],
+              },
+              Section: {
+                type: "object",
+                properties: {
+                  section_id: { type: "number", examples: [1] },
+                  section_title: { type: "string", examples: ["Seção 1"] },
+                  section_description: {
+                    type: "string",
+                    examples: ["Descrição da seção 1"],
+                  },
+                  level_id: { type: "number", examples: [1] },
+                },
               },
             },
           },

@@ -110,12 +110,23 @@ export default function UnitRoutes(
           200: {
             type: "object",
             properties: {
-              unit_progress_id: { type: "number", examples: [1] },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {
                 type: "string",
                 examples: [""],
+              },
+              Unit: {
+                type: "object",
+                properties: {
+                  unit_id: { type: "number", examples: [1] },
+                  unit_title: { type: "string", examples: ["Unidade 1"] },
+                  unit_description: {
+                    type: "string",
+                    examples: ["Descrição da unidade 1"],
+                  },
+                  section_id: { type: "number", examples: [1] },
+                },
               },
             },
           },

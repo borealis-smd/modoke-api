@@ -32,6 +32,9 @@ export const getInProgressLessonByUserId = async (user_id: string) => {
       user_id,
       in_progress: true,
     },
+    include: {
+      Lesson: true,
+    }
   });
 };
 

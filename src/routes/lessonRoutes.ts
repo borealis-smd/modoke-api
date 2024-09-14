@@ -62,8 +62,8 @@ export default function LessonRoutes(
               properties: {
                 lesson_id: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
-                title: { type: "string", examples: ["Aula 1"] },
-                description: {
+                lesson_title: { type: "string", examples: ["Aula 1"] },
+                lesson_description: {
                   type: "string",
                   examples: ["Descrição da aula 1"],
                 },
@@ -179,6 +179,18 @@ export default function LessonRoutes(
               completed_at: {
                 type: "string",
                 examples: [""],
+              },
+              Lesson: {
+                type: "object",
+                properties: {
+                  lesson_id: { type: "number", examples: [1] },
+                  lesson_title: { type: "string", examples: ["Lição 1"] },
+                  lesson_description: {
+                    type: "string",
+                    examples: ["Descrição da lição 1"],
+                  },
+                  unit_id: { type: "number", examples: [1] },
+                },
               },
             },
           },
