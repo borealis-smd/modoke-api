@@ -38,6 +38,7 @@ export const createSection = async (section: SectionCreate) => {
 
   return prisma.sections.create({
     data: {
+      section_id: section.section_id,
       section_title: section.section_title,
       section_description: section.section_description,
       level_id: section.level_id,
@@ -71,8 +72,10 @@ export const unlockSection = async (section_id: number, user_id: string) => {
 export const finishSection = async (section_id: number, user_id: string) => {
   return prisma.sectionProgress.update({
     where: {
-      section_id,
-      user_id,
+      section_id_user_id: {
+        section_id,
+        user_id,
+      },
     },
     data: {
       in_progress: false,

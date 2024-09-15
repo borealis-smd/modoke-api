@@ -36,7 +36,6 @@ export const UnitsDBSchema = z.object({
 export const UnitsSchema = UnitsDBSchema.partial();
 
 export const UnitsCreateSchema = UnitsDBSchema.omit({
-  unit_id: true,
   is_completed: true,
   completed_at: true,
 });

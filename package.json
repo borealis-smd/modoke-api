@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "tsx watch src/server.ts",
-    "seed": "tsx prisma/seed.ts"
+    "start": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",

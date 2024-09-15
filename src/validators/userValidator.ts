@@ -55,4 +55,3 @@ export type User = z.infer<typeof UserSchema>;
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
 export type UserToken = z.infer<typeof UserTokenSchema>;
-export type GoogleUserRegister = z.infer<typeof GoogleUserRegisterSchema>;

@@ -9,8 +9,8 @@ export const OptionsDBSchema = z.object({
     message: "Status de correção deve ser um booleano.",
   }),
   question_id: z
-    .number()
-    .int({ message: "ID da pergunta deve ser um número inteiro." }),
+    .string()
+    .uuid({ message: "ID da questão deve ser um UUID válido." }),
 });
 
 export const OptionsCreateSchema = OptionsDBSchema.omit({ option_id: true });

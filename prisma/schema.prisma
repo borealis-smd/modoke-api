@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
@@ -15,24 +9,23 @@ datasource db {
 }
 
 model User {
-  user_id         String               @id @default(uuid())
-  first_name      String
-  last_name       String?
-  avatar_url      String               @db.VarChar(255)
-  xp              Int
-  role            Role                 @default(USER)
-  level_id        Int
-  created_at      DateTime             @default(now())
-  updated_at      DateTime             @updatedAt
-  Login           Login[]
-  Level           Level                @relation(fields: [level_id], references: [level_id])
-  Mascot          Mascot?
-  Badges          UserHasBadge[]
-  Attempts        Attempts[]
-  Certificates    UserHasCertificate[]
-  SectionProgress SectionProgress[]
-  UnitProgress    UnitProgress[]
-  LessonProgress  LessonProgress[]
+  user_id           String               @id @default(uuid())
+  first_name        String
+  last_name         String?
+  avatar_url        String               @db.VarChar(255)
+  xp                Int
+  role              Role                 @default(USER)
+  level_id          Int
+  created_at        DateTime             @default(now())
+  updated_at        DateTime             @updatedAt
+  Login             Login[]
+  Level             Level                @relation(fields: [level_id], references: [level_id])
+  Badges            UserHasBadge[]
+  Attempts          Attempt[]
+  Certificates      UserHasCertificate[]
+  SectionProgresses SectionProgress[]
+  UnitProgresses    UnitProgress[]
+  LessonProgresses  LessonProgress[]
 }
 
 enum Role {
@@ -52,11 +45,11 @@ model Login {
 }
 
 model Level {
-  level_id    Int       @id @default(autoincrement())
+  level_id    Int       @id
   name        LevelName
   description String    @db.Text
-  User        User[]
-  Sections    Sections?
+  Users       User[]
+  Section     Section?
 }
 
 enum LevelName {
@@ -65,82 +58,88 @@ enum LevelName {
   AAA // Advanced
 }
 
-model Sections {
-  section_id          Int               @id @default(autoincrement())
+model Section {
+  section_id          Int               @id
   section_title       String            @db.VarChar(255)
   section_description String            @db.Text
   level_id            Int               @unique
   Level               Level             @relation(fields: [level_id], references: [level_id])
-  Units               Units[]
-  Certificates        Certificates?
-  SectionProgress     SectionProgress[]
+  Units               Unit[]
+  Certificate         Certificate?
+  SectionProgresses   SectionProgress[]
 }
 
 model SectionProgress {
-  section_progress_id Int       @id @default(autoincrement())
+  section_progress_id String    @id @default(uuid())
   section_id          Int
   user_id             String
   in_progress         Boolean   @default(false)
   is_locked           Boolean   @default(true)
   completed_at        DateTime?
   User                User      @relation(fields: [user_id], references: [user_id])
-  Section             Sections  @relation(fields: [section_id], references: [section_id])
+  Section             Section   @relation(fields: [section_id], references: [section_id])
+
+  @@unique([section_id, user_id])
 }
 
-model Units {
-  unit_id          Int            @id @default(autoincrement())
+model Unit {
+  unit_id          Int            @id
   unit_title       String         @db.VarChar(255)
   unit_description String         @db.Text
   section_id       Int
-  Section          Sections       @relation(fields: [section_id], references: [section_id])
-  Lessons          Lessons[]
-  Badges           Badges?
-  UnitProgress     UnitProgress[]
+  Section          Section        @relation(fields: [section_id], references: [section_id])
+  Lessons          Lesson[]
+  Badge            Badge?
+  UnitProgresses   UnitProgress[]
 }
 
 model UnitProgress {
-  unit_progress_id Int       @id @default(autoincrement())
+  unit_progress_id String    @id @default(uuid())
   unit_id          Int
   user_id          String
   in_progress      Boolean   @default(false)
   is_locked        Boolean   @default(true)
   completed_at     DateTime?
   User             User      @relation(fields: [user_id], references: [user_id])
-  Unit             Units     @relation(fields: [unit_id], references: [unit_id])
+  Unit             Unit      @relation(fields: [unit_id], references: [unit_id])
+
+  @@unique([unit_id, user_id])
 }
 
-model Lessons {
-  lesson_id          Int              @id @default(autoincrement())
+model Lesson {
+  lesson_id          Int              @id
   lesson_title       String           @db.VarChar(255)
   lesson_description String           @db.Text
   unit_id            Int
   created_at         DateTime         @default(now())
   updated_at         DateTime         @updatedAt
-  Unit               Units            @relation(fields: [unit_id], references: [unit_id])
-  Explanations       Explanations[]
-  Questions          Questions[]
-  LessonProgress     LessonProgress[]
+  Unit               Unit             @relation(fields: [unit_id], references: [unit_id])
+  Explanations       Explanation[]
+  Question           Question[]
+  LessonProgresses   LessonProgress[]
 }
 
 model LessonProgress {
-  lesson_progress_id Int       @id @default(autoincrement())
+  lesson_progress_id String    @id @default(uuid())
   lesson_id          Int
   user_id            String
   in_progress        Boolean   @default(false)
   is_locked          Boolean   @default(true)
   completed_at       DateTime?
   User               User      @relation(fields: [user_id], references: [user_id])
-  Lesson             Lessons   @relation(fields: [lesson_id], references: [lesson_id])
+  Lesson             Lesson    @relation(fields: [lesson_id], references: [lesson_id])
+
+  @@unique([lesson_id, user_id])
 }
 
-model Explanations {
+model Explanation {
   explanation_id Int             @id @default(autoincrement())
   content        String          @db.Text
   part           ExplanationPart
   lesson_id      Int
   created_at     DateTime        @default(now())
   updated_at     DateTime        @updatedAt
-  Lesson         Lessons         @relation(fields: [lesson_id], references: [lesson_id])
+  Lesson         Lesson          @relation(fields: [lesson_id], references: [lesson_id])
 }
 
 enum ExplanationPart {
@@ -149,74 +148,49 @@ enum ExplanationPart {
   PART_3
 }
 
-model Questions {
-  question_id          Int        @id @default(autoincrement())
-  question_text        String     @db.Text
+model Question {
+  question_id          String    @id @default(uuid())
+  question_text        String    @db.Text
   is_entrance_question Boolean
   xp                   Int
   lesson_id            Int?
-  created_at           DateTime   @default(now())
-  updated_at           DateTime   @updatedAt
-  Lesson               Lessons?   @relation(fields: [lesson_id], references: [lesson_id])
-  Options              Options[]
-  Attempts             Attempts[]
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+  Lesson               Lesson?   @relation(fields: [lesson_id], references: [lesson_id])
+  Options              Option[]
+  Attempts             Attempt[]
 }
 
 // Alternativas
 // Considera apenas questões de múltipla escolha.
-model Options {
-  option_id   Int        @id @default(autoincrement())
-  option_text String     @db.Text
+model Option {
+  option_id   String    @id @default(uuid())
+  option_text String    @db.Text
   is_correct  Boolean
-  question_id Int
-  Question    Questions  @relation(fields: [question_id], references: [question_id])
-  Attempts    Attempts[]
+  question_id String
+  Question    Question  @relation(fields: [question_id], references: [question_id])
+  Attempts    Attempt[]
 }
 
 // Respostas marcadas
-model Attempts {
-  attempt_id         Int       @id @default(autoincrement())
+model Attempt {
+  attempt_id         Int      @id @default(autoincrement())
   user_id            String
-  question_id        Int
-  selected_option_id Int
+  question_id        String
+  selected_option_id String
   attempted_at       DateTime
-  User               User      @relation(fields: [user_id], references: [user_id])
-  Question           Questions @relation(fields: [question_id], references: [question_id])
-  Option             Options   @relation(fields: [selected_option_id], references: [option_id])
+  User               User     @relation(fields: [user_id], references: [user_id])
+  Question           Question @relation(fields: [question_id], references: [question_id])
+  Option             Option   @relation(fields: [selected_option_id], references: [option_id])
 }
 
-model Mascot {
-  mascot_id        Int                    @id @default(autoincrement())
-  mascot_image_url String                 @db.VarChar(255)
-  user_id          String                 @unique
-  User             User                   @relation(fields: [user_id], references: [user_id])
-  MascotItems      MascotHasMascotItems[]
-}
-
-model MascotItems {
-  mascot_items_id Int                    @id @default(autoincrement())
-  item_name       String
-  item_image_url  String                 @db.VarChar(255)
-  isEquipped      Boolean
-  Mascots         MascotHasMascotItems[]
-}
-
-model MascotHasMascotItems {
-  mascot_has_mascot_items_id String      @id @default(uuid())
-  mascot_id                  Int
-  mascot_items_id            Int
-  acquired_at                DateTime?
-  Mascot                     Mascot      @relation(fields: [mascot_id], references: [mascot_id])
-  MascotItems                MascotItems @relation(fields: [mascot_items_id], references: [mascot_items_id])
-}
-
-model Badges {
+model Badge {
   badge_id        Int            @id @default(autoincrement())
   badge_name      String
   badge_image_url String         @db.VarChar(255)
   unit_id         Int            @unique
-  Unit            Units          @relation(fields: [unit_id], references: [unit_id])
-  users           UserHasBadge[]
+  Unit            Unit           @relation(fields: [unit_id], references: [unit_id])
+  Users           UserHasBadge[]
 }
 
 model UserHasBadge {
@@ -225,22 +199,22 @@ model UserHasBadge {
   user_id           String
   acquired_at       DateTime @default(now())
   User              User     @relation(fields: [user_id], references: [user_id])
-  Badges            Badges   @relation(fields: [badge_id], references: [badge_id])
+  Badge             Badge    @relation(fields: [badge_id], references: [badge_id])
 }
 
-model Certificates {
+model Certificate {
   certificate_id   Int                  @id @default(autoincrement())
   certificate_text String               @db.Text
   section_id       Int                  @unique
-  Section          Sections             @relation(fields: [section_id], references: [section_id])
+  Section          Section              @relation(fields: [section_id], references: [section_id])
   Users            UserHasCertificate[]
 }
 
 model UserHasCertificate {
-  user_has_certificate_id String       @id @default(uuid())
+  user_has_certificate_id String      @id @default(uuid())
   user_id                 String
   certificate_id          Int
-  acquired_at             DateTime     @default(now())
-  User                    User         @relation(fields: [user_id], references: [user_id])
-  Certificate             Certificates @relation(fields: [certificate_id], references: [certificate_id])
+  acquired_at             DateTime    @default(now())
+  User                    User        @relation(fields: [user_id], references: [user_id])
+  Certificate             Certificate @relation(fields: [certificate_id], references: [certificate_id])
 }

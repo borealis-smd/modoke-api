@@ -8,11 +8,11 @@ export const AttemptsDBSchema = z.object({
     .string()
     .uuid({ message: "ID do usuário deve ser um UUID válido." }),
   question_id: z
-    .number()
-    .int({ message: "ID da pergunta deve ser um número inteiro." }),
+    .string()
+    .uuid({ message: "ID da questão deve ser um UUID válido." }),
   selected_option_id: z
-    .number()
-    .int({ message: "ID da opção selecionada deve ser um número inteiro." }),
+    .string()
+    .uuid({ message: "ID da opção selecionada deve ser um UUID válido." }),
   attempted_at: z.date({
     message: "Data da tentativa deve ser uma data válida.",
   }),

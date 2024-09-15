@@ -39,7 +39,6 @@ export const LessonsDBSchema = z.object({
 export const LessonsSchema = LessonsDBSchema.partial();
 
 export const LessonsCreateSchema = LessonsDBSchema.omit({
-  lesson_id: true,
   is_completed: true,
   completed_at: true,
   created_at: true,
