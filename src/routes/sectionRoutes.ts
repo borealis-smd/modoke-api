@@ -85,6 +85,10 @@ export default function SectionRoutes(
         body: {
           type: "object",
           properties: {
+            session_id: {
+              type: "string",
+              examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+            },
             section_title: { type: "string", examples: ["Seção 1"] },
             section_description: {
               type: "string",

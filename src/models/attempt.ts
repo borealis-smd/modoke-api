@@ -29,7 +29,7 @@ export const registerAttempt = async (attempt: AttemptCreate) => {
 };
 
 export const getLastAttemptByQuestionId = async (
-  question_id: number,
+  question_id: string,
   user_id: string,
 ) => {
   return prisma.attempts.findFirst({

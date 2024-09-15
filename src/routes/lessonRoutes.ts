@@ -211,6 +211,7 @@ export default function LessonRoutes(
         body: {
           type: "object",
           properties: {
+            lesson_id: { type: "number", examples: [1] },
             lesson_title: { type: "string", examples: ["Aula 1"] },
             lesson_description: {
               type: "string",

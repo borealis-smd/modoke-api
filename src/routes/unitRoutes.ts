@@ -147,6 +147,7 @@ export default function UnitRoutes(
         body: {
           type: "object",
           properties: {
+            unit_id: { type: "number", examples: [1] },
             unit_title: { type: "string", examples: ["Unidade 1"] },
             unit_description: {
               type: "string",

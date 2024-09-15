@@ -13,8 +13,8 @@ export const registerAttempt = async (
 
     const attemptParsedBody = z
       .object({
-        question_id: z.number().int(),
-        selected_option_id: z.number().int(),
+        question_id: z.string().uuid(),
+        selected_option_id: z.string().uuid(),
       })
       .parse(request.body);
 
@@ -36,7 +36,7 @@ export const getLastAttemptByQuestionId = async (
   try {
     const { question_id } = z
       .object({
-        question_id: z.number().int(),
+        question_id: z.string().uuid(),
       })
       .parse(request.query);
 

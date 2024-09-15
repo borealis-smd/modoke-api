@@ -12,6 +12,9 @@ export const getInProgressUnitByUserId = async (user_id: string) => {
       user_id,
       in_progress: true,
     },
+    include: {
+      Unit: true,
+    },
   });
 };
 
@@ -30,6 +33,7 @@ export const getUnitsBySectionId = async (section_id: number) => {
 export const createUnit = async (unit: UnitsCreate) => {
   return prisma.units.create({
     data: {
+      unit_id: unit.unit_id,
       unit_title: unit.unit_title,
       unit_description: unit.unit_description,
       section_id: unit.section_id,
@@ -61,8 +65,10 @@ export const unlockUnit = async (unit_id: number, user_id: string) => {
 export const finishUnit = async (unit_id: number, user_id: string) => {
   return prisma.unitProgress.update({
     where: {
-      unit_id,
-      user_id,
+      unit_id_user_id: {
+        unit_id,
+        user_id,
+      },
     },
     data: {
       in_progress: false,

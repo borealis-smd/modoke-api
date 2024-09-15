@@ -28,7 +28,6 @@ export const SectionsDBSchema = z.object({
 });
 
 export const SectionCreateSchema = SectionsDBSchema.omit({
-  section_id: true,
   is_completed: true,
   completed_at: true,
 });

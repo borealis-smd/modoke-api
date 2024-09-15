@@ -18,7 +18,7 @@ export default function QuestionRoutes(
         description:
           "Buscar questões (enunciados e alternativas) por ID da lição",
         querystring: {
-          lesson_id: { type: "number", examples: [1] },
+          lesson_id: { type: "number", examples: [1] }
         },
         response: {
           200: {
@@ -26,7 +26,10 @@ export default function QuestionRoutes(
             items: {
               type: "object",
               properties: {
-                question_id: { type: "number", examples: [1] },
+                question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                 question_text: {
                   type: "string",
                   examples: ["Qual a cor do céu?"],
@@ -47,13 +50,19 @@ export default function QuestionRoutes(
                   items: {
                     type: "object",
                     properties: {
-                      option_id: { type: "number", examples: [1] },
+                      option_id: {
+                        type: "string",
+                        examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                      },
                       option_text: {
                         type: "string",
                         examples: ["Azul"],
                       },
                       is_correct: { type: "boolean", examples: [true] },
-                      question_id: { type: "number", examples: [1] },
+                      question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                     },
                   },
                 },
@@ -84,7 +93,10 @@ export default function QuestionRoutes(
             items: {
               type: "object",
               properties: {
-                question_id: { type: "number", examples: [1] },
+                question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                 question_text: {
                   type: "string",
                   examples: ["Qual a cor do céu?"],
@@ -105,13 +117,19 @@ export default function QuestionRoutes(
                   items: {
                     type: "object",
                     properties: {
-                      option_id: { type: "number", examples: [1] },
+                      option_id: {
+                        type: "string",
+                        examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                      },
                       option_text: {
                         type: "string",
                         examples: ["Azul"],
                       },
                       is_correct: { type: "boolean", examples: [true] },
-                      question_id: { type: "number", examples: [1] },
+                      question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                     },
                   },
                 },
@@ -139,7 +157,10 @@ export default function QuestionRoutes(
             items: {
               type: "object",
               properties: {
-                question_id: { type: "number", examples: [1] },
+                question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                 question_text: {
                   type: "string",
                   examples: ["Qual a cor do céu?"],
@@ -160,13 +181,19 @@ export default function QuestionRoutes(
                   items: {
                     type: "object",
                     properties: {
-                      option_id: { type: "number", examples: [1] },
+                      option_id: {
+                        type: "string",
+                        examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                      },
                       option_text: {
                         type: "string",
                         examples: ["Azul"],
                       },
                       is_correct: { type: "boolean", examples: [true] },
-                      question_id: { type: "number", examples: [1] },
+                      question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
                     },
                   },
                 },
@@ -196,14 +223,17 @@ export default function QuestionRoutes(
             },
             is_entrance_question: { type: "boolean", examples: [true] },
             xp: { type: "number", examples: [10] },
-            lesson_id: { type: "number", examples: [1] },
+            lesson_id: { type: "number", examples: [1] }
           },
         },
         response: {
           201: {
             type: "object",
             properties: {
-              question_id: { type: "number", examples: [1] },
+              question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
               question_text: {
                 type: "string",
                 examples: ["Qual a cor do céu?"],

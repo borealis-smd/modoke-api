@@ -16,8 +16,14 @@ export default function AttemptRoutes(
         body: {
           type: "object",
           properties: {
-            question_id: { type: "number", examples: [1] },
-            selected_option_id: { type: "number", examples: [1] },
+            question_id: {
+              type: "string",
+              examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+            },
+            selected_option_id: {
+              type: "string",
+              examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+            },
           },
         },
         response: {
@@ -25,8 +31,14 @@ export default function AttemptRoutes(
             type: "object",
             properties: {
               attempt_id: { type: "number", examples: [1] },
-              question_id: { type: "number", examples: [1] },
-              option_id: { type: "number", examples: [1] },
+              question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
+              option_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
               // user_id: {
               //   type: "string",
               //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
@@ -56,15 +68,24 @@ export default function AttemptRoutes(
       schema: {
         description: "Buscar última tentativa por ID da questão",
         querystring: {
-          question_id: { type: "number", examples: [1] },
+          question_id: {
+            type: "string",
+            examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+          },
         },
         response: {
           200: {
             type: "object",
             properties: {
               attempt_id: { type: "number", examples: [1] },
-              question_id: { type: "number", examples: [1] },
-              selected_option_id: { type: "number", examples: [1] },
+              question_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
+              selected_option_id: {
+                type: "string",
+                examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+              },
               // user_id: {
               //   type: "string",
               //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
@@ -76,10 +97,16 @@ export default function AttemptRoutes(
               Option: {
                 type: "object",
                 properties: {
-                  option_id: { type: "number", examples: [1] },
+                  option_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
                   option_text: { type: "string", examples: ["Texto da opção"] },
                   is_correct: { type: "boolean", examples: [false] },
-                  question_id: { type: "number", examples: [1] },
+                  question_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
                 },
               },
             },
