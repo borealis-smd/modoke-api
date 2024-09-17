@@ -5,7 +5,7 @@ import { CorrectOptionAlreadyExistsError } from "../errors/CorrectOptionAlreadyE
 import { MissingCorrectOptionError } from "../errors/MissingCorrectOptionError";
 
 export const createOption = async (option: OptionsCreate) => {
-  const options = await prisma.options.findMany({
+  const options = await prisma.option.findMany({
     where: {
       question_id: option.question_id,
     },
@@ -27,7 +27,7 @@ export const createOption = async (option: OptionsCreate) => {
     );
   }
 
-  return prisma.options.create({
+  return prisma.option.create({
     data: {
       option_text: option.option_text,
       is_correct: option.is_correct,

@@ -4,7 +4,7 @@ import { MaxSectionsReachedError } from "../errors/MaxSectionsReachedError";
 import { SectionForLevelAlreadyExistsError } from "../errors/SectionForLevelAlreadyExistsError";
 
 export const getSections = async () => {
-  return prisma.sections.findMany();
+  return prisma.section.findMany();
 };
 
 // Só pode haver uma seção em progresso por usuário
@@ -36,7 +36,7 @@ export const createSection = async (section: SectionCreate) => {
     );
   }
 
-  return prisma.sections.create({
+  return prisma.section.create({
     data: {
       section_id: section.section_id,
       section_title: section.section_title,

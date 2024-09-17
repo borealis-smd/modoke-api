@@ -12,7 +12,7 @@ export const getCertificateByUserId = async (user_id: string) => {
 
 // Apenas um para cada seção/nível: A, AA, AAA
 export const createCertificate = async (certificate: CertificateCreate) => {
-  const certificates = await prisma.certificates.findMany();
+  const certificates = await prisma.certificate.findMany();
   if (certificates.length >= 3) {
     throw new MaxCertificatesReachedError(
       "Já existem certificados para todas as seções.",
@@ -28,7 +28,7 @@ export const createCertificate = async (certificate: CertificateCreate) => {
     );
   }
 
-  return prisma.certificates.create({
+  return prisma.certificate.create({
     data: {
       certificate_text: certificate.certificate_text,
       section_id: certificate.section_id,

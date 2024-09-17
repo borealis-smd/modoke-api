@@ -2,25 +2,25 @@ import { prisma } from "../config/db";
 import { LessonsCreate } from "../validators/lessonsValidator";
 
 export const getLessonById = async (lesson_id: number) => {
-  return prisma.lessons.findUniqueOrThrow({
+  return prisma.lesson.findUniqueOrThrow({
     where: { lesson_id },
   });
 };
 
 export const getLessonsByUnitId = async (unit_id: number) => {
-  return prisma.lessons.findMany({
+  return prisma.lesson.findMany({
     where: { unit_id },
   });
 };
 
 export const getLessonsBySectionId = async (section_id: number) => {
-  return prisma.lessons.findMany({
+  return prisma.lesson.findMany({
     where: { Unit: { section_id } },
   });
 };
 
 export const getLessonsByLevelId = async (level_id: number) => {
-  return prisma.lessons.findMany({
+  return prisma.lesson.findMany({
     where: { Unit: { Section: { level_id } } },
   });
 };
@@ -39,7 +39,7 @@ export const getInProgressLessonByUserId = async (user_id: string) => {
 };
 
 export const createLesson = async (lesson: LessonsCreate) => {
-  return prisma.lessons.create({
+  return prisma.lesson.create({
     data: {
       lesson_id: lesson.lesson_id,
       lesson_title: lesson.lesson_title,
