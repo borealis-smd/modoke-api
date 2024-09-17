@@ -9,7 +9,7 @@ export const registerAttempt = async (attempt: AttemptCreate) => {
   );
 
   if (lastAttempt) {
-    return prisma.attempts.update({
+    return prisma.attempt.update({
       where: { attempt_id: lastAttempt.attempt_id },
       data: {
         selected_option_id: attempt.selected_option_id,
@@ -18,7 +18,7 @@ export const registerAttempt = async (attempt: AttemptCreate) => {
     });
   }
 
-  return prisma.attempts.create({
+  return prisma.attempt.create({
     data: {
       user_id: attempt.user_id,
       question_id: attempt.question_id,
@@ -32,7 +32,7 @@ export const getLastAttemptByQuestionId = async (
   question_id: string,
   user_id: string,
 ) => {
-  return prisma.attempts.findFirst({
+  return prisma.attempt.findFirst({
     where: { question_id, user_id },
     orderBy: { attempted_at: "desc" },
     include: { Option: true },
