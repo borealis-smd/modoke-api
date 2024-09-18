@@ -47,9 +47,8 @@ export const createQuestionWithOptions = async ({
       xp: question.xp,
       lesson_id: question.lesson_id,
       Options: {
-        create: {
-          option_text: options[0].option_text,
-          is_correct: options[0].is_correct,
+        createMany: {
+          data: options,
         },
       },
     },
