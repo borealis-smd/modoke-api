@@ -1,5 +1,8 @@
 import { prisma } from "../config/db";
-import { QuestionCreate } from "../validators/questionsValidator";
+import {
+  FullQuestionCreate,
+  QuestionCreate,
+} from "../validators/questionsValidator";
 
 export const getQuestionsByLessonId = async (lesson_id: number) => {
   return prisma.question.findMany({
@@ -30,5 +33,26 @@ export const createQuestion = async (question: QuestionCreate) => {
       xp: question.xp,
       lesson_id: question.lesson_id,
     },
+  });
+};
+
+export const createQuestionWithOptions = async ({
+  question,
+  options,
+}: FullQuestionCreate) => {
+  return prisma.question.create({
+    data: {
+      question_text: question.question_text,
+      is_entrance_question: question.is_entrance_question,
+      xp: question.xp,
+      lesson_id: question.lesson_id,
+      Options: {
+        create: {
+          option_text: options[0].option_text,
+          is_correct: options[0].is_correct,
+        },
+      },
+    },
+    include: { Options: true },
   });
 };

@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { OptionsCreateSchema } from "./optionsValidator";
 
-export const QuestionsDBSchema = z.object({
+export const QuestionDBSchema = z.object({
   question_id: z
     .number()
     .int({ message: "ID da pergunta deve ser um número inteiro." }),
@@ -17,13 +18,21 @@ export const QuestionsDBSchema = z.object({
   updated_at: z.date(),
 });
 
-export const QuestionsSchema = QuestionsDBSchema.partial();
+export const QuestionsSchema = QuestionDBSchema.partial();
 
-export const QuestionCreateSchema = QuestionsDBSchema.omit({
+export const QuestionCreateSchema = QuestionDBSchema.omit({
   question_id: true,
   created_at: true,
   updated_at: true,
 });
 
+export const FullQuestionCreateSchema = z.object({
+  question: QuestionCreateSchema,
+  options: OptionsCreateSchema.omit({ question_id: true })
+    .array()
+    .length(4, "Deve haver 4 opções."),
+});
+
 export type Questions = z.infer<typeof QuestionsSchema>;
 export type QuestionCreate = z.infer<typeof QuestionCreateSchema>;
+export type FullQuestionCreate = z.infer<typeof FullQuestionCreateSchema>;
