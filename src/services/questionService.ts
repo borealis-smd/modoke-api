@@ -16,3 +16,7 @@ export const getEntranceTestQuestions = async () => {
 export const createQuestion = async (question: QuestionCreate) => {
   return QuestionRepository.createQuestion(question);
 };
+
+export const createQuestionWithOptions = async (question: any) => {
+  return QuestionRepository.createQuestionWithOptions(question);
+};

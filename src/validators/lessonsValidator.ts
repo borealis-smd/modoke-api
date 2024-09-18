@@ -8,9 +8,6 @@ export const LessonsDBSchema = z.object({
   lesson_description: z
     .string()
     .min(1, "Descrição da lição não deve ser vazia."),
-  lesson_principle: z.enum(["P", "O", "U", "R"], {
-    message: "Princípio da lição inválido.",
-  }),
   in_progress: z
     .boolean({
       message: "Status de progresso deve ser um booleano.",
