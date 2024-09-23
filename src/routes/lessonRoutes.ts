@@ -11,80 +11,6 @@ export default function LessonRoutes(
   done: Function,
 ) {
   app.get(
-    "/",
-    {
-      schema: {
-        description: "Buscar lições",
-        response: {
-          200: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                lesson_id: { type: "number", examples: [1] },
-                lesson_sequence: { type: "number", examples: [1] },
-                unit_id: { type: "number", examples: [1] },
-                lesson_title: { type: "string", examples: ["Aula 1"] },
-                description: {
-                  type: "string",
-                  examples: ["Descrição da aula 1"],
-                },
-                created_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
-                updated_at: {
-                  type: "string",
-                  examples: ["2024-08-04 16:21:21.921"],
-                },
-              },
-            },
-          },
-        },
-        tags: ["Lessons"],
-      },
-    },
-    LessonController.getLessonById,
-  );
-
-  app.get(
-    "/id:lesson_id",
-    {
-      schema: {
-        description: "Buscar lição por ID",
-        querystring: {
-          lesson_id: { type: "number", examples: [1] },
-        },
-        response: {
-          200: {
-            type: "object",
-            properties: {
-              lesson_id: { type: "number", examples: [1] },
-              lesson_sequence: { type: "number", examples: [1] },
-              unit_id: { type: "number", examples: [1] },
-              lesson_title: { type: "string", examples: ["Aula 1"] },
-              description: {
-                type: "string",
-                examples: ["Descrição da aula 1"],
-              },
-              created_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-              updated_at: {
-                type: "string",
-                examples: ["2024-08-04 16:21:21.921"],
-              },
-            },
-          },
-        },
-        tags: ["Lessons"],
-      },
-    },
-    LessonController.getLessons,
-  );
-
-  app.get(
     "/id:lesson_id",
     {
       schema: {
@@ -278,6 +204,44 @@ export default function LessonRoutes(
       },
     },
     LessonController.getInProgressLessonByUserId,
+  );
+
+  app.get(
+    "/finished",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Buscar lições finalizadas por ID de usuário",
+        response: {
+          200: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                lesson_progress_id: {
+                  type: "string",
+                  examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                },
+                lesson_id: { type: "number", examples: [1] },
+                user_id: {
+                  type: "string",
+                  examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                },
+                in_progress: { type: "boolean", examples: [false] },
+                is_locked: { type: "boolean", examples: [false] },
+                completed_at: {
+                  type: "string",
+                  examples: ["2021-08-04T00:00:00.000Z"],
+                },
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    LessonController.getFinishedLessonsByUserId,
   );
 
   app.post(
