@@ -105,6 +105,10 @@ export default function UserRoutes(
               // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
+              avatar_url: {
+                type: "string",
+                examples: ["https://www.example.com/avatar.jpg"],
+              },
               xp: { type: "number", examples: [0] },
               level_id: { type: "number", examples: [1] },
               created_at: {
@@ -144,6 +148,10 @@ export default function UserRoutes(
               // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
+              avatar_url: {
+                type: "string",
+                examples: ["https://www.example.com/avatar.jpg"],
+              },
               xp: { type: "number", examples: [0] },
               level_id: { type: "number", examples: [1] },
               created_at: {
