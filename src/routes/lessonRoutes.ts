@@ -11,6 +11,80 @@ export default function LessonRoutes(
   done: Function,
 ) {
   app.get(
+    "/",
+    {
+      schema: {
+        description: "Buscar lições",
+        response: {
+          200: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                lesson_id: { type: "number", examples: [1] },
+                lesson_sequence: { type: "number", examples: [1] },
+                unit_id: { type: "number", examples: [1] },
+                lesson_title: { type: "string", examples: ["Aula 1"] },
+                description: {
+                  type: "string",
+                  examples: ["Descrição da aula 1"],
+                },
+                created_at: {
+                  type: "string",
+                  examples: ["2024-08-04 16:21:21.921"],
+                },
+                updated_at: {
+                  type: "string",
+                  examples: ["2024-08-04 16:21:21.921"],
+                },
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+      },
+    },
+    LessonController.getLessonById,
+  );
+
+  app.get(
+    "/id:lesson_id",
+    {
+      schema: {
+        description: "Buscar lição por ID",
+        querystring: {
+          lesson_id: { type: "number", examples: [1] },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              lesson_id: { type: "number", examples: [1] },
+              lesson_sequence: { type: "number", examples: [1] },
+              unit_id: { type: "number", examples: [1] },
+              lesson_title: { type: "string", examples: ["Aula 1"] },
+              description: {
+                type: "string",
+                examples: ["Descrição da aula 1"],
+              },
+              created_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
+              },
+              updated_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
+              },
+            },
+          },
+        },
+        tags: ["Lessons"],
+      },
+    },
+    LessonController.getLessons,
+  );
+
+  app.get(
     "/id:lesson_id",
     {
       schema: {

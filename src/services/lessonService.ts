@@ -3,6 +3,10 @@ import { LessonsCreate } from "../validators/lessonsValidator";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 import { LessonAlreadyInProgressError } from "../errors/LessonAlreadyInProgressError";
 
+export const getLessons = async () => {
+  return LessonRepo.getLessons();
+};
+
 export const getLessonById = async (lesson_id: number) => {
   const lesson = await LessonRepo.getLessonById(lesson_id);
   if (!lesson) {

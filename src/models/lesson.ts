@@ -1,6 +1,10 @@
 import { prisma } from "../config/db";
 import { LessonsCreate } from "../validators/lessonsValidator";
 
+export const getLessons = async () => {
+  return prisma.lesson.findMany();
+};
+
 export const getLessonById = async (lesson_id: number) => {
   return prisma.lesson.findUniqueOrThrow({
     where: { lesson_id },
