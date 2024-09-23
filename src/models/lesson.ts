@@ -1,10 +1,6 @@
 import { prisma } from "../config/db";
 import { LessonsCreate } from "../validators/lessonsValidator";
 
-export const getLessons = async () => {
-  return prisma.lesson.findMany();
-};
-
 export const getLessonById = async (lesson_id: number) => {
   return prisma.lesson.findUniqueOrThrow({
     where: { lesson_id },
@@ -47,6 +43,15 @@ export const getInProgressLessonByUserId = async (user_id: string) => {
     },
     include: {
       Lesson: true,
+    },
+  });
+};
+
+export const getFinishedLessonsByUserId = async (user_id: string) => {
+  return prisma.lessonProgress.findMany({
+    where: {
+      user_id,
+      in_progress: false,
     },
   });
 };

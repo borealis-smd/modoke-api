@@ -5,19 +5,6 @@ import { LessonsCreateSchema } from "../validators/lessonsValidator";
 import { handleError } from "../utils/errorHandler";
 import { extractUserId } from "../utils/extractUserId";
 
-export const getLessons = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const lessons = await LessonService.getLessons();
-
-    reply.code(200).send(lessons);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
 export const getLessonById = async (
   request: FastifyRequest,
   reply: FastifyReply,
@@ -104,6 +91,21 @@ export const getInProgressLessonByUserId = async (
     const lesson = await LessonService.getInProgressLessonByUserId(user_id);
 
     reply.code(200).send(lesson);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
+export const getFinishedLessonsByUserId = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const lessons = await LessonService.getFinishedLessonsByUserId(user_id);
+
+    reply.code(200).send(lessons);
   } catch (error) {
     handleError(error, reply);
   }

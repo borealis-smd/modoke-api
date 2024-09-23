@@ -3,10 +3,6 @@ import { LessonsCreate } from "../validators/lessonsValidator";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 import { LessonAlreadyInProgressError } from "../errors/LessonAlreadyInProgressError";
 
-export const getLessons = async () => {
-  return LessonRepo.getLessons();
-};
-
 export const getLessonById = async (lesson_id: number) => {
   const lesson = await LessonRepo.getLessonById(lesson_id);
   if (!lesson) {
@@ -41,6 +37,10 @@ export const getLessonsByLevelId = async (level_id: number) => {
 
 export const getInProgressLessonByUserId = async (user_id: string) => {
   return LessonRepo.getInProgressLessonByUserId(user_id);
+};
+
+export const getFinishedLessonsByUserId = async (user_id: string) => {
+  return LessonRepo.getFinishedLessonsByUserId(user_id);
 };
 
 export const createLesson = async (lesson: LessonsCreate) => {
