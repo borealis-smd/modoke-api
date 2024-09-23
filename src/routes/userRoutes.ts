@@ -187,10 +187,15 @@ export default function UserRoutes(
                 { required: ["first_name"] },
                 { required: ["last_name"] },
                 { required: ["level_id"] },
+                { required: ["avatar_url"] },
               ],
               properties: {
                 first_name: { type: "string", examples: ["John"] },
                 last_name: { type: "string", examples: ["Doe"] },
+                avatar_url: {
+                  type: "string",
+                  examples: ["https://www.example.com/avatar.jpg"],
+                },
                 level_id: { type: "number", examples: [1] },
               },
             },
@@ -206,6 +211,10 @@ export default function UserRoutes(
               // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
+              avatar_url: {
+                type: "string",
+                examples: ["https://www.example.com/avatar.jpg"],
+              },
               xp: { type: "number", examples: [0] },
               level_id: { type: "number", examples: [1] },
               created_at: {
