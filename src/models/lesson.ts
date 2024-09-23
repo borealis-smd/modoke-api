@@ -53,6 +53,9 @@ export const getFinishedLessonsByUserId = async (user_id: string) => {
       user_id,
       in_progress: false,
     },
+    orderBy: {
+      completed_at: "desc",
+    },
   });
 };
 
