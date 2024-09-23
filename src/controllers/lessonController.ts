@@ -5,6 +5,19 @@ import { LessonsCreateSchema } from "../validators/lessonsValidator";
 import { handleError } from "../utils/errorHandler";
 import { extractUserId } from "../utils/extractUserId";
 
+export const getLessons = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const lessons = await LessonService.getLessons();
+
+    reply.code(200).send(lessons);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
 export const getLessonById = async (
   request: FastifyRequest,
   reply: FastifyReply,
