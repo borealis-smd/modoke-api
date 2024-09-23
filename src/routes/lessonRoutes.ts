@@ -23,6 +23,7 @@ export default function LessonRoutes(
             type: "object",
             properties: {
               lesson_id: { type: "number", examples: [1] },
+              lesson_sequence: { type: "number", examples: [1] },
               unit_id: { type: "number", examples: [1] },
               lesson_title: { type: "string", examples: ["Aula 1"] },
               description: {
@@ -61,6 +62,7 @@ export default function LessonRoutes(
               type: "object",
               properties: {
                 lesson_id: { type: "number", examples: [1] },
+                lesson_sequence: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
                 lesson_title: { type: "string", examples: ["Aula 1"] },
                 lesson_description: {
@@ -100,6 +102,7 @@ export default function LessonRoutes(
               type: "object",
               properties: {
                 lesson_id: { type: "number", examples: [1] },
+                lesson_sequence: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
                 title: { type: "string", examples: ["Aula 1"] },
                 description: {
@@ -139,6 +142,7 @@ export default function LessonRoutes(
               type: "object",
               properties: {
                 lesson_id: { type: "number", examples: [1] },
+                lesson_sequence: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
                 title: { type: "string", examples: ["Aula 1"] },
                 description: {
@@ -211,7 +215,7 @@ export default function LessonRoutes(
         body: {
           type: "object",
           properties: {
-            lesson_id: { type: "number", examples: [1] },
+            lesson_sequence: { type: "number", examples: [1] },
             lesson_title: { type: "string", examples: ["Aula 1"] },
             lesson_description: {
               type: "string",
@@ -225,6 +229,7 @@ export default function LessonRoutes(
             type: "object",
             properties: {
               lesson_id: { type: "number", examples: [1] },
+              lesson_sequence: { type: "number", examples: [1] },
               unit_id: { type: "number", examples: [1] },
               title: { type: "string", examples: ["Aula 1"] },
               description: {

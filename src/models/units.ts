@@ -2,7 +2,11 @@ import { prisma } from "../config/db";
 import { UnitsCreate } from "../validators/unitsValidator";
 
 export const getUnits = async () => {
-  return prisma.unit.findMany();
+  return prisma.unit.findMany({
+    orderBy: {
+      unit_sequence: "asc",
+    },
+  });
 };
 
 // Só pode haver uma unidade em progresso por usuário
@@ -27,13 +31,16 @@ export const getUnitById = async (unit_id: number) => {
 export const getUnitsBySectionId = async (section_id: number) => {
   return prisma.unit.findMany({
     where: { section_id },
+    orderBy: {
+      unit_sequence: "asc",
+    },
   });
 };
 
 export const createUnit = async (unit: UnitsCreate) => {
   return prisma.unit.create({
     data: {
-      unit_id: unit.unit_id,
+      unit_sequence: unit.unit_sequence,
       unit_title: unit.unit_title,
       unit_description: unit.unit_description,
       section_id: unit.section_id,

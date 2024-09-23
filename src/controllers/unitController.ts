@@ -108,15 +108,15 @@ export const startUnit = async (
 };
 
 export const unlockUnit = async (
-    request: FastifyRequest,
-    reply: FastifyReply,
+  request: FastifyRequest,
+  reply: FastifyReply,
 ) => {
   try {
     const { unit_id } = z
-        .object({
-          unit_id: z.number().int(),
-        })
-        .parse(request.query);
+      .object({
+        unit_id: z.number().int(),
+      })
+      .parse(request.query);
     const user_id = extractUserId(request, reply);
 
     const unit = await UnitService.unlockUnit(unit_id, user_id);
