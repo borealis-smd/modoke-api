@@ -10,18 +10,27 @@ export const getLessonById = async (lesson_id: number) => {
 export const getLessonsByUnitId = async (unit_id: number) => {
   return prisma.lesson.findMany({
     where: { unit_id },
+    orderBy: {
+      lesson_sequence: "asc",
+    },
   });
 };
 
 export const getLessonsBySectionId = async (section_id: number) => {
   return prisma.lesson.findMany({
     where: { Unit: { section_id } },
+    orderBy: {
+      lesson_sequence: "asc",
+    },
   });
 };
 
 export const getLessonsByLevelId = async (level_id: number) => {
   return prisma.lesson.findMany({
     where: { Unit: { Section: { level_id } } },
+    orderBy: {
+      lesson_sequence: "asc",
+    },
   });
 };
 
@@ -41,7 +50,7 @@ export const getInProgressLessonByUserId = async (user_id: string) => {
 export const createLesson = async (lesson: LessonsCreate) => {
   return prisma.lesson.create({
     data: {
-      lesson_id: lesson.lesson_id,
+      lesson_sequence: lesson.lesson_sequence,
       lesson_title: lesson.lesson_title,
       lesson_description: lesson.lesson_description,
       unit_id: lesson.unit_id,

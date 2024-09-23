@@ -4,6 +4,9 @@ export const LessonsDBSchema = z.object({
   lesson_id: z
     .number()
     .int({ message: "ID da lição deve ser um número inteiro." }),
+  lesson_sequence: z
+    .number()
+    .int({ message: "Sequência da lição deve ser um número inteiro." }),
   lesson_title: z.string().min(1, "Título da lição não deve ser vazio."),
   lesson_description: z
     .string()
@@ -36,6 +39,7 @@ export const LessonsDBSchema = z.object({
 export const LessonsSchema = LessonsDBSchema.partial();
 
 export const LessonsCreateSchema = LessonsDBSchema.omit({
+  lesson_id: true,
   is_completed: true,
   completed_at: true,
   created_at: true,
