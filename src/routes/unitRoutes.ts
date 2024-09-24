@@ -95,6 +95,34 @@ export default function UnitRoutes(
                   examples: ["Descrição da unidade 1"],
                 },
                 section_id: { type: "number", examples: [1] },
+                Lessons: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      LessonProgresses: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            lesson_progress_id: {
+                              type: "string",
+                              examples: ["1"],
+                            },
+                            lesson_id: { type: "number", examples: [1] },
+                            in_progress: { type: "boolean", examples: [true] },
+                            is_locked: { type: "boolean", examples: [false] },
+                            completed_at: {
+                              type: "string",
+                              nullable: true,
+                              examples: [null],
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
           },

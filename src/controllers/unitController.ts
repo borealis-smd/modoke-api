@@ -48,8 +48,9 @@ export const getUnitsBySectionId = async (
         section_id: z.number().int(),
       })
       .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
-    const units = await UnitService.getUnitsBySectionId(section_id);
+    const units = await UnitService.getUnitsBySectionId(section_id, user_id);
 
     reply.code(200).send(units);
   } catch (error) {

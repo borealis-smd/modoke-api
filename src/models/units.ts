@@ -28,11 +28,25 @@ export const getUnitById = async (unit_id: number) => {
   });
 };
 
-export const getUnitsBySectionId = async (section_id: number) => {
+export const getUnitsBySectionId = async (
+  section_id: number,
+  user_id: string,
+) => {
   return prisma.unit.findMany({
     where: { section_id },
     orderBy: {
       unit_sequence: "asc",
+    },
+    include: {
+      Lessons: {
+        include: {
+          LessonProgresses: {
+            where: {
+              user_id,
+            },
+          },
+        },
+      },
     },
   });
 };
