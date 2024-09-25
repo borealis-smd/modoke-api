@@ -23,6 +23,11 @@ export default function UnitRoutes(
               type: "object",
               properties: {
                 unit_id: { type: "number", examples: [1] },
+                unit_icon: {
+                  type: "string",
+                  examples: ["Plane"],
+                  nullable: true,
+                },
                 unit_sequence: { type: "number", examples: [1] },
                 unit_title: { type: "string", examples: ["Unidade 1"] },
                 unit_description: {
@@ -55,6 +60,11 @@ export default function UnitRoutes(
             type: "object",
             properties: {
               unit_id: { type: "number", examples: [1] },
+              unit_icon: {
+                type: "string",
+                examples: ["Plane"],
+                nullable: true,
+              },
               unit_sequence: { type: "number", examples: [1] },
               unit_title: { type: "string", examples: ["Unidade 1"] },
               unit_description: {
@@ -88,6 +98,11 @@ export default function UnitRoutes(
               type: "object",
               properties: {
                 unit_id: { type: "number", examples: [1] },
+                unit_icon: {
+                  type: "string",
+                  examples: ["Plane"],
+                  nullable: true,
+                },
                 unit_sequence: { type: "number", examples: [1] },
                 unit_title: { type: "string", examples: ["Unidade 1"] },
                 unit_description: {
@@ -154,6 +169,11 @@ export default function UnitRoutes(
                 type: "object",
                 properties: {
                   unit_id: { type: "number", examples: [1] },
+                  unit_icon: {
+                    type: "string",
+                    examples: ["Plane"],
+                    nullable: true,
+                  },
                   unit_sequence: { type: "number", examples: [1] },
                   unit_title: { type: "string", examples: ["Unidade 1"] },
                   unit_description: {
@@ -182,6 +202,11 @@ export default function UnitRoutes(
         body: {
           type: "object",
           properties: {
+            unit_icon: {
+              type: "string",
+              examples: ["Plane"],
+              nullable: true,
+            },
             unit_sequence: { type: "number", examples: [1] },
             unit_title: { type: "string", examples: ["Unidade 1"] },
             unit_description: {
@@ -196,6 +221,11 @@ export default function UnitRoutes(
             type: "object",
             properties: {
               unit_id: { type: "number", examples: [1] },
+              unit_icon: {
+                type: "string",
+                examples: ["Plane"],
+                nullable: true,
+              },
               unit_sequence: { type: "number", examples: [1] },
               unit_title: { type: "string", examples: ["Unidade 1"] },
               unit_description: {

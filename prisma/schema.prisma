@@ -84,6 +84,7 @@ model SectionProgress {
 
 model Unit {
   unit_id          Int            @id @default(autoincrement())
+  unit_icon        String?        @db.VarChar(100)
   unit_sequence    Int            @unique
   unit_title       String         @db.VarChar(255)
   unit_description String         @db.Text
