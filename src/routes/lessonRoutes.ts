@@ -90,6 +90,7 @@ export default function LessonRoutes(
   app.get(
     "/section:section_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar lições por ID de uma seção",
         querystring: {
@@ -104,7 +105,7 @@ export default function LessonRoutes(
                 lesson_id: { type: "number", examples: [1] },
                 lesson_sequence: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
-                title: { type: "string", examples: ["Aula 1"] },
+                lesson_title: { type: "string", examples: ["Aula 1"] },
                 description: {
                   type: "string",
                   examples: ["Descrição da aula 1"],
@@ -117,11 +118,26 @@ export default function LessonRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
+                Explanations: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      explanation_id: { type: "number", examples: [1] },
+                      content: {
+                        type: "string",
+                        examples: ["Explicação 1"],
+                      },
+                      part: { type: "string", examples: ["PART_1"] },
+                    },
+                  },
+                },
               },
             },
           },
         },
         tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
       },
     },
     LessonController.getLessonsBySectionId,
@@ -144,7 +160,7 @@ export default function LessonRoutes(
                 lesson_id: { type: "number", examples: [1] },
                 lesson_sequence: { type: "number", examples: [1] },
                 unit_id: { type: "number", examples: [1] },
-                title: { type: "string", examples: ["Aula 1"] },
+                lesson_title: { type: "string", examples: ["Aula 1"] },
                 description: {
                   type: "string",
                   examples: ["Descrição da aula 1"],
@@ -269,7 +285,7 @@ export default function LessonRoutes(
               lesson_id: { type: "number", examples: [1] },
               lesson_sequence: { type: "number", examples: [1] },
               unit_id: { type: "number", examples: [1] },
-              title: { type: "string", examples: ["Aula 1"] },
+              lesson_title: { type: "string", examples: ["Aula 1"] },
               description: {
                 type: "string",
                 examples: ["Descrição da aula 1"],

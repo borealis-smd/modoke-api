@@ -22,6 +22,9 @@ export const getLessonsBySectionId = async (section_id: number) => {
     orderBy: {
       lesson_sequence: "asc",
     },
+    include: {
+      Explanations: true,
+    },
   });
 };
 
