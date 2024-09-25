@@ -75,6 +75,7 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 ### Lições
 - Protegidas
   - `GET /lesson/user`: Busca a lição em progresso de um usuário
+  - `GET /lesson/finished`: Busca as lições finalizadas de um usuário
   - `POST /lesson/`: Cria uma nova lição (ADMIN)
   - `POST /lesson/start{lesson_id}`: Inicia uma lição
   - `PUT /lesson/unlock{lesson_id}`: Desbloqueia uma lição
