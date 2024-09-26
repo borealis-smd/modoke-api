@@ -50,6 +50,7 @@ export default function LessonRoutes(
   app.get(
     "/unit:unit_id",
     {
+      preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Buscar lições por ID de uma unidade",
         querystring: {
@@ -77,11 +78,32 @@ export default function LessonRoutes(
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
                 },
+                LessonProgresses: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      lesson_progress_id: {
+                        type: "string",
+                        examples: ["1"],
+                      },
+                      lesson_id: { type: "number", examples: [1] },
+                      in_progress: { type: "boolean", examples: [true] },
+                      is_locked: { type: "boolean", examples: [false] },
+                      completed_at: {
+                        type: "string",
+                        nullable: true,
+                        examples: [null],
+                      },
+                    },
+                  },
+                },
               },
             },
           },
         },
         tags: ["Lessons"],
+        security: [{ bearerAuth: [] }],
       },
     },
     LessonController.getLessonsByUnitId,
@@ -193,7 +215,7 @@ export default function LessonRoutes(
           200: {
             type: "object",
             properties: {
-              lesson_progress_id: { type: "number", examples: [1] },
+              lesson_progress_id: { type: "string", examples: ["000f21"] },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {
@@ -321,7 +343,7 @@ export default function LessonRoutes(
           201: {
             type: "object",
             properties: {
-              lesson_progress_id: { type: "number", examples: [1] },
+              lesson_progress_id: { type: "string", examples: ["000f21"] },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {
@@ -339,19 +361,20 @@ export default function LessonRoutes(
   );
 
   app.put(
-    "/unlock:lesson_id",
+    "/unlock:lesson_sequence",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma lição por ID de lição e ID de usuário",
         querystring: {
-          lesson_id: { type: "number", examples: [1] },
+          lesson_sequence: { type: "number", examples: [1] },
+          unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              lesson_progress_id: { type: "number", examples: [1] },
+              lesson_progress_id: { type: "string", examples: ["000f21"] },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {
@@ -381,7 +404,7 @@ export default function LessonRoutes(
           200: {
             type: "object",
             properties: {
-              lesson_progress_id: { type: "number", examples: [1] },
+              lesson_progress_id: { type: "string", examples: ["000f21"] },
               in_progress: { type: "boolean", examples: [false] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {

@@ -34,8 +34,9 @@ export const getLessonsByUnitId = async (
         unit_id: z.number().int(),
       })
       .parse(request.query);
+    const user_id = extractUserId(request, reply);
 
-    const lessons = await LessonService.getLessonsByUnitId(unit_id);
+    const lessons = await LessonService.getLessonsByUnitId(unit_id, user_id);
 
     reply.code(200).send(lessons);
   } catch (error) {
@@ -154,14 +155,19 @@ export const unlockLesson = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { lesson_id } = z
+    const { lesson_sequence, unit_id } = z
       .object({
-        lesson_id: z.number().int(),
+        lesson_sequence: z.number().int(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const lesson = await LessonService.unlockLesson(lesson_id, user_id);
+    const lesson = await LessonService.unlockLesson(
+      lesson_sequence,
+      unit_id,
+      user_id,
+    );
 
     reply.code(200).send(lesson);
   } catch (error) {
