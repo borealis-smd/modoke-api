@@ -56,9 +56,6 @@ export const getLessonsBySectionId = async (
       .parse(request.query);
 
     const lessons = await LessonService.getLessonsBySectionId(section_id);
-    lessons.forEach((lesson) => {
-      console.log(lesson.Explanations);
-    });
 
     reply.code(200).send(lessons);
   } catch (error) {

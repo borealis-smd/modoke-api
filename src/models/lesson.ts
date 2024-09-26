@@ -20,6 +20,7 @@ export const getLessonsByUnitId = async (unit_id: number, user_id: string) => {
           user_id: user_id,
         },
       },
+      Explanations: true,
     },
   });
 };
@@ -29,9 +30,6 @@ export const getLessonsBySectionId = async (section_id: number) => {
     where: { Unit: { section_id } },
     orderBy: {
       lesson_sequence: "asc",
-    },
-    include: {
-      Explanations: true,
     },
   });
 };

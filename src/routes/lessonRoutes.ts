@@ -98,6 +98,20 @@ export default function LessonRoutes(
                     },
                   },
                 },
+                Explanations: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      explanation_id: { type: "number", examples: [1] },
+                      content: {
+                        type: "string",
+                        examples: ["Explicação 1"],
+                      },
+                      part: { type: "string", examples: ["PART_1"] },
+                    },
+                  },
+                },
               },
             },
           },
@@ -139,20 +153,6 @@ export default function LessonRoutes(
                 updated_at: {
                   type: "string",
                   examples: ["2024-08-04 16:21:21.921"],
-                },
-                Explanations: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      explanation_id: { type: "number", examples: [1] },
-                      content: {
-                        type: "string",
-                        examples: ["Explicação 1"],
-                      },
-                      part: { type: "string", examples: ["PART_1"] },
-                    },
-                  },
                 },
               },
             },
