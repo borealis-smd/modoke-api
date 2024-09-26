@@ -44,14 +44,14 @@ export const startUnit = async (unit_id: number, user_id: string) => {
   return UnitRepo.startUnit(unit_id, user_id);
 };
 
-export const unlockUnit = async (unit_id: number, user_id: string) => {
+export const unlockUnit = async (cur_unit_id: number, user_id: string) => {
   const unitInProgress = await UnitRepo.getInProgressUnitByUserId(user_id);
   if (unitInProgress) {
     throw new UnitAlreadyInProgressError(
       "Só é possível ter uma unidade em progresso por vez.",
     );
   }
-  return UnitRepo.unlockUnit(unit_id, user_id);
+  return UnitRepo.unlockUnit(cur_unit_id, user_id);
 };
 
 export const finishUnit = async (unit_id: number, user_id: string) => {

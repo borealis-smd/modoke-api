@@ -122,7 +122,7 @@ export default function UnitRoutes(
                           properties: {
                             lesson_progress_id: {
                               type: "string",
-                              examples: ["1"],
+                              examples: ["000f21"],
                             },
                             lesson_id: { type: "number", examples: [1] },
                             in_progress: { type: "boolean", examples: [true] },
@@ -274,20 +274,23 @@ export default function UnitRoutes(
   );
 
   app.put(
-    "/unlock:unit_id",
+    "/unlock:cur_unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description:
           "Desbloquear uma unidade por ID de unidade e ID de usuário",
         querystring: {
-          unit_id: { type: "number", examples: [1] },
+          cur_unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              unit_progress_id: { type: "number", examples: [1] },
+              unit_progress_id: {
+                type: "string",
+                examples: ["d979de1d-3fde-4b4f-8869-46491aba8d08"],
+              },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {

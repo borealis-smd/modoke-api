@@ -361,7 +361,7 @@ export default function LessonRoutes(
   );
 
   app.put(
-    "/unlock:lesson_sequence",
+    "/unlock:lesson_sequence:unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
