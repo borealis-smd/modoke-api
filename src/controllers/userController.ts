@@ -24,9 +24,7 @@ export const registerUser = async (
 
     await sendGreetingEmail(login.email, user.first_name);
 
-    const { token } = await UserService.logIn(login.email, login.password!);
-
-    reply.code(201).send(JSON.stringify(token));
+    reply.code(201).send();
   } catch (error) {
     handleError(error, reply);
   }

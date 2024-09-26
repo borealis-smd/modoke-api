@@ -40,15 +40,7 @@ export default function UserRoutes(
         },
         response: {
           201: {
-            type: "object",
-            properties: {
-              token: {
-                type: "string",
-                examples: [
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMGZmM2I4NmYtYTdkZS00NTE5LTllNTktMTAxZGI4YzNhOGYzIiwiaWF0IjoxNjI5NzA3NjQ3LCJleHAiOjE2Mjk3MTExMDd9.6L9r0H7F8G5Pw4l7d0J4Zd7X0z0kF0R4Z0n0e0W4",
-                ],
-              },
-            },
+            type: "null",
           },
         },
         tags: ["User"],
