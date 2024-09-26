@@ -74,14 +74,14 @@ export const unlockSection = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { section_id } = z
+    const { cur_unit_id } = z
       .object({
-        section_id: z.number().int(),
+        cur_unit_id: z.number().int(),
       })
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const section = await SectionService.unlockSection(section_id, user_id);
+    const section = await SectionService.unlockSection(cur_unit_id, user_id);
 
     reply.code(200).send(section);
   } catch (error) {
@@ -94,15 +94,15 @@ export const finishSection = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { section_id } = z
+    const { unit_id } = z
       .object({
-        section_id: z.number().int(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
     const finishedSection = await SectionService.finishSection(
-      section_id,
+      unit_id,
       user_id,
     );
 
