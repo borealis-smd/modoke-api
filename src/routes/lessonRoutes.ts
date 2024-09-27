@@ -404,12 +404,36 @@ export default function LessonRoutes(
           200: {
             type: "object",
             properties: {
-              lesson_progress_id: { type: "string", examples: ["000f21"] },
-              in_progress: { type: "boolean", examples: [false] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2021-08-04T00:00:00.000Z"],
+              finishedLesson: {
+                type: "object",
+                properties: {
+                  lesson_progress_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  lesson_id: { type: "number", examples: [1] },
+                  user_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  in_progress: { type: "boolean", examples: [false] },
+                  is_locked: { type: "boolean", examples: [false] },
+                  completed_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
+              },
+              badge: {
+                type: "object",
+                nullable: true,
+                properties: {
+                  badge_id: { type: "number", examples: [1] },
+                  acquired_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
               },
             },
           },
