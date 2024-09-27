@@ -91,6 +91,21 @@ export const updateUser = async (
   }
 };
 
+export const increaseLevel = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const updatedUser = await UserService.increaseLevel(user_id);
+
+    reply.code(200).send(updatedUser);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
 export const updatePassword = async (
   request: FastifyRequest,
   reply: FastifyReply,

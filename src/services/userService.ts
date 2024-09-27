@@ -72,6 +72,14 @@ export const updateUser = async (user_id: string, user: UserUpdate) => {
   return UserRepo.updateUser(user_id, user);
 };
 
+export const increaseLevel = async (user_id: string) => {
+  const existingUser = await UserRepo.getUserById(user_id);
+  if (!existingUser) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
+  return UserRepo.increaseLevel(user_id);
+};
+
 export const updatePassword = async (
   email: string,
   oldPassword: string,

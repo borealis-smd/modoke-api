@@ -10,6 +10,7 @@ import { ValidationError } from "../errors/ValidationError";
 import { hash } from "bcrypt";
 import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
+import { UserNotFoundError } from "../errors/UserNotFoundError";
 
 export const registerUser = async (user: UserRegister, login: Login) => {
   if (!user.first_name) {
@@ -80,6 +81,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
       user_id: newUser.user_id,
       unit_id: unit.unit_id,
       in_progress: true,
+      is_locked: false,
     },
   });
 
@@ -101,6 +103,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
       user_id: newUser.user_id,
       lesson_id: lesson.unit_id,
       in_progress: true,
+      is_locked: false,
     },
   });
 
@@ -137,6 +140,29 @@ export const updateUser = async (user_id: string, user: UserUpdate) => {
   return prisma.user.update({
     where: { user_id },
     data: user,
+  });
+};
+
+export const increaseLevel = async (user_id: string) => {
+  const user = await prisma.user.findUnique({
+    where: { user_id },
+  });
+
+  if (!user) {
+    throw new UserNotFoundError("Usuário não encontrado.");
+  }
+
+  if (user.level_id === 3 || user.xp >= 6000) {
+    return user;
+  }
+
+  const newLevelId = user.xp >= 2000 ? (user.xp >= 4000 ? 3 : 2) : 1;
+
+  return prisma.user.update({
+    where: { user_id },
+    data: {
+      level_id: newLevelId,
+    },
   });
 };
 

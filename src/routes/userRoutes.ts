@@ -197,10 +197,6 @@ export default function UserRoutes(
           200: {
             type: "object",
             properties: {
-              // user_id: {
-              //   type: "string",
-              //   examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
-              // },
               first_name: { type: "string", examples: ["John"] },
               last_name: { type: "string", examples: ["Doe"] },
               avatar_url: {
@@ -225,6 +221,42 @@ export default function UserRoutes(
       },
     },
     UserController.updateUser,
+  );
+
+  app.put(
+    "/level",
+    {
+      preHandler: verifyTokenMiddleware(),
+      schema: {
+        description: "Avançar o nível de um usuário",
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              first_name: { type: "string", examples: ["John"] },
+              last_name: { type: "string", examples: ["Doe"] },
+              avatar_url: {
+                type: "string",
+                examples: ["https://www.example.com/avatar.jpg"],
+              },
+              xp: { type: "number", examples: [0] },
+              level_id: { type: "number", examples: [1] },
+              created_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
+              },
+              updated_at: {
+                type: "string",
+                examples: ["2024-08-04 16:21:21.921"],
+              },
+            },
+          },
+        },
+        tags: ["User"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    UserController.increaseLevel,
   );
 
   app.put(
