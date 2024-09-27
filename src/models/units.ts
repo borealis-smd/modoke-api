@@ -4,9 +4,14 @@ import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 
 export const getUnits = async () => {
   return prisma.unit.findMany({
-    orderBy: {
-      unit_sequence: "asc",
-    },
+    orderBy: [
+      {
+        section_id: "asc",
+      },
+      {
+        unit_sequence: "asc",
+      },
+    ],
   });
 };
 
