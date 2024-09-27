@@ -6,7 +6,6 @@ import {
   UserUpdateSchema,
 } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
-import { sendGreetingEmail } from "../config/nodemailer";
 import { z } from "zod";
 import { extractUserId } from "../utils/extractUserId";
 import { handleError } from "../utils/errorHandler";
@@ -22,7 +21,7 @@ export const registerUser = async (
 
     await UserService.registerUser(userParsedBody, loginParsedBody);
 
-    await sendGreetingEmail(login.email, user.first_name);
+    // await sendGreetingEmail(login.email, user.first_name);
 
     reply.code(201).send();
   } catch (error) {
