@@ -8,6 +8,8 @@ import { Login, LoginSchema } from "../validators/loginValidator";
 import { MissingFieldError } from "../errors/MissingFieldError";
 import { ValidationError } from "../errors/ValidationError";
 import { hash } from "bcrypt";
+import { UnitNotFoundError } from "../errors/UnitNotFoundError";
+import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 
 export const registerUser = async (user: UserRegister, login: Login) => {
   if (!user.first_name) {
@@ -34,9 +36,11 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     throw new ValidationError("Dados de login inválidos.");
   }
 
-  const password_hash = login.password ? await hash(login.password, 10) : undefined;
+  const password_hash = login.password
+    ? await hash(login.password, 10)
+    : undefined;
 
-  return prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       ...user,
       xp: 0,
@@ -49,6 +53,58 @@ export const registerUser = async (user: UserRegister, login: Login) => {
       },
     },
   });
+
+  const sectionInProgress = await prisma.sectionProgress.create({
+    data: {
+      user_id: newUser.user_id,
+      section_id: newUser.level_id,
+      in_progress: true,
+    },
+  });
+
+  const unit = await prisma.unit.findUnique({
+    where: {
+      section_id_unit_sequence: {
+        section_id: sectionInProgress.section_id,
+        unit_sequence: 1,
+      },
+    },
+  });
+
+  if (!unit) {
+    throw new UnitNotFoundError("Unidade não encontrada.");
+  }
+
+  const unitInProgress = await prisma.unitProgress.create({
+    data: {
+      user_id: newUser.user_id,
+      unit_id: unit.unit_id,
+      in_progress: true,
+    },
+  });
+
+  const lesson = await prisma.lesson.findUnique({
+    where: {
+      unit_id_lesson_sequence: {
+        unit_id: unitInProgress.unit_id,
+        lesson_sequence: 1,
+      },
+    },
+  });
+
+  if (!lesson) {
+    throw new NoLessonFoundError("Lição não encontrada.");
+  }
+
+  await prisma.lessonProgress.create({
+    data: {
+      user_id: newUser.user_id,
+      lesson_id: lesson.unit_id,
+      in_progress: true,
+    },
+  });
+
+  return newUser;
 };
 
 export const getUserById = async (user_id: string) => {
