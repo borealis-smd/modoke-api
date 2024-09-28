@@ -243,36 +243,6 @@ export default function UnitRoutes(
     UnitController.createUnit,
   );
 
-  app.post(
-    "/start:unit_id",
-    {
-      preHandler: verifyTokenMiddleware(),
-      schema: {
-        description: "Iniciar uma unidade por ID de unidade e ID de usuário",
-        querystring: {
-          unit_id: { type: "number", examples: [1] },
-        },
-        response: {
-          201: {
-            type: "object",
-            properties: {
-              unit_progress_id: { type: "number", examples: [1] },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: [""],
-              },
-            },
-          },
-        },
-        tags: ["Units"],
-        security: [{ bearerAuth: [] }],
-      },
-    },
-    UnitController.startUnit,
-  );
-
   app.put(
     "/unlock:cur_unit_id",
     {

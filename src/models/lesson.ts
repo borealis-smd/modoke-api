@@ -82,16 +82,6 @@ export const createLesson = async (lesson: LessonsCreate) => {
   });
 };
 
-export const startLesson = async (lesson_id: number, user_id: string) => {
-  return prisma.lessonProgress.create({
-    data: {
-      lesson_id,
-      user_id,
-      in_progress: true,
-    },
-  });
-};
-
 export const unlockLesson = async (
   lesson_sequence: number,
   unit_id: number,

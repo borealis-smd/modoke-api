@@ -78,7 +78,6 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
   - `GET /lesson/user`: Busca a lição em progresso de um usuário
   - `GET /lesson/finished`: Busca as lições finalizadas de um usuário
   - `POST /lesson/`: Cria uma nova lição (ADMIN)
-  - `POST /lesson/start{lesson_id}`: Inicia uma lição
   - `PUT /lesson/unlock{lesson_id}`: Desbloqueia uma lição
   - `PUT /lesson/finish{lesson_id}`: Finaliza uma lição
 - Não protegidas
@@ -91,7 +90,6 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - Protegidas
   - `GET /unit/user`: Busca a unidade em progresso de um usuário
   - `POST /unit/`: Cria uma nova unidade (ADMIN)
-  - `POST /unit/start{unit_id}`: Inicia uma unidade
   - `PUT /unit/unlock{unit_id}`: Desbloqueia uma unidade
   - `PUT /unit/finish{unit_id}`: Finaliza uma unidade
 - Não protegidas
@@ -108,7 +106,6 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - Protegidas
   - `GET /section/user`: Busca a seção em progresso de um usuário
   - `POST /section/`: Cria uma nova seção (ADMIN)
-  - `POST /section/start{section_id}`: Inicia uma seção
   - `PUT /section/unlock{section_id}`: Desbloqueia uma seção
   - `PUT /section/finish{section_id}`: Finaliza uma seção
 - Não protegidas
@@ -157,9 +154,6 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `/auth/google/login`
 
 ### RF05 - Salvamento de progresso
-- `/section/start`
-- `/unit/start`
-- `/lesson/start`
 - `/section/unlock`
 - `/unit/unlock`
 - `/lesson/unlock`

@@ -88,26 +88,6 @@ export const createUnit = async (
   }
 };
 
-export const startUnit = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { unit_id } = z
-      .object({
-        unit_id: z.number().int(),
-      })
-      .parse(request.query);
-    const user_id = extractUserId(request, reply);
-
-    const unit = await UnitService.startUnit(unit_id, user_id);
-
-    reply.code(201).send(unit);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
 export const unlockUnit = async (
   request: FastifyRequest,
   reply: FastifyReply,

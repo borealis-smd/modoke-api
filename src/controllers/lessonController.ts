@@ -127,26 +127,6 @@ export const createLesson = async (
   }
 };
 
-export const startLesson = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { lesson_id } = z
-      .object({
-        lesson_id: z.number().int(),
-      })
-      .parse(request.query);
-    const user_id = extractUserId(request, reply);
-
-    const lesson = await LessonService.startLesson(lesson_id, user_id);
-
-    reply.code(201).send(lesson);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
 export const unlockLesson = async (
   request: FastifyRequest,
   reply: FastifyReply,

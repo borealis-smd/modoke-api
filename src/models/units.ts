@@ -68,16 +68,6 @@ export const createUnit = async (unit: UnitsCreate) => {
   });
 };
 
-export const startUnit = async (unit_id: number, user_id: string) => {
-  return prisma.unitProgress.create({
-    data: {
-      unit_id,
-      user_id,
-      in_progress: true,
-    },
-  });
-};
-
 export const unlockUnit = async (cur_unit_id: number, user_id: string) => {
   const curUnit = await prisma.unit.findUnique({
     where: {

@@ -49,26 +49,6 @@ export const createSection = async (
   }
 };
 
-export const startSection = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { section_id } = z
-      .object({
-        section_id: z.number().int(),
-      })
-      .parse(request.query);
-    const user_id = extractUserId(request, reply);
-
-    const section = await SectionService.startSection(section_id, user_id);
-
-    reply.code(201).send(section);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
 export const unlockSection = async (
   request: FastifyRequest,
   reply: FastifyReply,
