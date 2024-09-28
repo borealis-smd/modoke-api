@@ -47,11 +47,7 @@ export const createLesson = async (lesson: LessonsCreate) => {
   return LessonRepo.createLesson(lesson);
 };
 
-export const unlockLesson = async (
-  lesson_sequence: number,
-  unit_id: number,
-  user_id: string,
-) => {
+export const unlockLesson = async (lesson_id: number, user_id: string) => {
   const lessonInProgress =
     await LessonRepo.getInProgressLessonByUserId(user_id);
   if (lessonInProgress) {
@@ -59,7 +55,7 @@ export const unlockLesson = async (
       "Só é possível ter uma lição em progresso por vez.",
     );
   }
-  return LessonRepo.unlockLesson(lesson_sequence, unit_id, user_id);
+  return LessonRepo.unlockLesson(lesson_id, user_id);
 };
 
 export const finishLesson = async (lesson_id: number, user_id: string) => {

@@ -93,14 +93,14 @@ export const unlockUnit = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { cur_unit_id } = z
+    const { unit_id } = z
       .object({
-        cur_unit_id: z.number().int(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const unit = await UnitService.unlockUnit(cur_unit_id, user_id);
+    const unit = await UnitService.unlockUnit(unit_id, user_id);
 
     reply.code(200).send(unit);
   } catch (error) {

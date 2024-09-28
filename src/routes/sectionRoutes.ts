@@ -119,13 +119,13 @@ export default function SectionRoutes(
   );
 
   app.put(
-    "/unlock:cur_unit_id",
+    "/unlock:unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma seção por ID de seção e ID de usuário",
         querystring: {
-          cur_unit_id: { type: "number", examples: [1] },
+          unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {

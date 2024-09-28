@@ -68,27 +68,10 @@ export const createUnit = async (unit: UnitsCreate) => {
   });
 };
 
-export const unlockUnit = async (cur_unit_id: number, user_id: string) => {
-  const curUnit = await prisma.unit.findUnique({
-    where: {
-      unit_id: cur_unit_id,
-    },
-  });
-
-  const nextUnit = await prisma.unit.findUnique({
-    where: {
-      unit_sequence: curUnit!.unit_sequence + 1,
-      section_id: curUnit!.section_id,
-    },
-  });
-
-  if (!nextUnit) {
-    throw new UnitNotFoundError("Não há unidade seguinte.");
-  }
-
+export const unlockUnit = async (unit_id: number, user_id: string) => {
   return prisma.unitProgress.create({
     data: {
-      unit_id: nextUnit.unit_id,
+      unit_id: unit_id,
       user_id,
       in_progress: true,
       is_locked: false,

@@ -54,14 +54,14 @@ export const unlockSection = async (
   reply: FastifyReply,
 ) => {
   try {
-    const { cur_unit_id } = z
+    const { unit_id } = z
       .object({
-        cur_unit_id: z.number().int(),
+        unit_id: z.number().int(),
       })
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const section = await SectionService.unlockSection(cur_unit_id, user_id);
+    const section = await SectionService.unlockSection(unit_id, user_id);
 
     reply.code(200).send(section);
   } catch (error) {

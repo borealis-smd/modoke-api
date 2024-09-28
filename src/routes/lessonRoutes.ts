@@ -331,14 +331,13 @@ export default function LessonRoutes(
   );
 
   app.put(
-    "/unlock:lesson_sequence:unit_id",
+    "/unlock:lesson_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma lição por ID de lição e ID de usuário",
         querystring: {
-          lesson_sequence: { type: "number", examples: [1] },
-          unit_id: { type: "number", examples: [1] },
+          lesson_id: { type: "number", examples: [1] },
         },
         response: {
           200: {

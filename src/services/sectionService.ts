@@ -14,7 +14,7 @@ export const createSection = async (section: SectionCreate) => {
   return SectionRepo.createSection(section);
 };
 
-export const unlockSection = async (cur_unit_id: number, user_id: string) => {
+export const unlockSection = async (unit_id: number, user_id: string) => {
   const sectionInProgress =
     await SectionRepo.getInProgressSectionByUserId(user_id);
   if (sectionInProgress) {
@@ -22,7 +22,7 @@ export const unlockSection = async (cur_unit_id: number, user_id: string) => {
       "Só é possível ter uma seção em progresso por vez.",
     );
   }
-  return SectionRepo.unlockSection(cur_unit_id, user_id);
+  return SectionRepo.unlockSection(unit_id, user_id);
 };
 
 export const finishSection = async (unit_id: number, user_id: string) => {
