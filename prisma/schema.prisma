@@ -48,6 +48,8 @@ model Level {
   level_id    Int       @id
   name        LevelName
   description String    @db.Text
+  min_xp      Int       @default(0)
+  max_xp      Int       @default(2000)
   Users       User[]
   Section     Section?
 }
@@ -85,7 +87,7 @@ model SectionProgress {
 model Unit {
   unit_id          Int            @id @default(autoincrement())
   unit_icon        String?        @db.VarChar(100)
-  unit_sequence    Int            @unique
+  unit_sequence    Int
   unit_title       String         @db.VarChar(255)
   unit_description String         @db.Text
   section_id       Int
