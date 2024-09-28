@@ -11,6 +11,7 @@ import { hash } from "bcrypt";
 import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 import { UserNotFoundError } from "../errors/UserNotFoundError";
+import { LevelNotFoundError } from "../errors/LevelNotFoundError";
 
 export const registerUser = async (user: UserRegister, login: Login) => {
   if (!user.first_name) {
@@ -143,7 +144,7 @@ export const updateUser = async (user_id: string, user: UserUpdate) => {
   });
 };
 
-export const increaseLevel = async (user_id: string) => {
+export const levelUp = async (user_id: string) => {
   const user = await prisma.user.findUnique({
     where: { user_id },
   });
@@ -152,16 +153,20 @@ export const increaseLevel = async (user_id: string) => {
     throw new UserNotFoundError("Usuário não encontrado.");
   }
 
-  if (user.level_id === 3 || user.xp >= 6000) {
-    return user;
-  }
+  const levels = await prisma.level.findMany();
 
-  const newLevelId = user.xp >= 2000 ? (user.xp >= 4000 ? 3 : 2) : 1;
+  const newLevel = levels.find(
+    (level) => level.min_xp <= user.xp && level.max_xp > user.xp,
+  );
+
+  if (!newLevel) {
+    throw new LevelNotFoundError("Nível não encontrado.");
+  }
 
   return prisma.user.update({
     where: { user_id },
     data: {
-      level_id: newLevelId,
+      level_id: newLevel.level_id,
     },
   });
 };
