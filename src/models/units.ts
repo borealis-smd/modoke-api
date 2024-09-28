@@ -1,6 +1,5 @@
 import { prisma } from "../config/db";
 import { UnitsCreate } from "../validators/unitsValidator";
-import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 
 export const getUnits = async () => {
   return prisma.unit.findMany({
