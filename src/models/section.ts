@@ -2,6 +2,7 @@ import { prisma } from "../config/db";
 import { SectionCreate } from "../validators/sectionsValidator";
 import { MaxSectionsReachedError } from "../errors/MaxSectionsReachedError";
 import { SectionForLevelAlreadyExistsError } from "../errors/SectionForLevelAlreadyExistsError";
+import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 
 export const getSections = async () => {
   return prisma.section.findMany();
@@ -47,7 +48,6 @@ export const createSection = async (section: SectionCreate) => {
 };
 
 export const startSection = async (section_id: number, user_id: string) => {
-  // [] verificar se não existe uma seção em progresso
   return prisma.sectionProgress.create({
     data: {
       section_id,
@@ -57,11 +57,20 @@ export const startSection = async (section_id: number, user_id: string) => {
   });
 };
 
-export const unlockSection = async (section_id: number, user_id: string) => {
-  // [] verificar se não existe uma seção em progresso
+export const unlockSection = async (cur_unit_id: number, user_id: string) => {
+  const unit = await prisma.unit.findUnique({
+    where: {
+      unit_id: cur_unit_id,
+    },
+  });
+
+  if (!unit) {
+    throw new UnitNotFoundError("Unidade não encontrada.");
+  }
+
   return prisma.sectionProgress.create({
     data: {
-      section_id,
+      section_id: unit.section_id,
       user_id,
       in_progress: true,
       is_locked: false,
@@ -69,11 +78,21 @@ export const unlockSection = async (section_id: number, user_id: string) => {
   });
 };
 
-export const finishSection = async (section_id: number, user_id: string) => {
+export const finishSection = async (unit_id: number, user_id: string) => {
+  const unit = await prisma.unit.findUnique({
+    where: {
+      unit_id,
+    },
+  });
+
+  if (!unit) {
+    throw new UnitNotFoundError("Unidade não encontrada.");
+  }
+
   return prisma.sectionProgress.update({
     where: {
       section_id_user_id: {
-        section_id,
+        section_id: unit.section_id,
         user_id,
       },
     },

@@ -23,6 +23,11 @@ export default function UnitRoutes(
               type: "object",
               properties: {
                 unit_id: { type: "number", examples: [1] },
+                unit_icon: {
+                  type: "string",
+                  examples: ["Plane"],
+                  nullable: true,
+                },
                 unit_sequence: { type: "number", examples: [1] },
                 unit_title: { type: "string", examples: ["Unidade 1"] },
                 unit_description: {
@@ -35,6 +40,7 @@ export default function UnitRoutes(
           },
         },
         tags: ["Units"],
+        security: [{ bearerAuth: [] }],
       },
     },
     UnitController.getUnits,
@@ -54,6 +60,11 @@ export default function UnitRoutes(
             type: "object",
             properties: {
               unit_id: { type: "number", examples: [1] },
+              unit_icon: {
+                type: "string",
+                examples: ["Plane"],
+                nullable: true,
+              },
               unit_sequence: { type: "number", examples: [1] },
               unit_title: { type: "string", examples: ["Unidade 1"] },
               unit_description: {
@@ -65,6 +76,7 @@ export default function UnitRoutes(
           },
         },
         tags: ["Units"],
+        security: [{ bearerAuth: [] }],
       },
     },
     UnitController.getUnitById,
@@ -86,6 +98,11 @@ export default function UnitRoutes(
               type: "object",
               properties: {
                 unit_id: { type: "number", examples: [1] },
+                unit_icon: {
+                  type: "string",
+                  examples: ["Plane"],
+                  nullable: true,
+                },
                 unit_sequence: { type: "number", examples: [1] },
                 unit_title: { type: "string", examples: ["Unidade 1"] },
                 unit_description: {
@@ -93,11 +110,40 @@ export default function UnitRoutes(
                   examples: ["Descrição da unidade 1"],
                 },
                 section_id: { type: "number", examples: [1] },
+                Lessons: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      LessonProgresses: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            lesson_progress_id: {
+                              type: "string",
+                              examples: ["000f21"],
+                            },
+                            lesson_id: { type: "number", examples: [1] },
+                            in_progress: { type: "boolean", examples: [true] },
+                            is_locked: { type: "boolean", examples: [false] },
+                            completed_at: {
+                              type: "string",
+                              nullable: true,
+                              examples: [null],
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
           },
         },
         tags: ["Units"],
+        security: [{ bearerAuth: [] }],
       },
     },
     UnitController.getUnitsBySectionId,
@@ -123,6 +169,11 @@ export default function UnitRoutes(
                 type: "object",
                 properties: {
                   unit_id: { type: "number", examples: [1] },
+                  unit_icon: {
+                    type: "string",
+                    examples: ["Plane"],
+                    nullable: true,
+                  },
                   unit_sequence: { type: "number", examples: [1] },
                   unit_title: { type: "string", examples: ["Unidade 1"] },
                   unit_description: {
@@ -151,6 +202,11 @@ export default function UnitRoutes(
         body: {
           type: "object",
           properties: {
+            unit_icon: {
+              type: "string",
+              examples: ["Plane"],
+              nullable: true,
+            },
             unit_sequence: { type: "number", examples: [1] },
             unit_title: { type: "string", examples: ["Unidade 1"] },
             unit_description: {
@@ -165,6 +221,11 @@ export default function UnitRoutes(
             type: "object",
             properties: {
               unit_id: { type: "number", examples: [1] },
+              unit_icon: {
+                type: "string",
+                examples: ["Plane"],
+                nullable: true,
+              },
               unit_sequence: { type: "number", examples: [1] },
               unit_title: { type: "string", examples: ["Unidade 1"] },
               unit_description: {
@@ -213,20 +274,23 @@ export default function UnitRoutes(
   );
 
   app.put(
-    "/unlock:unit_id",
+    "/unlock:cur_unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description:
           "Desbloquear uma unidade por ID de unidade e ID de usuário",
         querystring: {
-          unit_id: { type: "number", examples: [1] },
+          cur_unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              unit_progress_id: { type: "number", examples: [1] },
+              unit_progress_id: {
+                type: "string",
+                examples: ["d979de1d-3fde-4b4f-8869-46491aba8d08"],
+              },
               in_progress: { type: "boolean", examples: [true] },
               is_locked: { type: "boolean", examples: [false] },
               completed_at: {

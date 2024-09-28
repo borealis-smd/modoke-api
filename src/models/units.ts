@@ -1,11 +1,17 @@
 import { prisma } from "../config/db";
 import { UnitsCreate } from "../validators/unitsValidator";
+import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 
 export const getUnits = async () => {
   return prisma.unit.findMany({
-    orderBy: {
-      unit_sequence: "asc",
-    },
+    orderBy: [
+      {
+        section_id: "asc",
+      },
+      {
+        unit_sequence: "asc",
+      },
+    ],
   });
 };
 
@@ -28,11 +34,25 @@ export const getUnitById = async (unit_id: number) => {
   });
 };
 
-export const getUnitsBySectionId = async (section_id: number) => {
+export const getUnitsBySectionId = async (
+  section_id: number,
+  user_id: string,
+) => {
   return prisma.unit.findMany({
     where: { section_id },
     orderBy: {
       unit_sequence: "asc",
+    },
+    include: {
+      Lessons: {
+        include: {
+          LessonProgresses: {
+            where: {
+              user_id,
+            },
+          },
+        },
+      },
     },
   });
 };
@@ -58,10 +78,27 @@ export const startUnit = async (unit_id: number, user_id: string) => {
   });
 };
 
-export const unlockUnit = async (unit_id: number, user_id: string) => {
+export const unlockUnit = async (cur_unit_id: number, user_id: string) => {
+  const curUnit = await prisma.unit.findUnique({
+    where: {
+      unit_id: cur_unit_id,
+    },
+  });
+
+  const nextUnit = await prisma.unit.findUnique({
+    where: {
+      unit_sequence: curUnit!.unit_sequence + 1,
+      section_id: curUnit!.section_id,
+    },
+  });
+
+  if (!nextUnit) {
+    throw new UnitNotFoundError("Não há unidade seguinte.");
+  }
+
   return prisma.unitProgress.create({
     data: {
-      unit_id,
+      unit_id: nextUnit.unit_id,
       user_id,
       in_progress: true,
       is_locked: false,

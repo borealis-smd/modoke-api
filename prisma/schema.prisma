@@ -84,6 +84,7 @@ model SectionProgress {
 
 model Unit {
   unit_id          Int            @id @default(autoincrement())
+  unit_icon        String?        @db.VarChar(100)
   unit_sequence    Int            @unique
   unit_title       String         @db.VarChar(255)
   unit_description String         @db.Text
@@ -92,6 +93,8 @@ model Unit {
   Lessons          Lesson[]
   Badge            Badge?
   UnitProgresses   UnitProgress[]
+
+  @@unique([section_id, unit_sequence])
 }
 
 model UnitProgress {
@@ -109,7 +112,7 @@ model UnitProgress {
 
 model Lesson {
   lesson_id          Int              @id @default(autoincrement())
-  lesson_sequence    Int              @unique
+  lesson_sequence    Int
   lesson_title       String           @db.VarChar(255)
   lesson_description String           @db.Text
   unit_id            Int
@@ -119,6 +122,8 @@ model Lesson {
   Explanations       Explanation[]
   Question           Question[]
   LessonProgresses   LessonProgress[]
+
+  @@unique([unit_id, lesson_sequence])
 }
 
 model LessonProgress {

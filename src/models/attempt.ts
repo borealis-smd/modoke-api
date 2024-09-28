@@ -2,22 +2,6 @@ import { prisma } from "../config/db";
 import { AttemptCreate } from "../validators/attemptsValidator";
 
 export const registerAttempt = async (attempt: AttemptCreate) => {
-  // Verifica se o usuário já respondeu à questão
-  const lastAttempt = await getLastAttemptByQuestionId(
-    attempt.question_id,
-    attempt.user_id,
-  );
-
-  if (lastAttempt) {
-    return prisma.attempt.update({
-      where: { attempt_id: lastAttempt.attempt_id },
-      data: {
-        selected_option_id: attempt.selected_option_id,
-        attempted_at: new Date(),
-      },
-    });
-  }
-
   return prisma.attempt.create({
     data: {
       user_id: attempt.user_id,

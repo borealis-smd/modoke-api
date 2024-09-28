@@ -11,8 +11,8 @@ export const getLessonById = async (lesson_id: number) => {
   return lesson;
 };
 
-export const getLessonsByUnitId = async (unit_id: number) => {
-  const lessons = await LessonRepo.getLessonsByUnitId(unit_id);
+export const getLessonsByUnitId = async (unit_id: number, user_id: string) => {
+  const lessons = await LessonRepo.getLessonsByUnitId(unit_id, user_id);
   if (!lessons) {
     throw new NoLessonFoundError("Nenhuma lição encontrada.");
   }
@@ -58,7 +58,11 @@ export const startLesson = async (lesson_id: number, user_id: string) => {
   return LessonRepo.startLesson(lesson_id, user_id);
 };
 
-export const unlockLesson = async (lesson_id: number, user_id: string) => {
+export const unlockLesson = async (
+  lesson_sequence: number,
+  unit_id: number,
+  user_id: string,
+) => {
   const lessonInProgress =
     await LessonRepo.getInProgressLessonByUserId(user_id);
   if (lessonInProgress) {
@@ -66,7 +70,7 @@ export const unlockLesson = async (lesson_id: number, user_id: string) => {
       "Só é possível ter uma lição em progresso por vez.",
     );
   }
-  return LessonRepo.unlockLesson(lesson_id, user_id);
+  return LessonRepo.unlockLesson(lesson_sequence, unit_id, user_id);
 };
 
 export const finishLesson = async (lesson_id: number, user_id: string) => {

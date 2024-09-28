@@ -35,11 +35,19 @@ export const createBadge = async (badge: BadgeCreate) => {
   });
 };
 
-export const assignBadgeToUser = async (user_id: string, badge_id: number) => {
+export const assignBadgeToUser = async (user_id: string, unit_id: number) => {
+  const badge = await prisma.badge.findUnique({
+    where: { unit_id },
+  });
+
+  if (!badge) {
+    throw new Error("Badge not found");
+  }
+
   return prisma.userHasBadge.create({
     data: {
       user_id,
-      badge_id,
+      badge_id: badge.badge_id,
     },
   });
 };

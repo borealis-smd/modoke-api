@@ -6,7 +6,6 @@ import * as UserService from "../services/userService";
 import { handleError } from "../utils/errorHandler";
 import { User, UserRegisterSchema } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
-import { sendGreetingEmail } from "../config/nodemailer";
 
 export const login = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
@@ -33,7 +32,7 @@ export const register = async (
 
     const newUser = await registerUser(userParsedBody, loginParsedBody);
 
-    await sendGreetingEmail(login.email, user.first_name);
+    // await sendGreetingEmail(login.email, user.first_name);
 
     const token = generateToken({
       user_id: newUser.user_id,

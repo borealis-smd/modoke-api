@@ -149,13 +149,13 @@ export default function SectionRoutes(
   );
 
   app.put(
-    "/unlock:section_id",
+    "/unlock:cur_unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma seção por ID de seção e ID de usuário",
         querystring: {
-          section_id: { type: "number", examples: [1] },
+          cur_unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
@@ -179,13 +179,13 @@ export default function SectionRoutes(
   );
 
   app.put(
-    "/finish:section_id",
+    "/finish:unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Finalizar uma seção",
         querystring: {
-          section_id: { type: "number", examples: [1] },
+          unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {

@@ -61,10 +61,11 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
   - `GET /user/`: Busca um usuário por id  
   - `GET /user{email}`: Busca um usuário pelo email
   - `PUT /user/`: Atualiza um usuário por id
+  - `PUT /user/level`: Atualiza o nível de um usuário
   - `PUT /user/password`: Atualiza a senha de um usuário
 - Não protegidas
-    - `POST /user/`: Cria um novo usuário
-    - `POST /user/login`: Autentica um usuário
+  - `POST /user/`: Cria um novo usuário
+  - `POST /user/login`: Autentica um usuário
 
 
 ### Níveis
@@ -75,6 +76,7 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 ### Lições
 - Protegidas
   - `GET /lesson/user`: Busca a lição em progresso de um usuário
+  - `GET /lesson/finished`: Busca as lições finalizadas de um usuário
   - `POST /lesson/`: Cria uma nova lição (ADMIN)
   - `POST /lesson/start{lesson_id}`: Inicia uma lição
   - `PUT /lesson/unlock{lesson_id}`: Desbloqueia uma lição
@@ -140,6 +142,51 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
   - `GET /certificate/user`: Busca todos os certificados de um usuário
   - `POST /certificate/`: Cria um novo certificado (ADMIN)
   - `POST /certificate/assign`: Atribui um certificado a um usuário
+
+## Mapeamento de requisitos funcionais
+
+### RF02 - Imagens
+- `/images/upload`
+
+### RF03 - Cadastro
+- `/user/register`
+- `/auth/google/register`
+
+### RF04 - Autenticação do usuário
+- `/user/login`
+- `/auth/google/login`
+
+### RF05 - Salvamento de progresso
+- `/section/start`
+- `/unit/start`
+- `/lesson/start`
+- `/section/unlock`
+- `/unit/unlock`
+- `/lesson/unlock`
+- `/section/finish`
+- `/unit/finish`
+- `/lesson/finish`
+
+### RF06 - Acesso a lições: 
+- `/lessons/*`
+- `/explanations/*`
+
+### RF07 - Resolução de questões
+- `/questions/*`
+- `/options/*`
+- `/attempts/*`
+
+### RF08 - Sistema de níveis e experiência
+- `/levels/`
+- `/user/level`
+
+### RF09 - Emblemas
+- `/badges/*`
+-
+
+### RF11 - Perfil
+- `/user`
+
 
 ## Produção
 A documentação da aplicação está disponível em produção no Railway: https://modoke-api-production.up.railway.app/docs.

@@ -4,6 +4,7 @@ export const UnitsDBSchema = z.object({
   unit_id: z
     .number()
     .int({ message: "ID da unidade deve ser um número inteiro." }),
+  unit_icon: z.string().nullable(),
   unit_sequence: z
     .number()
     .int({ message: "Sequência da unidade deve ser um número inteiro." }),

@@ -6,7 +6,6 @@ import {
   UserUpdateSchema,
 } from "../validators/userValidator";
 import { Login, LoginSchema } from "../validators/loginValidator";
-import { sendGreetingEmail } from "../config/nodemailer";
 import { z } from "zod";
 import { extractUserId } from "../utils/extractUserId";
 import { handleError } from "../utils/errorHandler";
@@ -22,11 +21,9 @@ export const registerUser = async (
 
     await UserService.registerUser(userParsedBody, loginParsedBody);
 
-    await sendGreetingEmail(login.email, user.first_name);
+    // await sendGreetingEmail(login.email, user.first_name);
 
-    const { token } = await UserService.logIn(login.email, login.password!);
-
-    reply.code(201).send(JSON.stringify(token));
+    reply.code(201).send();
   } catch (error) {
     handleError(error, reply);
   }
@@ -87,6 +84,21 @@ export const updateUser = async (
     const user = UserUpdateSchema.parse(request.body);
 
     const updatedUser = await UserService.updateUser(user_id, user);
+
+    reply.code(200).send(updatedUser);
+  } catch (error) {
+    handleError(error, reply);
+  }
+};
+
+export const increaseLevel = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+) => {
+  try {
+    const user_id = extractUserId(request, reply);
+
+    const updatedUser = await UserService.increaseLevel(user_id);
 
     reply.code(200).send(updatedUser);
   } catch (error) {
