@@ -161,7 +161,7 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 - `/unit/finish`
 - `/lesson/finish`
 
-### RF06 - Acesso a lições: 
+### RF06 - Acesso a lições
 - `/lessons/*`
 - `/explanations/*`
 
@@ -176,7 +176,6 @@ A aplicação estará disponível em `http://localhost:<port>`. Documentação e
 
 ### RF09 - Emblemas
 - `/badges/*`
--
 
 ### RF11 - Perfil
 - `/user`
