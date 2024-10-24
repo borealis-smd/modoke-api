@@ -3,7 +3,7 @@ import { LessonsCreate } from "../validators/lessonsValidator";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 import { assignBadgeToUser } from "./badge";
-import { finishUnit } from "./units";
+import { finishUnit, unlockUnit } from "./units";
 
 export const getLessonById = async (lesson_id: number) => {
   return prisma.lesson.findUniqueOrThrow({
@@ -82,39 +82,13 @@ export const createLesson = async (lesson: LessonsCreate) => {
   });
 };
 
-export const startLesson = async (lesson_id: number, user_id: string) => {
+export const unlockLesson = async (lesson_id: number, user_id: string) => {
   return prisma.lessonProgress.create({
     data: {
-      lesson_id,
+      lesson_id: lesson_id,
       user_id,
       in_progress: true,
-    },
-  });
-};
-
-export const unlockLesson = async (
-  lesson_sequence: number,
-  unit_id: number,
-  user_id: string,
-) => {
-  const lesson = await prisma.lesson.findUnique({
-    where: {
-      unit_id_lesson_sequence: {
-        lesson_sequence,
-        unit_id,
-      },
-    },
-  });
-
-  if (!lesson) {
-    throw new NoLessonFoundError("Lição não encontrada.");
-  }
-
-  return prisma.lessonProgress.create({
-    data: {
-      lesson_id: lesson.lesson_id,
-      user_id,
-      in_progress: true,
+      is_locked: false,
     },
   });
 };
@@ -182,6 +156,7 @@ export const finishLesson = async (lesson_id: number, user_id: string) => {
     badge = await assignBadgeToUser(user_id, unit.unit_id);
 
     // inicia a nova unidade
+    await unlockUnit(nextUnit.unit_id, user_id);
     await prisma.unitProgress.create({
       data: {
         unit_id: nextUnit.unit_id,
@@ -205,14 +180,8 @@ export const finishLesson = async (lesson_id: number, user_id: string) => {
     }
   }
 
-  await prisma.lessonProgress.create({
-    data: {
-      lesson_id: nextLesson.lesson_id,
-      user_id,
-      in_progress: true,
-      is_locked: false,
-    },
-  });
+  // inicia a próxima lição
+  await unlockLesson(nextLesson.lesson_id, user_id);
 
   return { finishedLesson, badge };
 };

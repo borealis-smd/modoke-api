@@ -127,7 +127,7 @@ export const createLesson = async (
   }
 };
 
-export const startLesson = async (
+export const unlockLesson = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
@@ -139,32 +139,7 @@ export const startLesson = async (
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const lesson = await LessonService.startLesson(lesson_id, user_id);
-
-    reply.code(201).send(lesson);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
-export const unlockLesson = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { lesson_sequence, unit_id } = z
-      .object({
-        lesson_sequence: z.number().int(),
-        unit_id: z.number().int(),
-      })
-      .parse(request.query);
-    const user_id = extractUserId(request, reply);
-
-    const lesson = await LessonService.unlockLesson(
-      lesson_sequence,
-      unit_id,
-      user_id,
-    );
+    const lesson = await LessonService.unlockLesson(lesson_id, user_id);
 
     reply.code(200).send(lesson);
   } catch (error) {

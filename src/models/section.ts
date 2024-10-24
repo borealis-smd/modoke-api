@@ -47,20 +47,10 @@ export const createSection = async (section: SectionCreate) => {
   });
 };
 
-export const startSection = async (section_id: number, user_id: string) => {
-  return prisma.sectionProgress.create({
-    data: {
-      section_id,
-      user_id,
-      in_progress: true,
-    },
-  });
-};
-
-export const unlockSection = async (cur_unit_id: number, user_id: string) => {
+export const unlockSection = async (unit_id: number, user_id: string) => {
   const unit = await prisma.unit.findUnique({
     where: {
-      unit_id: cur_unit_id,
+      unit_id: unit_id,
     },
   });
 

@@ -118,44 +118,14 @@ export default function SectionRoutes(
     SectionController.createSection,
   );
 
-  app.post(
-    "/start:section_id",
-    {
-      preHandler: verifyTokenMiddleware(),
-      schema: {
-        description: "Iniciar uma seção por ID de seção e ID de usuário",
-        querystring: {
-          section_id: { type: "number", examples: [1] },
-        },
-        response: {
-          201: {
-            type: "object",
-            properties: {
-              section_progress_id: { type: "number", examples: [1] },
-              in_progress: { type: "boolean", examples: [false] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: [""],
-              },
-            },
-          },
-        },
-        tags: ["Sections"],
-        security: [{ bearerAuth: [] }],
-      },
-    },
-    SectionController.startSection,
-  );
-
   app.put(
-    "/unlock:cur_unit_id",
+    "/unlock:unit_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma seção por ID de seção e ID de usuário",
         querystring: {
-          cur_unit_id: { type: "number", examples: [1] },
+          unit_id: { type: "number", examples: [1] },
         },
         response: {
           200: {

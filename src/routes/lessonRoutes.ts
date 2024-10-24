@@ -330,45 +330,14 @@ export default function LessonRoutes(
     LessonController.createLesson,
   );
 
-  app.post(
-    "/start:lesson_id",
-    {
-      preHandler: verifyTokenMiddleware(),
-      schema: {
-        description: "Iniciar uma lição por ID de lição e ID de usuário",
-        querystring: {
-          lesson_id: { type: "number", examples: [1] },
-        },
-        response: {
-          201: {
-            type: "object",
-            properties: {
-              lesson_progress_id: { type: "string", examples: ["000f21"] },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: [""],
-              },
-            },
-          },
-        },
-        tags: ["Lessons"],
-        security: [{ bearerAuth: [] }],
-      },
-    },
-    LessonController.startLesson,
-  );
-
   app.put(
-    "/unlock:lesson_sequence:unit_id",
+    "/unlock:lesson_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma lição por ID de lição e ID de usuário",
         querystring: {
-          lesson_sequence: { type: "number", examples: [1] },
-          unit_id: { type: "number", examples: [1] },
+          lesson_id: { type: "number", examples: [1] },
         },
         response: {
           200: {

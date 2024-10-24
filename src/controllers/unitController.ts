@@ -88,7 +88,7 @@ export const createUnit = async (
   }
 };
 
-export const startUnit = async (
+export const unlockUnit = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
@@ -100,27 +100,7 @@ export const startUnit = async (
       .parse(request.query);
     const user_id = extractUserId(request, reply);
 
-    const unit = await UnitService.startUnit(unit_id, user_id);
-
-    reply.code(201).send(unit);
-  } catch (error) {
-    handleError(error, reply);
-  }
-};
-
-export const unlockUnit = async (
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
-  try {
-    const { cur_unit_id } = z
-      .object({
-        cur_unit_id: z.number().int(),
-      })
-      .parse(request.query);
-    const user_id = extractUserId(request, reply);
-
-    const unit = await UnitService.unlockUnit(cur_unit_id, user_id);
+    const unit = await UnitService.unlockUnit(unit_id, user_id);
 
     reply.code(200).send(unit);
   } catch (error) {

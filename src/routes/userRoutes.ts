@@ -256,7 +256,7 @@ export default function UserRoutes(
         security: [{ bearerAuth: [] }],
       },
     },
-    UserController.increaseLevel,
+    UserController.levelUp,
   );
 
   app.put(
