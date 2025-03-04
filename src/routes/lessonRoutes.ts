@@ -4,6 +4,7 @@ import {
   verifyRole,
   verifyTokenMiddleware,
 } from "../middleware/authMiddleware";
+import { ProgressStatus } from "@prisma/client";
 
 export default function LessonRoutes(
   app: FastifyInstance,
@@ -88,8 +89,11 @@ export default function LessonRoutes(
                         examples: ["1"],
                       },
                       lesson_id: { type: "number", examples: [1] },
-                      in_progress: { type: "boolean", examples: [true] },
-                      is_locked: { type: "boolean", examples: [false] },
+                      status: { 
+                        type: "string", 
+                        enum: Object.values(ProgressStatus),
+                        examples: ["IN_PROGRESS"] 
+                      },
                       completed_at: {
                         type: "string",
                         nullable: true,
@@ -216,8 +220,11 @@ export default function LessonRoutes(
             type: "object",
             properties: {
               lesson_progress_id: { type: "string", examples: ["000f21"] },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
+              },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -344,8 +351,11 @@ export default function LessonRoutes(
             type: "object",
             properties: {
               lesson_progress_id: { type: "string", examples: ["000f21"] },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
+              },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -385,8 +395,11 @@ export default function LessonRoutes(
                     type: "string",
                     examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
                   },
-                  in_progress: { type: "boolean", examples: [false] },
-                  is_locked: { type: "boolean", examples: [false] },
+                  status: { 
+                    type: "string", 
+                    enum: Object.values(ProgressStatus),
+                    examples: ["COMPLETED"] 
+                  },
                   completed_at: {
                     type: "string",
                     examples: ["2021-08-04T00:00:00.000Z"],

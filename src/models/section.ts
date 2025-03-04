@@ -2,7 +2,7 @@ import { prisma } from "../config/db";
 import { SectionCreate } from "../validators/sectionsValidator";
 import { MaxSectionsReachedError } from "../errors/MaxSectionsReachedError";
 import { SectionForLevelAlreadyExistsError } from "../errors/SectionForLevelAlreadyExistsError";
-import { UnitNotFoundError } from "../errors/UnitNotFoundError";
+import { ProgressStatus } from "@prisma/client";
 
 export const getSections = async () => {
   return prisma.section.findMany();
@@ -13,7 +13,7 @@ export const getInProgressSectionByUserId = async (user_id: string) => {
   return prisma.sectionProgress.findFirst({
     where: {
       user_id,
-      in_progress: true,
+      status: ProgressStatus.IN_PROGRESS,
     },
     include: {
       Section: true,
@@ -47,47 +47,30 @@ export const createSection = async (section: SectionCreate) => {
   });
 };
 
-export const unlockSection = async (unit_id: number, user_id: string) => {
-  const unit = await prisma.unit.findUnique({
-    where: {
-      unit_id: unit_id,
-    },
-  });
-
-  if (!unit) {
-    throw new UnitNotFoundError("Unidade não encontrada.");
-  }
-
-  return prisma.sectionProgress.create({
-    data: {
-      section_id: unit.section_id,
-      user_id,
-      in_progress: true,
-      is_locked: false,
-    },
-  });
-};
-
-export const finishSection = async (unit_id: number, user_id: string) => {
-  const unit = await prisma.unit.findUnique({
-    where: {
-      unit_id,
-    },
-  });
-
-  if (!unit) {
-    throw new UnitNotFoundError("Unidade não encontrada.");
-  }
-
+export const unlockSection = async (section_id: number, user_id: string) => {
   return prisma.sectionProgress.update({
     where: {
       section_id_user_id: {
-        section_id: unit.section_id,
+        section_id,
         user_id,
       },
     },
     data: {
-      in_progress: false,
+      status: ProgressStatus.IN_PROGRESS,
+    },
+  });
+};
+
+export const finishSection = async (section_id: number, user_id: string) => {
+  return prisma.sectionProgress.update({
+    where: {
+      section_id_user_id: {
+        section_id,
+        user_id,
+      },
+    },
+    data: {
+      status: ProgressStatus.COMPLETED,
       completed_at: new Date(),
     },
   });

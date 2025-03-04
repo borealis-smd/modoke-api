@@ -4,6 +4,7 @@ import {
   verifyRole,
   verifyTokenMiddleware,
 } from "../middleware/authMiddleware";
+import { ProgressStatus } from "@prisma/client";
 
 export default function UnitRoutes(
   app: FastifyInstance,
@@ -159,8 +160,12 @@ export default function UnitRoutes(
           200: {
             type: "object",
             properties: {
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
+              unit_progress_id: { type: "string", examples: ["000f21"] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
+              },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -169,12 +174,6 @@ export default function UnitRoutes(
                 type: "object",
                 properties: {
                   unit_id: { type: "number", examples: [1] },
-                  unit_icon: {
-                    type: "string",
-                    examples: ["Plane"],
-                    nullable: true,
-                  },
-                  unit_sequence: { type: "number", examples: [1] },
                   unit_title: { type: "string", examples: ["Unidade 1"] },
                   unit_description: {
                     type: "string",
@@ -248,8 +247,7 @@ export default function UnitRoutes(
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
-        description:
-          "Desbloquear uma unidade por ID de unidade e ID de usuário",
+        description: "Desbloquear uma unidade por ID de unidade e ID de usuário",
         querystring: {
           unit_id: { type: "number", examples: [1] },
         },
@@ -257,12 +255,12 @@ export default function UnitRoutes(
           200: {
             type: "object",
             properties: {
-              unit_progress_id: {
-                type: "string",
-                examples: ["d979de1d-3fde-4b4f-8869-46491aba8d08"],
+              unit_progress_id: { type: "string", examples: ["000f21"] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
               },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -290,12 +288,39 @@ export default function UnitRoutes(
           200: {
             type: "object",
             properties: {
-              unit_progress_id: { type: "number", examples: [1] },
-              in_progress: { type: "boolean", examples: [false] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2021-08-04T00:00:00.000Z"],
+              finishedUnit: {
+                type: "object",
+                properties: {
+                  unit_progress_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  unit_id: { type: "number", examples: [1] },
+                  user_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  status: { 
+                    type: "string", 
+                    enum: Object.values(ProgressStatus),
+                    examples: ["COMPLETED"] 
+                  },
+                  completed_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
+              },
+              badge: {
+                type: "object",
+                nullable: true,
+                properties: {
+                  badge_id: { type: "number", examples: [1] },
+                  acquired_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
               },
             },
           },

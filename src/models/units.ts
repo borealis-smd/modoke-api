@@ -1,5 +1,6 @@
 import { prisma } from "../config/db";
 import { UnitsCreate } from "../validators/unitsValidator";
+import { ProgressStatus } from "@prisma/client";
 
 export const getUnits = async () => {
   return prisma.unit.findMany({
@@ -19,7 +20,7 @@ export const getInProgressUnitByUserId = async (user_id: string) => {
   return prisma.unitProgress.findFirst({
     where: {
       user_id,
-      in_progress: true,
+      status: ProgressStatus.IN_PROGRESS,
     },
     include: {
       Unit: true,
@@ -68,12 +69,15 @@ export const createUnit = async (unit: UnitsCreate) => {
 };
 
 export const unlockUnit = async (unit_id: number, user_id: string) => {
-  return prisma.unitProgress.create({
+  return prisma.unitProgress.update({
+    where: {
+      unit_id_user_id: {
+        unit_id,
+        user_id,
+      },
+    },
     data: {
-      unit_id: unit_id,
-      user_id,
-      in_progress: true,
-      is_locked: false,
+      status: ProgressStatus.IN_PROGRESS,
     },
   });
 };
@@ -87,7 +91,7 @@ export const finishUnit = async (unit_id: number, user_id: string) => {
       },
     },
     data: {
-      in_progress: false,
+      status: ProgressStatus.COMPLETED,
       completed_at: new Date(),
     },
   });

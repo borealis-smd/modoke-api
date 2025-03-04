@@ -4,6 +4,7 @@ import {
   verifyRole,
   verifyTokenMiddleware,
 } from "../middleware/authMiddleware";
+import { ProgressStatus } from "@prisma/client";
 
 export default function SectionRoutes(
   app: FastifyInstance,
@@ -48,8 +49,12 @@ export default function SectionRoutes(
           200: {
             type: "object",
             properties: {
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
+              section_progress_id: { type: "string", examples: ["000f21"] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
+              },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -63,7 +68,6 @@ export default function SectionRoutes(
                     type: "string",
                     examples: ["Descrição da seção 1"],
                   },
-                  level_id: { type: "number", examples: [1] },
                 },
               },
             },
@@ -119,21 +123,24 @@ export default function SectionRoutes(
   );
 
   app.put(
-    "/unlock:unit_id",
+    "/unlock:section_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Desbloquear uma seção por ID de seção e ID de usuário",
         querystring: {
-          unit_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              section_progress_id: { type: "number", examples: [1] },
-              in_progress: { type: "boolean", examples: [true] },
-              is_locked: { type: "boolean", examples: [false] },
+              section_progress_id: { type: "string", examples: ["000f21"] },
+              status: { 
+                type: "string", 
+                enum: Object.values(ProgressStatus),
+                examples: ["IN_PROGRESS"] 
+              },
               completed_at: {
                 type: "string",
                 examples: [""],
@@ -149,24 +156,51 @@ export default function SectionRoutes(
   );
 
   app.put(
-    "/finish:unit_id",
+    "/finish:section_id",
     {
       preHandler: verifyTokenMiddleware(),
       schema: {
         description: "Finalizar uma seção",
         querystring: {
-          unit_id: { type: "number", examples: [1] },
+          section_id: { type: "number", examples: [1] },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              section_progress_id: { type: "number", examples: [1] },
-              in_progress: { type: "boolean", examples: [false] },
-              is_locked: { type: "boolean", examples: [false] },
-              completed_at: {
-                type: "string",
-                examples: ["2021-08-04T00:00:00.000Z"],
+              finishedSection: {
+                type: "object",
+                properties: {
+                  section_progress_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  section_id: { type: "number", examples: [1] },
+                  user_id: {
+                    type: "string",
+                    examples: ["0ff3b86f-a7de-4519-9e59-101db8c3a8f3"],
+                  },
+                  status: { 
+                    type: "string", 
+                    enum: Object.values(ProgressStatus),
+                    examples: ["COMPLETED"] 
+                  },
+                  completed_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
+              },
+              badge: {
+                type: "object",
+                nullable: true,
+                properties: {
+                  badge_id: { type: "number", examples: [1] },
+                  acquired_at: {
+                    type: "string",
+                    examples: ["2021-08-04T00:00:00.000Z"],
+                  },
+                },
               },
             },
           },
