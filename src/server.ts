@@ -17,6 +17,7 @@ import BadgeRoutes from "./routes/badgeRoutes";
 import CertificateRoutes from "./routes/certificateRoutes";
 import GoogleAuthRoutes from "./routes/googleAuthRoutes";
 import UploadRoutes from "./routes/uploadRoutes";
+import QuizRoutes from "./routes/quizRoutes";
 
 config();
 
@@ -71,6 +72,7 @@ fastify.register(UnitRoutes, { prefix: "/unit" });
 fastify.register(LessonRoutes, { prefix: "/lesson" });
 fastify.register(ExplanationRoutes, { prefix: "/explanation" });
 fastify.register(QuestionRoutes, { prefix: "/question" });
+fastify.register(QuizRoutes, { prefix: "/quiz" });
 fastify.register(AttemptRoutes, { prefix: "/attempt" });
 fastify.register(OptionRoutes, { prefix: "/option" });
 fastify.register(BadgeRoutes, { prefix: "/badge" });
