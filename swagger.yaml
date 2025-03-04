@@ -1,0 +1,1652 @@
+openapi: 3.0.0
+info:
+  title: Modoke API
+  description: API documentation for the Modoke learning platform
+  version: 1.0.0
+  contact:
+    name: Modoke Support
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://api.modoke.com
+    description: Production server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: "John"
+        last_name:
+          type: string
+          example: "Doe"
+        avatar_url:
+          type: string
+          example: "https://www.example.com/avatar.jpg"
+        xp:
+          type: number
+          example: 0
+        level_id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+
+    Attempt:
+      type: object
+      properties:
+        attempt_id:
+          type: number
+          example: 1
+        question_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+        selected_option_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+        attempted_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        Option:
+          type: object
+          properties:
+            option_id:
+              type: string
+              example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+            option_text:
+              type: string
+              example: "Texto da opção"
+            is_correct:
+              type: boolean
+              example: false
+            question_id:
+              type: string
+              example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+
+    Badge:
+      type: object
+      properties:
+        badge_id:
+          type: number
+          example: 1
+        badge_name:
+          type: string
+          example: "Badge 1"
+        badge_image_url:
+          type: string
+          example: "http://example.com/image.png"
+        unit_id:
+          type: number
+          example: 1
+        Unit:
+          type: object
+          properties:
+            unit_id:
+              type: number
+              example: 1
+            unit_title:
+              type: string
+              example: "Unit 1"
+            unit_description:
+              type: string
+              example: "Description"
+            is_completed:
+              type: boolean
+              example: false
+            completed_at:
+              type: string
+              format: date-time
+              example: "2024-08-28T13:46:10.632Z"
+            section_id:
+              type: number
+              example: 1
+
+    UserBadge:
+      type: object
+      properties:
+        user_has_badge_id:
+          type: string
+          example: "f7cf3608-5069-3466-abee-9ec9d454e0c3"
+        badge_id:
+          type: number
+          example: 1
+        acquired_at:
+          type: string
+          format: date-time
+          example: "2024-08-28T13:46:10.632Z"
+        Badges:
+          $ref: '#/components/schemas/Badge'
+
+    Lesson:
+      type: object
+      properties:
+        lesson_id:
+          type: number
+          example: 1
+        lesson_sequence:
+          type: number
+          example: 1
+        unit_id:
+          type: number
+          example: 1
+        lesson_title:
+          type: string
+          example: "Aula 1"
+        description:
+          type: string
+          example: "Descrição da aula 1"
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        LessonProgresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonProgress'
+        Explanations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Explanation'
+
+    LessonProgress:
+      type: object
+      properties:
+        lesson_progress_id:
+          type: string
+          example: "1"
+        lesson_id:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+          example: "IN_PROGRESS"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    Certificate:
+      type: object
+      properties:
+        certificate_id:
+          type: number
+          example: 1
+        certificate_text:
+          type: string
+          example: "Certificate of Completion"
+        section_id:
+          type: number
+          example: 1
+
+    UserCertificate:
+      type: object
+      properties:
+        acquired_at:
+          type: string
+          format: date-time
+          example: "2024-08-28T14:49:45.162Z"
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
+
+    Explanation:
+      type: object
+      properties:
+        explanation_id:
+          type: number
+          example: 1
+        content:
+          type: string
+          example: "Conteúdo 1"
+        part:
+          type: string
+          enum: [PART_1, PART_2, PART_3]
+          example: "PART_1"
+        lesson_id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+
+    Level:
+      type: object
+      properties:
+        level_id:
+          type: number
+          example: 1
+        name:
+          type: string
+          enum: [A, AA, AAA]
+          example: "A"
+        description:
+          type: string
+          example: "Iniciante"
+
+    Option:
+      type: object
+      properties:
+        option_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+        option_text:
+          type: string
+          example: "Texto da opção"
+        is_correct:
+          type: boolean
+          example: false
+        question_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+        question_text:
+          type: string
+          example: "Qual a cor do céu?"
+        is_entrance_question:
+          type: boolean
+          example: true
+        xp:
+          type: number
+          example: 10
+        lesson_id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-08-04 16:21:21.921"
+        Options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+
+    QuizQuestion:
+      type: object
+      properties:
+        question_id:
+          type: string
+          example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+        question_text:
+          type: string
+          example: "Qual a cor do céu?"
+        xp:
+          type: number
+          example: 10
+        lesson_id:
+          type: number
+          example: 1
+        Options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+        userAnswer:
+          type: string
+          nullable: true
+          example: null
+
+    QuizState:
+      type: object
+      properties:
+        currentQuestion:
+          $ref: '#/components/schemas/QuizQuestion'
+        progress:
+          type: object
+          properties:
+            answered:
+              type: number
+              example: 0
+            total:
+              type: number
+              example: 10
+        hasNext:
+          type: boolean
+          example: true
+        currentIndex:
+          type: number
+          example: 0
+
+    Section:
+      type: object
+      properties:
+        section_id:
+          type: number
+          example: 1
+        section_title:
+          type: string
+          example: "Seção 1"
+        section_description:
+          type: string
+          example: "Descrição da seção 1"
+        level_id:
+          type: number
+          example: 1
+
+    SectionProgress:
+      type: object
+      properties:
+        section_progress_id:
+          type: string
+          example: "000f21"
+        status:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+          example: "IN_PROGRESS"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        Section:
+          $ref: '#/components/schemas/Section'
+
+    Unit:
+      type: object
+      properties:
+        unit_id:
+          type: number
+          example: 1
+        unit_icon:
+          type: string
+          example: "Plane"
+          nullable: true
+        unit_sequence:
+          type: number
+          example: 1
+        unit_title:
+          type: string
+          example: "Unidade 1"
+        unit_description:
+          type: string
+          example: "Descrição da unidade 1"
+        section_id:
+          type: number
+          example: 1
+        Lessons:
+          type: array
+          items:
+            type: object
+            properties:
+              LessonProgresses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    lesson_progress_id:
+                      type: string
+                      example: "000f21"
+                    lesson_id:
+                      type: number
+                      example: 1
+                    in_progress:
+                      type: boolean
+                      example: true
+                    is_locked:
+                      type: boolean
+                      example: false
+                    completed_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+
+    UnitProgress:
+      type: object
+      properties:
+        unit_progress_id:
+          type: string
+          example: "000f21"
+        status:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+          example: "IN_PROGRESS"
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        Unit:
+          $ref: '#/components/schemas/Unit'
+
+paths:
+  /auth/google:
+    get:
+      summary: Authenticate with Google
+      tags:
+        - Authentication
+      responses:
+        '302':
+          description: Redirects to Google OAuth page
+  
+  /auth/google/callback:
+    get:
+      summary: Google OAuth callback
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+
+  /users:
+    post:
+      summary: Register a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  required: ["first_name", "level_id"]
+                  properties:
+                    first_name:
+                      type: string
+                      example: "John"
+                    last_name:
+                      type: string
+                      example: "Doe"
+                    avatar_url:
+                      type: string
+                      example: "https://www.example.com/avatar.jpg"
+                    level_id:
+                      type: number
+                      example: 1
+                login:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: "john.doe@gmail.com"
+                    password:
+                      type: string
+                      example: "John@123"
+                    is_google_user:
+                      type: boolean
+                      example: false
+      responses:
+        '201':
+          description: User created successfully
+
+  /users/login:
+    post:
+      summary: User login
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: ["email", "password"]
+              properties:
+                email:
+                  type: string
+                  example: "john.doe@gmail.com"
+                password:
+                  type: string
+                  example: "John@123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  /lessons/id:lesson_id:
+    get:
+      summary: Get lesson by ID
+      tags:
+        - Lessons
+      parameters:
+        - in: query
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Lesson details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+
+  /lessons/unit:unit_id:
+    get:
+      summary: Get lessons by unit ID
+      tags:
+        - Lessons
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: unit_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: List of lessons in the unit
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lesson'
+
+  /lessons/user:
+    get:
+      summary: Get user's current lesson progress
+      tags:
+        - Lessons
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current lesson progress
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lesson_progress_id:
+                    type: string
+                    example: "000f21"
+                  status:
+                    type: string
+                    enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+                    example: "IN_PROGRESS"
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  Lesson:
+                    type: object
+                    properties:
+                      lesson_id:
+                        type: number
+                        example: 1
+                      lesson_title:
+                        type: string
+                        example: "Lição 1"
+                      lesson_description:
+                        type: string
+                        example: "Descrição da lição 1"
+                      unit_id:
+                        type: number
+                        example: 1
+
+  /upload:
+    post:
+      summary: Upload a file
+      tags:
+        - Upload
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+
+  /attempts:
+    post:
+      summary: Register an attempt
+      tags:
+        - Attempts
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+                selected_option_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+      responses:
+        '201':
+          description: Attempt registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+
+  /attempts/last:question_id:
+    get:
+      summary: Get last attempt by question ID
+      tags:
+        - Attempts
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: question_id
+          required: true
+          schema:
+            type: string
+            example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+      responses:
+        '200':
+          description: Last attempt for the question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+
+  /badges:
+    get:
+      summary: Get all badges
+      tags:
+        - Badges
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all badges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+    
+    post:
+      summary: Create a new badge
+      tags:
+        - Badges
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                badge_name:
+                  type: string
+                  example: "Badge 1"
+                badge_image_url:
+                  type: string
+                  example: "http://example.com/image.png"
+                unit_id:
+                  type: number
+                  example: 1
+      responses:
+        '201':
+          description: Badge created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+
+  /badges/unit:unit_id:
+    get:
+      summary: Get badge by unit ID
+      tags:
+        - Badges
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: unit_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Badge for the unit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+
+  /badges/user:
+    get:
+      summary: Get user's badges
+      tags:
+        - Badges
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of user's badges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserBadge'
+
+  /badges/assign:
+    post:
+      summary: Assign badge to user
+      tags:
+        - Badges
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+                badge_id:
+                  type: number
+                  example: 1
+      responses:
+        '200':
+          description: Badge assigned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Emblema atribuído com sucesso."
+
+  /certificates:
+    post:
+      summary: Create a certificate
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                certificate_id:
+                  type: number
+                  example: 1
+                certificate_text:
+                  type: string
+                  example: "Certificado de participação"
+                section_id:
+                  type: number
+                  example: 1
+      responses:
+        '201':
+          description: Certificate created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+
+  /certificates/user:
+    get:
+      summary: Get user's certificates
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of user's certificates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCertificate'
+
+  /certificates/assign:
+    post:
+      summary: Assign certificate to user
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Certificado atribuído com sucesso!"
+                certificate_id:
+                  type: number
+                  example: 1
+      responses:
+        '200':
+          description: Certificate assigned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Certificado atribuído com sucesso!"
+
+  /explanations:
+    post:
+      summary: Create an explanation
+      tags:
+        - Explanations
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lesson_id:
+                  type: number
+                  example: 1
+                content:
+                  type: string
+                  example: "Conteúdo 1"
+                part:
+                  type: string
+                  enum: [PART_1, PART_2, PART_3]
+                  example: "PART_1"
+      responses:
+        '201':
+          description: Explanation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Explanation'
+
+  /explanations/{lesson_id}:
+    get:
+      summary: Get explanations by lesson ID
+      tags:
+        - Explanations
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: part
+          schema:
+            type: string
+            enum: [PART_1, PART_2, PART_3]
+            example: "PART_1"
+      responses:
+        '200':
+          description: List of explanations for the lesson
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Explanation'
+
+  /levels:
+    get:
+      summary: Get all levels
+      tags:
+        - Levels
+      responses:
+        '200':
+          description: List of all levels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Level'
+
+  /levels/id:level_id:
+    get:
+      summary: Get level by ID
+      tags:
+        - Levels
+      parameters:
+        - in: query
+          name: level_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Level details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Level'
+
+  /options:
+    post:
+      summary: Create an option
+      tags:
+        - Options
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                option_text:
+                  type: string
+                  example: "Texto da opção"
+                is_correct:
+                  type: boolean
+                  example: false
+                question_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+      responses:
+        '201':
+          description: Option created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Option'
+
+  /questions:
+    post:
+      summary: Create a question
+      tags:
+        - Questions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question_text:
+                  type: string
+                  example: "Qual a cor do céu?"
+                is_entrance_question:
+                  type: boolean
+                  example: true
+                xp:
+                  type: number
+                  example: 10
+                lesson_id:
+                  type: number
+                  example: 1
+      responses:
+        '201':
+          description: Question created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+
+  /questions/options:
+    post:
+      summary: Create a question with options
+      tags:
+        - Questions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: object
+                  required: [question_text, is_entrance_question, xp]
+                  properties:
+                    question_text:
+                      type: string
+                      example: "Qual a cor do céu?"
+                    is_entrance_question:
+                      type: boolean
+                      example: true
+                    xp:
+                      type: number
+                      example: 10
+                    lesson_id:
+                      type: number
+                      example: 1
+                options:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      option_text:
+                        type: string
+                        example: "Azul"
+                      is_correct:
+                        type: boolean
+                        example: true
+      responses:
+        '201':
+          description: Question with options created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+
+  /quiz/initialize/lesson:
+    get:
+      summary: Initialize a quiz for a lesson
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Quiz initialized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizState'
+
+  /quiz/initialize/unit:
+    get:
+      summary: Initialize a quiz for a unit
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: unit_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Quiz initialized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizState'
+
+  /quiz/initialize/entranceTest:
+    get:
+      summary: Initialize an entrance test quiz
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Entrance test quiz initialized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizState'
+
+  /quiz/answer:
+    post:
+      summary: Answer a quiz question
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selected_option_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+      responses:
+        '200':
+          description: Answer submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nextQuestion:
+                    $ref: '#/components/schemas/QuizQuestion'
+                    nullable: true
+                  progress:
+                    type: object
+                    properties:
+                      answered:
+                        type: number
+                        example: 0
+                      total:
+                        type: number
+                        example: 10
+                  hasNext:
+                    type: boolean
+                    example: true
+                  isComplete:
+                    type: boolean
+                    example: false
+                  currentIndex:
+                    type: number
+                    example: 0
+
+  /quiz/progress:
+    get:
+      summary: Get quiz progress
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Quiz progress information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizQuestion'
+                  progress:
+                    type: object
+                    properties:
+                      answered:
+                        type: number
+                        example: 0
+                      total:
+                        type: number
+                        example: 10
+                  isComplete:
+                    type: boolean
+                    example: false
+                  currentIndex:
+                    type: number
+                    example: 0
+
+  /quiz/navigate:
+    post:
+      summary: Navigate through quiz questions
+      tags:
+        - Quiz
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: lesson_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                direction:
+                  type: string
+                  enum: [next, previous]
+                  example: "next"
+      responses:
+        '200':
+          description: Navigation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  question:
+                    $ref: '#/components/schemas/QuizQuestion'
+                  progress:
+                    type: object
+                    properties:
+                      answered:
+                        type: number
+                        example: 0
+                      total:
+                        type: number
+                        example: 10
+                  hasNext:
+                    type: boolean
+                    example: true
+                  isComplete:
+                    type: boolean
+                    example: false
+                  currentIndex:
+                    type: number
+                    example: 0
+
+  /sections:
+    get:
+      summary: Get all sections
+      tags:
+        - Sections
+      responses:
+        '200':
+          description: List of all sections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Section'
+    
+    post:
+      summary: Create a new section
+      tags:
+        - Sections
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id:
+                  type: string
+                  example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+                section_title:
+                  type: string
+                  example: "Seção 1"
+                section_description:
+                  type: string
+                  example: "Descrição da seção 1"
+                level_id:
+                  type: number
+                  example: 1
+      responses:
+        '201':
+          description: Section created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+  /sections/user:
+    get:
+      summary: Get user's current section progress
+      tags:
+        - Sections
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current section progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionProgress'
+
+  /sections/unlock:section_id:
+    put:
+      summary: Unlock a section
+      tags:
+        - Sections
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: section_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Section unlocked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  section_progress_id:
+                    type: string
+                    example: "000f21"
+                  status:
+                    type: string
+                    enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+                    example: "IN_PROGRESS"
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+
+  /sections/finish:section_id:
+    put:
+      summary: Finish a section
+      tags:
+        - Sections
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: section_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Section finished successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  finishedSection:
+                    type: object
+                    properties:
+                      section_progress_id:
+                        type: string
+                        example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+                      section_id:
+                        type: number
+                        example: 1
+                      user_id:
+                        type: string
+                        example: "0ff3b86f-a7de-4519-9e59-101db8c3a8f3"
+                      status:
+                        type: string
+                        enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+                        example: "COMPLETED"
+                      completed_at:
+                        type: string
+                        format: date-time
+                        example: "2021-08-04T00:00:00.000Z"
+                  badge:
+                    type: object
+                    nullable: true
+                    properties:
+                      badge_id:
+                        type: number
+                        example: 1
+                      acquired_at:
+                        type: string
+                        format: date-time
+                        example: "2021-08-04T00:00:00.000Z"
+
+  /units:
+    get:
+      summary: Get all units
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all units
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+    
+    post:
+      summary: Create a new unit
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unit_icon:
+                  type: string
+                  example: "Plane"
+                  nullable: true
+                unit_sequence:
+                  type: number
+                  example: 1
+                unit_title:
+                  type: string
+                  example: "Unidade 1"
+                unit_description:
+                  type: string
+                  example: "Descrição da unidade 1"
+                section_id:
+                  type: number
+                  example: 1
+      responses:
+        '201':
+          description: Unit created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+
+  /units/id:unit_id:
+    get:
+      summary: Get unit by ID
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: unit_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Unit details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+
+  /units/section:section_id:
+    get:
+      summary: Get units by section ID
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: section_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: List of units in the section
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+
+  /units/user:
+    get:
+      summary: Get user's current unit progress
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current unit progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitProgress'
+
+  /units/unlock:unit_id:
+    put:
+      summary: Unlock a unit
+      tags:
+        - Units
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: unit_id
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Unit unlocked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitProgress'
+
+tags:
+  - name: Authentication
+    description: Authentication endpoints
+  - name: Users
+    description: User management endpoints
+  - name: Lessons
+    description: Lesson management endpoints
+  - name: Attempts
+    description: Quiz attempt management endpoints
+  - name: Badges
+    description: Badge management endpoints
+  - name: Quizzes
+    description: Quiz management endpoints
+  - name: Upload
+    description: File upload endpoints
+  - name: Certificates
+    description: Certificate management endpoints
+  - name: Explanations
+    description: Lesson explanation management endpoints
+  - name: Levels
+    description: Level management endpoints
+  - name: Options
+    description: Question option management endpoints
+  - name: Questions
+    description: Question management endpoints
+  - name: Quiz
+    description: Quiz management endpoints
+  - name: Sections
+    description: Section management endpoints
+  - name: Units
+    description: Unit management endpoints 
