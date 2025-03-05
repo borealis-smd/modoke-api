@@ -61,14 +61,23 @@ enum LevelName {
 }
 
 model Section {
-  section_id          Int               @id
-  section_title       String            @db.VarChar(255)
-  section_description String            @db.Text
-  level_id            Int               @unique
-  Level               Level             @relation(fields: [level_id], references: [level_id])
-  Units               Unit[]
-  Certificate         Certificate?
-  SectionProgresses   SectionProgress[]
+  section_id          Int              @id @default(autoincrement())
+  section_title       String           @db.VarChar(255)
+  section_description String           @db.Text
+  level_id           Int
+  next_section_id    Int?             @unique
+  prev_section_id    Int?             @unique
+  created_at         DateTime         @default(now())
+  Level              Level            @relation(fields: [level_id], references: [level_id])
+  NextSection        Section?         @relation("SectionLinks", fields: [next_section_id], references: [section_id])
+  PreviousSections   Section[]        @relation("SectionLinks")
+  Units              Unit[]
+  SectionProgresses  SectionProgress[]
+  Certificate        Certificate[]
+
+  @@unique([level_id])
+  @@index([next_section_id])
+  @@index([prev_section_id])
 }
 
 enum ProgressStatus {
@@ -90,18 +99,24 @@ model SectionProgress {
 }
 
 model Unit {
-  unit_id          Int            @id @default(autoincrement())
-  unit_icon        String?        @db.VarChar(100)
-  unit_sequence    Int
-  unit_title       String         @db.VarChar(255)
-  unit_description String         @db.Text
-  section_id       Int
-  Section          Section        @relation(fields: [section_id], references: [section_id])
-  Lessons          Lesson[]
-  Badge            Badge?
-  UnitProgresses   UnitProgress[]
+  unit_id            Int              @id @default(autoincrement())
+  unit_icon          String?          @db.VarChar(255)
+  unit_title         String           @db.VarChar(255)
+  unit_description   String           @db.Text
+  section_id         Int
+  next_unit_id       Int?             @unique
+  prev_unit_id       Int?             @unique
+  created_at         DateTime         @default(now())
+  Section            Section          @relation(fields: [section_id], references: [section_id])
+  NextUnit           Unit?            @relation("UnitLinks", fields: [next_unit_id], references: [unit_id])
+  PreviousUnits      Unit[]           @relation("UnitLinks")
+  Lessons            Lesson[]
+  UnitProgresses     UnitProgress[]
+  Badge              Badge[]
 
-  @@unique([section_id, unit_sequence])
+  @@index([section_id])
+  @@index([next_unit_id])
+  @@index([prev_unit_id])
 }
 
 model UnitProgress {

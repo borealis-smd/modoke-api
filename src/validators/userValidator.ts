@@ -6,21 +6,41 @@ export const UserDBSchema = z.object({
     .uuid({ message: "ID do usuário deve ser um UUID válido." }),
   first_name: z
     .string()
-    .min(3, "Primeiro nome deve ter pelo menos 3 caracteres.")
-    .max(70, "Primeiro nome deve ter no máximo 70 caracteres."),
-  last_name: z.string().optional(),
+    .min(2, "Nome deve ter pelo menos 2 caracteres.")
+    .max(70, "Nome deve ter no máximo 70 caracteres.")
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      "Nome deve conter apenas letras, espaços, hífens e apóstrofos."
+    ),
+  last_name: z
+    .string()
+    .min(2, "Sobrenome deve ter pelo menos 2 caracteres.")
+    .max(70, "Sobrenome deve ter no máximo 70 caracteres.")
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      "Sobrenome deve conter apenas letras, espaços, hífens e apóstrofos."
+    )
+    .optional(),
   avatar_url: z
-    .string({ message: "URL do avatar deve ser uma URL válida." })
-    .url(),
-  xp: z.number().int({ message: "XP deve ser um número inteiro." }),
+    .string()
+    .url("URL do avatar deve ser uma URL válida.")
+    .startsWith("https://", "URL do avatar deve começar com https://")
+    .optional(),
+  xp: z
+    .number()
+    .int("XP deve ser um número inteiro.")
+    .min(0, "XP não pode ser negativo.")
+    .default(0),
   role: z
-    .enum(["USER", "ADMIN"], { message: "Função inválida." })
+    .enum(["USER", "ADMIN"], {
+      errorMap: () => ({ message: "Função deve ser USER ou ADMIN." }),
+    })
     .default("USER"),
   level_id: z
     .number()
-    .int()
-    .min(1, "Nível inválido.")
-    .max(3, "Nível inválido."),
+    .int("Nível deve ser um número inteiro.")
+    .min(1, "Nível deve ser maior ou igual a 1.")
+    .max(3, "Nível deve ser menor ou igual a 3."),
   created_at: z.date(),
   updated_at: z.date(),
 });

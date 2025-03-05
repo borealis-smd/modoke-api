@@ -12,6 +12,7 @@ import { UnitNotFoundError } from "../errors/UnitNotFoundError";
 import { NoLessonFoundError } from "../errors/NoLessonFoundError";
 import { UserNotFoundError } from "../errors/UserNotFoundError";
 import { LevelNotFoundError } from "../errors/LevelNotFoundError";
+import { ProgressStatus } from "@prisma/client";
 
 export const registerUser = async (user: UserRegister, login: Login) => {
   if (!user.first_name) {
@@ -45,6 +46,7 @@ export const registerUser = async (user: UserRegister, login: Login) => {
   const newUser = await prisma.user.create({
     data: {
       ...user,
+      avatar_url: user.avatar_url || "https://default-avatar.png",
       xp: 0,
       Login: {
         create: {
@@ -60,16 +62,13 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     data: {
       user_id: newUser.user_id,
       section_id: newUser.level_id,
-      in_progress: true,
+      status: ProgressStatus.IN_PROGRESS,
     },
   });
 
-  const unit = await prisma.unit.findUnique({
+  const unit = await prisma.unit.findFirst({
     where: {
-      section_id_unit_sequence: {
-        section_id: sectionInProgress.section_id,
-        unit_sequence: 1,
-      },
+      section_id: sectionInProgress.section_id,
     },
   });
 
@@ -81,17 +80,13 @@ export const registerUser = async (user: UserRegister, login: Login) => {
     data: {
       user_id: newUser.user_id,
       unit_id: unit.unit_id,
-      in_progress: true,
-      is_locked: false,
+      status: ProgressStatus.IN_PROGRESS,
     },
   });
 
-  const lesson = await prisma.lesson.findUnique({
+  const lesson = await prisma.lesson.findFirst({
     where: {
-      unit_id_lesson_sequence: {
-        unit_id: unitInProgress.unit_id,
-        lesson_sequence: 1,
-      },
+      unit_id: unitInProgress.unit_id,
     },
   });
 
@@ -102,9 +97,8 @@ export const registerUser = async (user: UserRegister, login: Login) => {
   await prisma.lessonProgress.create({
     data: {
       user_id: newUser.user_id,
-      lesson_id: lesson.unit_id,
-      in_progress: true,
-      is_locked: false,
+      lesson_id: lesson.lesson_id,
+      status: ProgressStatus.IN_PROGRESS,
     },
   });
 
@@ -156,7 +150,7 @@ export const levelUp = async (user_id: string) => {
   const levels = await prisma.level.findMany();
 
   const newLevel = levels.find(
-    (level) => level.min_xp <= user.xp && level.max_xp > user.xp,
+    (level) => level.min_xp <= user.xp && level.max_xp > user.xp
   );
 
   if (!newLevel) {

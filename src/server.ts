@@ -18,6 +18,9 @@ import CertificateRoutes from "./routes/certificateRoutes";
 import GoogleAuthRoutes from "./routes/googleAuthRoutes";
 import UploadRoutes from "./routes/uploadRoutes";
 import QuizRoutes from "./routes/quizRoutes";
+import { readFileSync } from "fs";
+import { join } from "path";
+import yaml from "js-yaml";
 
 config();
 
@@ -30,27 +33,13 @@ fastify.register(fastifyCors, {
   origin: "*",
 });
 
+// Load Swagger YAML file
+const swaggerDocument = yaml.load(
+  readFileSync(join(__dirname, "../swagger.yaml"), "utf8")
+) as Record<string, any>;
+
 fastify.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: "API Documentation",
-      description: "API documentation with Swagger",
-      version: "1.0.0",
-    },
-    servers: [
-      { url: "http://localhost:8000" },
-      { url: "https://modoke-api-production.up.railway.app" },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
-  },
+  openapi: swaggerDocument
 });
 
 fastify.register(fastifySwaggerUi, {

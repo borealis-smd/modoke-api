@@ -150,12 +150,11 @@ export const finishLesson = async (lesson_id: number, user_id: string) => {
 
     if (currentUnit) {
       // Find the next unit in the section
-      const nextUnit = await prisma.unit.findFirst({
+      const nextUnit = currentUnit.next_unit_id ? await prisma.unit.findUnique({
         where: {
-          section_id: currentUnit.section_id,
-          unit_sequence: currentUnit.unit_sequence + 1,
+          unit_id: currentUnit.next_unit_id,
         },
-      });
+      }) : null;
 
       if (nextUnit) {
         // If there's a next unit, unlock it and its first lesson

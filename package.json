@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +18,11 @@
     "@fastify/swagger": "^8.15.0",
     "@fastify/swagger-ui": "^4.0.1",
     "@prisma/client": "^5.17.0",
+    "@types/js-yaml": "^4.0.9",
     "bcrypt": "^5.1.1",
     "fastify": "^4.28.1",
     "google-auth-library": "^9.14.0",
+    "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.14",
     "zod": "^3.23.8"
